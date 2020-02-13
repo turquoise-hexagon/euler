@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+declare -A array
+
+for src in src/*.scm; {
+    bin=${src##*/}
+    bin=bin/${bin/%.scm}
+
+    [[ -e $bin ]] && {
+        {
+            read -r a
+            read -r b
+        } < \
+            <(stat -c '%Y' -- "$src" "$bin")
+
+        ((a > b)) || continue
+    }
+
+    array[$src]=$bin
+}
+
+mkdir -p bin
+
+{
+    set -x
+
+    for src in "${!array[@]}"; {
+        csc -O5 "$src" -o "${array[$src]}"
+    }
+} |&
+    while IFS= read -r line; do
+        [[ $line =~ ^'+ 'for ]] ||
+            printf '%s\n' "$line"
+    done

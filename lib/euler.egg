@@ -1,0 +1,9 @@
+((synopsis "euler project helpers")
+ (author "camille, camille at lzr dot pw")
+ (license "0BSD")
+ (category misc)
+ (components (extension euler
+                        (csc-options "-O3")
+                        (source-dependencies "euler-impl.scm"))))
+
+; vim: ft=scheme
