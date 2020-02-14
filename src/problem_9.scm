@@ -1,0 +1,17 @@
+(define (main n)
+  (let helper-1 ((x 1))
+    (if (= x n)
+        0
+        (let helper-2 ((y 1))
+          (if (= y n)
+              (helper-1 (add1 x))
+              (let helper-3 ((z 1))
+                (if (= z n)
+                    (helper-2 (add1 y))
+                    (if (and (= (+ x y z) n)
+                             (= (+ (* x x) (* y y)) (* z z)))
+                        (* x y z)
+                        (helper-3 (add1 z))))))))))
+
+(display (main 1000))
+(newline)
