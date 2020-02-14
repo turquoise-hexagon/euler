@@ -3,7 +3,9 @@
          list->number
          digitsum
          fact
+         reverse-number
          sieve
+         palindrome?
          prime?)
 
         (import scheme

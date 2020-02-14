@@ -1,9 +1,8 @@
 (import euler)
 
 (define (palindrome-base? n base)
-  (let ((tmp (number->list n base)))
-    (= (list->number tmp)
-       (list->number (reverse tmp)))))
+  (let ((lst (number->list n base)))
+    (equal? lst (reverse lst))))
 
 (define (main n)
   (do ((x 1 (add1 x))
