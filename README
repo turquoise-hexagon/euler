@@ -7,6 +7,7 @@ $ bin/$problem
 depends on :
 * chicken
 * bash
+* regex
 * math
 * euler
 * srfi-1
