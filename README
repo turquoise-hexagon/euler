@@ -1,14 +1,18 @@
-project euler solutions written in scheme
+euler
+=====
+    project euler solutions written in scheme
 
-usage :
-$ ./make.sh
-$ bin/$problem
+usage
+-----
+    $ ./make.sh
+    $ bin/$problem
 
-depends on :
-* chicken
-* bash
-* regex
-* math
-* euler
-* srfi-1
-* srfi-69
+depends on
+----------
+    * chicken
+    * bash
+    * regex
+    * math
+    * euler
+    * srfi-1
+    * srfi-69
