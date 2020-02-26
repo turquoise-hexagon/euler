@@ -1,1 +1,13 @@
-project euler solutions written in chicken
+project euler solutions written in scheme
+
+usage :
+$ ./make.sh
+$ bin/$problem
+
+depends on :
+* chicken
+* bash
+* math
+* euler
+* srfi-1
+* srfi-69
