@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
+# check for chicken
+type csc &> /dev/null || {
+    echo 'error : install chicken first' >&2
+    exit 1
+}
+
 declare -A array
 
+# build list of files to compile
 for src in src/*.scm; {
     bin=${src##*/}
     bin=bin/${bin/%.scm}
