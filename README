@@ -9,10 +9,10 @@ usage
 
 depends on
 ----------
-    * chicken
     * bash
-    * regex
-    * math
+    * chicken
     * euler
+    * math
+    * regex
     * srfi-1
     * srfi-69
