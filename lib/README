@@ -1,6 +1,6 @@
 euler
 =====
-    small library containing functions useful to solve project euler problems
+    small library containing some functions useful to solve project euler problems
 
     * digitsum
         compute the digitsum of a given number
