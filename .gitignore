@@ -1,5 +1,6 @@
 bin
 lib/*
+!lib/README
 !lib/euler.scm
 !lib/euler.egg
 !lib/euler-impl.scm

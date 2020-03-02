@@ -1,0 +1,24 @@
+euler
+=====
+    small library containing functions useful to solve project euler problems
+
+    * digitsum
+        compute the digitsum of a given number
+    * fact
+        compute the factorial of a given number
+    * list->number
+        return the list of digits of a given number
+    * number->list
+        return aa number from the list of its digits
+    * palindrome?
+        test if a given number is a palindrome
+    * prime?
+        test if a given number is prime
+    * reverse-number
+        reverse a given number
+    * sieve
+        return a list of primes up to a given number
+
+usage
+-----
+    $ chicken-install -s
