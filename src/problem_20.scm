@@ -1,4 +1,4 @@
 (import euler)
 
-(display (digitsum (fact 100)))
+(display (digitsum (factorial 100)))
 (newline)

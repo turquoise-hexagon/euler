@@ -2,7 +2,7 @@
         (srfi 1))
 
 (define facts
-  (map fact (iota 10)))
+  (map factorial (iota 10)))
 
 (define (s n)
   (apply + (map

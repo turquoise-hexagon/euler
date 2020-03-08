@@ -30,13 +30,13 @@
        (acc 0 (+ (* acc 10) (remainder x 10))))
     ((zero? x) acc)))
 
-(define (fact n)
+(define (factorial n)
   (if (zero? n)
       1
       (let helper ((x 1) (acc n))
         (if (> acc x)
-            (* (helper (* 2 x) acc)
-               (helper (* 2 x) (- acc x)))
+            (* (helper (+ x x) acc)
+               (helper (+ x x) (- acc x)))
             acc))))
 
 (define (digitsum n)

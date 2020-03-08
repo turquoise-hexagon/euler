@@ -4,7 +4,7 @@ euler
 
     * digitsum
         compute the digitsum of a given number
-    * fact
+    * factorial
         compute the factorial of a given number
     * list->number
         return the list of digits of a given number

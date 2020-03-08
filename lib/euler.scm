@@ -2,7 +2,7 @@
         (number->list
          list->number
          digitsum
-         fact
+         factorial
          reverse-number
          sieve
          palindrome?
