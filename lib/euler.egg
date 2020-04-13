@@ -3,7 +3,7 @@
  (license "0BSD")
  (category misc)
  (components (extension euler
-                        (csc-options "-O5")
+                        (csc-options "-O3")
                         (source-dependencies "euler-impl.scm"))))
 
 ; vim: ft=scheme
