@@ -13,6 +13,5 @@ depends on
     * chicken
     * euler
     * math
-    * regex
     * srfi-1
     * srfi-69
