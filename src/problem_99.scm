@@ -1,11 +1,11 @@
 (import (chicken io)
-        (chicken irregex))
+        (chicken string))
 
 (define (read-file name)
   (call-with-input-file name
     (lambda (file)
       (do ((line (read-line file) (read-line file))
-           (acc (list) (cons (map string->number (irregex-split "," line)) acc)))
+           (acc (list) (cons (map string->number (string-split line ",")) acc)))
         ((eof-object? line) (reverse acc))))))
 
 (define (main name)
