@@ -4,7 +4,7 @@ euler
 
 usage
 -----
-    $ ./make.sh
+    $ make -j $jobs
     $ bin/$problem
 
 depends on
