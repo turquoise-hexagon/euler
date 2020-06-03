@@ -28,14 +28,12 @@ for src in src/*.scm; {
 
 mkdir -p bin
 
-{
+for src in "${!array[@]}"; {
     set -x
-
-    for src in "${!array[@]}"; {
-        csc -O5 "$src" -o "${array[$src]}"
-    }
+    csc -O5 "$src" -o "${array[$src]}"
+    set +x
 } |&
     while IFS= read -r line; do
-        [[ $line =~ ^\++\ ([^'for'].*) ]] &&
+        [[ $line =~ ^\++\ ([^'set'].*) ]] &&
             printf '%s\n' "${BASH_REMATCH[1]}"
     done
