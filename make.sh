@@ -34,6 +34,7 @@ for src in "${!array[@]}"; {
     set +x
 } |&
     while IFS= read -r line; do
-        [[ $line =~ ^\++\ ([^'set'].*) ]] &&
+        if [[ $line =~ ^\++\ ([^'set'].*) ]]; then
             printf '%s\n' "${BASH_REMATCH[1]}"
+        fi
     done
