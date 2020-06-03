@@ -1,6 +1,6 @@
 CSCFLAGS += -O5
 
-BIN = $(shell find src -name '*.scm' | sed 's|^src|bin|g;s|\.scm$$||g')
+BIN = $(shell printf '%s\n' src/*.scm | sed 's|^src|bin|g;s|\.scm$$||g')
 
 all: $(BIN)
 
