@@ -4,12 +4,11 @@ euler
 
 usage
 -----
-    $ make -j $jobs
+    $ make
     $ bin/$problem
 
 depends on
 ----------
-    * bash
     * chicken
     * euler
     * math
