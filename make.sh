@@ -36,6 +36,6 @@ mkdir -p bin
     }
 } |&
     while IFS= read -r line; do
-        [[ $line =~ ^'+ 'for ]] ||
-            printf '%s\n' "$line"
+        [[ $line =~ ^\++\ ([^'for'].*) ]] &&
+            printf '%s\n' "${BASH_REMATCH[1]}"
     done
