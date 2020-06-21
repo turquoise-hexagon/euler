@@ -1,6 +1,16 @@
 (import (chicken io)
         (chicken string))
 
+(define (helper-ref vec . refs)
+  (do ((refs refs (cdr refs))
+       (vec vec (vector-ref vec (car refs))))
+    ((null? refs) vec)))
+
+(define (helper-set vec val . refs)
+  (do ((refs refs (cdr refs))
+       (vec vec (vector-ref vec (car refs))))
+    ((null? (cdr refs)) (vector-set! vec (car refs) val))))
+
 (define (read-file name)
   (call-with-input-file name
     (lambda (file)
@@ -16,18 +26,18 @@
          (size (vector-length grid)))
     (do ((x (- size 2) (sub1 x))) ((< x 0))
       (begin
-        (vector-set! (vector-ref grid (sub1 size)) x
-                     (+ (vector-ref (vector-ref grid (sub1 size)) x)
-                        (vector-ref (vector-ref grid (sub1 size)) (add1 x))))
-        (vector-set! (vector-ref grid x) (sub1 size)
-                     (+ (vector-ref (vector-ref grid x) (sub1 size))
-                        (vector-ref (vector-ref grid (add1 x)) (sub1 size))))))
+        (helper-set grid (+ (helper-ref grid (sub1 size) x)
+                            (helper-ref grid (sub1 size) (add1 x)))
+                    (sub1 size) x)
+        (helper-set grid (+ (helper-ref grid x (sub1 size))
+                            (helper-ref grid (add1 x) (sub1 size)))
+                    x (sub1 size))))
     (do ((x (- size 2) (sub1 x))) ((< x 0))
       (do ((y (- size 2) (sub1 y))) ((< y 0))
-        (vector-set! (vector-ref grid x) y
-                     (+ (vector-ref (vector-ref grid x) y)
-                        (min (vector-ref (vector-ref grid (add1 x)) y)
-                             (vector-ref (vector-ref grid x) (add1 y)))))))
+        (helper-set grid (+ (helper-ref grid x y)
+                            (min (helper-ref grid (add1 x) y)
+                                 (helper-ref grid x (add1 y))))
+                    x y)))
     (vector-ref (vector-ref grid 0) 0)))
 
 (display (main))
