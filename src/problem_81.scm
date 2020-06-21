@@ -38,7 +38,7 @@
                             (min (helper-ref grid (add1 x) y)
                                  (helper-ref grid x (add1 y))))
                     x y)))
-    (vector-ref (vector-ref grid 0) 0)))
+    (helper-ref grid 0 0)))
 
 (display (main))
 (newline)
