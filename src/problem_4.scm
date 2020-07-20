@@ -1,5 +1,4 @@
-(import (euler)
-        (srfi 1))
+(import (euler))
 
 (define (main n)
   (set! res 0)
