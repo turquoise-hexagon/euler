@@ -22,8 +22,9 @@
                       (else (helper (+ x 6))))))))
 
 (define (palindrome? n)
-  (let ((lst (number->list n)))
-    (equal? lst (reverse lst))))
+  (do ((x n (quotient x 10))
+       (acc 0 (+ (* acc 10) (remainder x 10))))
+    ((zero? x) (= acc n))))
 
 (define (reverse-number n)
   (do ((x n (quotient x 10))
