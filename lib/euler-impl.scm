@@ -20,16 +20,13 @@
                            (zero? (remainder n (+ x 2))))
                        #f)
                       (else (helper (+ x 6))))))))
-
-(define (palindrome? n)
-  (do ((x n (quotient x 10))
-       (acc 0 (+ (* acc 10) (remainder x 10))))
-    ((zero? x) (= acc n))))
-
 (define (reverse-number n)
   (do ((x n (quotient x 10))
        (acc 0 (+ (* acc 10) (remainder x 10))))
     ((zero? x) acc)))
+
+(define (palindrome? n)
+  (= n (reverse-number n)))
 
 (define (factorial n)
   (if (zero? n)
