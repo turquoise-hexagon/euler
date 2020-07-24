@@ -1,17 +1,16 @@
-(import euler)
+(import (euler))
 
-(define (cube x)
-  (* x x x))
+(define (cube n)
+  (* n n n))
 
 (define (main n)
-  (let helper ((x 1) (acc 0))
-    (let ((tmp (- (cube (add1 x)) (cube x))))
-      (if (> tmp n)
-          acc
-          (helper (add1 x)
-                  (if (prime? tmp)
-                      (add1 acc)
-                      acc))))))
+  (do ((x 1 (add1 x))
+       (tmp 0 (- (cube (add1 x)) (cube x)))
+       (acc 0 (if (prime? tmp)
+                  (add1 acc)
+                  acc)))
+    ((> tmp n) acc)))
 
 (display (main 1000000))
 (newline)
+
