@@ -1,11 +1,9 @@
-(import euler)
+(import (euler))
 
 (define (main n)
-  (let helper ((lst (sieve n)) (acc 1))
-    (let ((tmp (* acc (car lst))))
-      (if (> tmp n)
-          acc
-          (helper (cdr lst) tmp)))))
+  (do ((lst (sieve n) (cdr lst))
+       (acc 1 (* acc (car lst))))
+    ((> (* acc (car lst)) n) acc)))
 
 (display (main 1000000))
 (newline)
