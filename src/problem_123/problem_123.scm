@@ -2,9 +2,10 @@
         (srfi 1))
 
 (define (compute prime index)
-  (modulo (+ (expt (- prime 1) index)
-             (expt (+ prime 1) index))
-          (* prime prime)))
+  (let ((mod (* prime prime)))
+    (modulo (+ (expt-mod (- prime 1) index mod)
+               (expt-mod (+ prime 1) index mod))
+            mod)))
 
 (define (solve n)
   (let ((lst (primes (expt 10 6))))
