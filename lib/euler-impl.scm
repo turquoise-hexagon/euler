@@ -149,20 +149,15 @@
 
 (define (primes n)
   (let ((sieve (make-vector (+ n 1) #t)))
-    (for-each
-      (lambda (i)
-        (when (vector-ref sieve i)
-          (for-each
-            (lambda (j)
-              (vector-set! sieve j #f))
-            (range (* i i) n i))))
-      (range 2 n 1))
-    (foldl
-      (lambda (primes i)
-        (if (vector-ref sieve i)
-            (cons i primes)
-            primes))
-      '() (range n 2 -1))))
+    (do ((i 2 (+ i 1))) ((> (* i i) n))
+      (when (vector-ref sieve i)
+        (do ((j (* i i) (+ j i))) ((> j n))
+          (vector-set! sieve j #f))))
+    (do ((i n (- i 1))
+         (acc '() (if (vector-ref sieve i)
+                      (cons i acc)
+                      acc)))
+      ((< i 2) acc))))
 
 (define (discrete-log base res mod)
   (let ((n (inexact->exact (ceiling (sqrt mod)))))
