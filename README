@@ -4,13 +4,13 @@ euler
 
 usage
 -----
-    $ make
-    $ bin/$problem
+    * cd src/$problem
+    * make
+    * ./$problem
 
 depends on
 ----------
+    * make
     * chicken
-    * euler
-    * math
     * srfi-1
     * srfi-69

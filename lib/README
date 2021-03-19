@@ -2,23 +2,26 @@ euler
 =====
     small library containing some functions useful to solve project euler problems
 
+    * combinations
     * digitsum
-        compute the digitsum of a given number
+    * discrete-log
+    * divisors
+    * expt-mod
     * factorial
-        compute the factorial of a given number
-    * list->number
-        return the list of digits of a given number
+    * factorize
     * number->list
-        return aa number from the list of its digits
     * palindrome?
-        test if a given number is a palindrome
+    * permutations
+    * powerset
     * prime?
-        test if a given number is prime
-    * reverse-number
-        reverse a given number
-    * sieve
-        return a list of primes up to a given number
+    * primes
+    * product
 
 usage
 -----
-    $ chicken-install -s
+    * chicken-install
+
+depends on
+----------
+    * chicken
+    * srfi-69
