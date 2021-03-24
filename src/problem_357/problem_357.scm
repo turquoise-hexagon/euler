@@ -1,0 +1,16 @@
+(import (euler))
+
+(define (solve n)
+  (let ((sieve (make-vector (+ n 1) #t)))
+    (do ((i 1 (+ i 1))) ((> i n))
+      (do ((j i (+ j i))) ((> j n))
+        (when (vector-ref sieve j)
+          (unless (prime? (+ i (quotient j i)))
+            (vector-set! sieve j #f)))))
+    (do ((i 1 (+ i 1))
+         (acc 0 (if (vector-ref sieve i)
+                    (+ acc i)
+                    acc)))
+      ((> i n) acc))))
+
+(print (solve 100000000))
