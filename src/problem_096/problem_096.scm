@@ -19,7 +19,7 @@
                 (return (list i j))))
             (iota Y)))
         (iota X))
-      (return #f))))
+      #f)))
 
 (define (can-place? grid x y n)
   (call/cc
@@ -36,7 +36,7 @@
         (iota 3 (- x (modulo x 3))))
       (when (= (vector-ref (vector-ref grid x) y) 0)
         (return #t))
-      (return #f))))
+      #f)))
 
 (define (solve-sudoku grid)
   (call/cc
@@ -50,9 +50,9 @@
                (when (solve-sudoku grid)
                  (return #t))
                (vector-set! (vector-ref grid x) y 0)))
-           (iota 9 1))
-         (return #f))
-        (_ (return #t))))))
+           (iota X 1))
+         #f)
+         (_ #t)))))
 
 (define (get-value grid)
   (let ((lst (vector->list (vector-ref grid 0))))
