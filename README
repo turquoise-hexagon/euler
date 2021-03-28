@@ -12,5 +12,6 @@ depends on
 ----------
     * make
     * chicken
+    * matchable
     * srfi-1
     * srfi-69
