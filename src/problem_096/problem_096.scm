@@ -34,9 +34,7 @@
                 (return #f)))
             (iota 3 (- y (modulo y 3)))))
         (iota 3 (- x (modulo x 3))))
-      (when (= (vector-ref (vector-ref grid x) y) 0)
-        (return #t))
-      #f)))
+      (= (vector-ref (vector-ref grid x) y) 0))))
 
 (define (solve-sudoku grid)
   (call/cc
