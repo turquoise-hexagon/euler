@@ -50,7 +50,7 @@
                (vector-set! (vector-ref grid x) y 0)))
            (iota X 1))
          #f)
-         (_ #t)))))
+        (_ #t)))))
 
 (define (get-value grid)
   (let ((lst (vector->list (vector-ref grid 0))))
@@ -64,7 +64,7 @@
                       (lambda (str)
                         (list->vector (map string->number (string-chop str 1))))
                       (string-split str "\n"))))
-  (irregex-split "Grid [0-9]+\n" (read-string #f))))
+   (irregex-split "Grid [0-9]+\n" (read-string #f))))
 
 (define (solve input)
   (for-each solve-sudoku input)
