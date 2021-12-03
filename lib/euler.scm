@@ -6,6 +6,7 @@
     expt-mod
     factorial
     factorize
+    list->number
     number->list
     palindrome?
     permutations

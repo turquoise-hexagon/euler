@@ -56,8 +56,18 @@
                       '()
                       (permutations/h (cons a l) (car b) (cdr b))))))))
 
+(define (list->number lst #!optional (base 10))
+  (let list->number/h ((lst lst) (acc 0))
+    (if (null? lst)
+      acc
+      (list->number/h (cdr lst) (+ (car lst) (* acc base))))))
+
 (define (number->list n #!optional (base 10))
-  (map string->number (string-chop (number->string n base) 1)))
+  (let number->list/h ((n n) (acc '()))
+    (if (= n 0)
+      acc
+      (let ((q (quotient n base)) (r (remainder n base)))
+        (number->list/h q (cons r acc))))))
 
 (define (digitsum n)
   (apply + (number->list n)))
@@ -174,6 +184,6 @@
                 (let ((tmp (modulo (* res (expt-mod factor i mod)) mod)))
                   (let ((res (hash-table-ref/default mem tmp #f)))
                     (when res (let ((ans (+ (* i n) res)))
-                      (when (> ans 0) (return ans)))))))
+                               (when (> ans 0) (return ans)))))))
               (range 0 (- n 1) 1))
             (return -1)))))))
