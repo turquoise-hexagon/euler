@@ -57,10 +57,10 @@
                       (permutations/h (cons a l) (car b) (cdr b))))))))
 
 (define (list->number lst #!optional (base 10))
-  (let list->number/h ((lst lst) (acc 0))
-    (if (null? lst)
-      acc
-      (list->number/h (cdr lst) (+ (car lst) (* acc base))))))
+  (foldl
+    (lambda (acc n)
+      (+ n (* acc base)))
+    0 lst))
 
 (define (number->list n #!optional (base 10))
   (let number->list/h ((n n) (acc '()))
