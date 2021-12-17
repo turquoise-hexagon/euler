@@ -9,11 +9,20 @@
     757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877
     881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997))
 
-(define (range start stop step)
-  (let ((comparison (if (> step 0) > <)))
-    (let range/h ((i start) (acc '()))
-      (if (comparison i stop) (reverse acc)
-          (range/h (+ i step) (cons i acc))))))
+(define (range start stop #!optional
+          ;; set default step
+          (step (cond ((< start stop)  1)
+                      ((> start stop) -1)
+                      (else 0))))
+  ;; set comparator
+  (let ((comparator (case step
+                      (( 1) >)
+                      ((-1) <)
+                      (else =))))
+    (let loop ((i start) (acc '()))
+      (if (comparator i stop)
+        (reverse acc)
+        (loop (+ i step) (cons i acc))))))
 
 (define (product . lsts)
   (foldr

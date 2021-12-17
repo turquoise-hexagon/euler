@@ -13,7 +13,8 @@
     powerset
     prime?
     primes
-    product)
+    product
+    range)
   (import scheme
           (chicken base)
           (chicken sort)
