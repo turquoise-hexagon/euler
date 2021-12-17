@@ -64,7 +64,8 @@
               (lambda (i)
                 (let ((x (modulo (* h (expt-mod c i p)) p)))
                   (when (hash-table-exists? mem x)
-                    (_ (+ (* i n) (hash-table-ref mem x))))))
+                    (let ((a (+ (* i n) (hash-table-ref mem x))))
+                      (when (> a 0) (_ a))))))
               (range 0 (- n 1)))
             (_ -1)))))))
 
