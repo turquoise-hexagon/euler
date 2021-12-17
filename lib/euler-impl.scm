@@ -1,4 +1,4 @@
-(define stored-primes
+(define STORED-PRIMES
   '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
     101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191
     193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283
@@ -9,141 +9,191 @@
     757 761 769 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877
     881 883 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997))
 
+;; ---
+;; general utilities
+;; ---
+
 (define (range start stop #!optional
           ;; set default step
           (step (cond ((< start stop)  1)
                       ((> start stop) -1)
                       (else 0))))
   ;; set comparator
-  (let ((comparator (case step
-                      (( 1) >)
-                      ((-1) <)
-                      (else =))))
+  (let ((comparator (cond ((> step 0) >)
+                          ((< step 0) <)
+                          (else =))))
     (let loop ((i start) (acc '()))
       (if (comparator i stop)
         (reverse acc)
         (loop (+ i step) (cons i acc))))))
 
-(define (product . lsts)
+;; ---
+;; math functions
+;; ---
+
+(define (factorial n)
+  (if (= n 0)
+    1
+    (let loop ((i 1) (acc n))
+      (if (> acc i)
+        (* (loop (+ i i) acc)
+           (loop (+ i i) (- acc i)))
+        acc))))
+
+(define (expt-mod base expo mod)
+  (let loop ((base base) (expo expo) (acc 1))
+    (if (= expo 0)
+      acc
+      (loop (modulo (* base base) mod)
+        (quotient expo 2)
+        (if (odd? expo) (modulo (* base acc) mod)
+          acc)))))
+
+(define (discrete-log g h p)
+  ;; https://gist.github.com/0xtowel/b4e7233fc86d8bb49698e4f1318a5a73
+  (let ((n (inexact->exact (ceiling (sqrt (- p 1))))))
+    (let ((mem (make-hash-table)))
+      (for-each
+        (lambda (i)
+          (hash-table-set! mem (expt-mod g i p) i))
+        (range 0 (- n 1)))
+      (let ((c (expt-mod g (* n (- p 2)) p)))
+        (call/cc
+          (lambda (_)
+            (for-each
+              (lambda (i)
+                (let ((x (modulo (* h (expt-mod c i p)) p)))
+                  (when (hash-table-exists? mem x)
+                    (_ (+ (* i n) (hash-table-ref mem x))))))
+              (range 0 (- n 1)))
+            (_ -1)))))))
+
+(define (divisors n)
+  (sort (foldl
+          (lambda (acc i)
+            (if (= (modulo n i) 0)
+              (let ((t (quotient n i)))
+                (cons t (cons i acc)))
+              acc))
+          '() (range 1 (sqrt n)))
+        <))
+
+;; ---
+;; operations on lists
+;; ---
+
+(define (product . lst)
   (foldr
     (lambda (a acc)
-      (apply append
-             (map
-               (lambda (x)
-                 (map (cut cons x <>) acc))
-               a)))
-    '(()) lsts))
+      (join (map
+              (lambda (b)
+                (map (cut cons b <>) acc))
+              a)))
+    '(()) lst))
 
-(define (combinations l n)
+(define (combinations lst n)
   (if (= n 0)
-      '(())
-      (apply append
-             (map
-               (lambda (a)
-                 (map (cut cons <> a) l))
-               (combinations l (- n 1))))))
+    '(())
+    (join (map
+            (lambda (i)
+              (map (cut cons <> i) lst))
+            (combinations lst (- n 1))))))
 
-(define (powerset l n)
-  (cond ((= n 0) '(()))
-        ((null? l) '())
-        (else (append (map
-                        (lambda (a)
-                          (cons (car l) a))
-                        (powerset (cdr l) (- n 1)))
-                      (powerset (cdr l) n)))))
+(define (powerset lst n)
+  (if (= n 0)
+    '(())
+    (if (null? lst)
+      '()
+      (append (map
+                (lambda (i)
+                  (cons (car lst) i))
+                (powerset (cdr lst) (- n 1)))
+              (powerset (cdr lst) n)))))
 
-(define (permutations l)
-  (cond ((null? l) '())
-        ((null? (cdr l)) `(,l))
-        (else (let permutations/h ((l '()) (a (car l)) (b (cdr l)))
-                (append
-                  (map
-                    (lambda (x)
-                      (cons a x))
-                    (permutations (append l b)))
-                  (if (null? b)
-                      '()
-                      (permutations/h (cons a l) (car b) (cdr b))))))))
+(define (permutations lst)
+  (if (null? lst)
+    '()
+    (if (null? (cdr lst))
+      `(,lst)
+      (let loop ((lst '()) (a (car lst)) (b (cdr lst)))
+        (append (map
+                  (lambda (i)
+                    (cons a i))
+                  (permutations (append lst b)))
+                (if (null? b)
+                  '()
+                  (loop (cons a lst) (car b) (cdr b))))))))
 
-(define (list->number lst #!optional (base 10))
-  (foldl
-    (lambda (acc n)
-      (+ n (* acc base)))
-    0 lst))
+;; ---
+;; operations on digits
+;; ---
 
 (define (number->list n #!optional (base 10))
-  (let number->list/h ((n n) (acc '()))
+  (let loop ((n n) (acc '()))
     (if (= n 0)
       acc
       (let ((q (quotient n base)) (r (remainder n base)))
-        (number->list/h q (cons r acc))))))
+        (loop q (cons r acc))))))
 
-(define (digitsum n)
-  (apply + (number->list n)))
+(define (list->number lst #!optional (base 10))
+  (foldl
+    (lambda (acc i)
+      (+ (* acc base) i))
+    0 lst))
+
+(define (digitsum n #!optional (base 10))
+  (foldl + 0 (number->list n)))
 
 (define (palindrome? n #!optional (base 10))
   (let ((lst (number->list n base)))
     (equal? lst (reverse lst))))
 
-(define (factorial n)
-  (if (= n 0) 1
-      (let factorial/h ((i 1) (acc n))
-        (if (> acc i)
-            (* (factorial/h (+ i i) acc)
-               (factorial/h (+ i i) (- acc i)))
-            acc))))
-
-(define (divisors n)
-  (sort (foldl
-          (lambda (divisors i)
-            (if (= (modulo n i) 0)
-                (let ((t (/ n i)))
-                  (cons i (cons t divisors)))
-                divisors))
-          '() (range 1 (sqrt n) 1))
-        <))
-
-(define (expt-mod base expo mod)
-  (let expt-mod/h ((base base) (expo expo) (res 1))
-    (if (= expo 0)
-        res
-        (expt-mod/h (modulo (* base base) mod) (quotient expo 2)
-                    (if (odd? expo) (modulo (* base res) mod)
-                        res)))))
+;; ---
+;; operations on primes
+;; ---
 
 (define (trial-division-prime? n)
   (call/cc
-    (lambda (return)
+    (lambda (_)
       (for-each
         (lambda (i)
-          (when (= i n)
-            (return #t))
-          (when (= (modulo n i) 0)
-            (return #f)))
-        stored-primes)
-      (return #t))))
+          (cond ((= n i) (_ #t))
+                ((= (modulo n i) 0) (_ #f))))
+        STORED-PRIMES)
+      (_ #t))))
+
+(define (spsp? n a)
+  ;; programming praxis
+  (do ((d (- n 1) (/ d 2))
+       (s 0 (+ s 1)))
+    ((odd? d)
+     (let ((t (expt-mod a d n)))
+       (if (= t 1)
+         #t
+         (do ((s s (- s 1))
+              (t t (expt-mod t 2 n)))
+           ((or (= s 0)
+                (= t (- n 1)))
+            (> s 0))))))))
 
 (define (prime? n)
-  (if (< n 2) #f
-      (if (< n 1000000) (trial-division-prime? n)
-          (call/cc
-            (lambda (return)
-              (for-each
-                (lambda (a)
-                  (unless (let ((n n) (a a))
-                            (do ((d (- n 1) (/ d 2)) (s 0 (+ s 1)))
-                              ((odd? d) (let ((t (expt-mod a d n)))
-                                          (if (= t 1) #t
-                                              (do ((s s (- s 1)) (t t (expt-mod t 2 n)))
-                                                ((or (= s 0) (= t (- n 1))) (> s 0))))))))
-                    (return #f)))
-                '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97))
-              (return #t))))))
+  (cond
+    ;; handle base cases
+    ((< n 2) #f)
+    ((< n 1000000) (trial-division-prime? n))
+    (else
+      (call/cc
+        (lambda (_)
+          (for-each
+            (lambda (a)
+              (unless (spsp? n a)
+                (_ #f)))
+            '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97))
+          (_ #t))))))
 
 (define (rho-factor n c)
-  (let ((f
-          (lambda (x)
-            (modulo (+ (* x x) c) n))))
+  ;; programming praxis
+  (let ((f (lambda (x) (modulo (+ (* x x) c) n))))
     (let loop ((t 2) (h 2) (d 1))
       (cond ((= d 1)
              (let* ((t (f t))
@@ -156,43 +206,30 @@
             (else    (rho-factor d (+ c 1)))))))
 
 (define (factorize n)
-  (let loop/1 ((n n) (acc '()))
-    (cond ((< n 2)
-           acc)
-          ((even? n)
-           (loop/1 (/ n 2) (cons 2 acc)))
-          (else (let loop/2 ((n n) (acc acc))
-                  (if (prime? n) (cons n acc)
-                      (let ((f (rho-factor n 1)))
-                        (loop/2 (/ n f) (cons f acc)))))))))
+  (let loop ((n n) (acc '()))
+    ;; handle base cases
+    (cond
+      ((< n 2) acc)
+      ((even? n) (loop (/ n 2) (cons 2 acc)))
+      (else (let loop ((n n) (acc acc))
+              (if (prime? n)
+                (cons n acc)
+                (let ((f (rho-factor n 1)))
+                  (loop (/ n f) (cons f acc)))))))))
 
 (define (primes n)
   (let ((sieve (make-vector (+ n 1) #t)))
-    (do ((i 2 (+ i 1))) ((> (* i i) n))
-      (when (vector-ref sieve i)
-        (do ((j (* i i) (+ j i))) ((> j n))
-          (vector-set! sieve j #f))))
-    (do ((i n (- i 1))
-         (acc '() (if (vector-ref sieve i)
-                      (cons i acc)
-                      acc)))
-      ((< i 2) acc))))
-
-(define (discrete-log base res mod)
-  (let ((n (inexact->exact (ceiling (sqrt mod)))))
-    (let ((mem (make-hash-table)))
-      (for-each
-        (lambda (i)
-          (hash-table-set! mem (expt-mod base i mod) i))
-        (range 0 (- n 1) 1))
-      (let ((factor (expt-mod base (* n (- mod 2)) mod)))
-        (call/cc
-          (lambda (return)
-            (for-each
-              (lambda (i)
-                (let ((tmp (modulo (* res (expt-mod factor i mod)) mod)))
-                  (let ((res (hash-table-ref/default mem tmp #f)))
-                    (when res (let ((ans (+ (* i n) res)))
-                               (when (> ans 0) (return ans)))))))
-              (range 0 (- n 1) 1))
-            (return -1)))))))
+    (for-each
+      (lambda (i)
+        (when (vector-ref sieve i)
+          (for-each
+            (lambda (j)
+              (vector-set! sieve j #f))
+            (range (* i i) n i))))
+      (range 2 (sqrt n)))
+    (foldr
+      (lambda (i acc)
+        (if (vector-ref sieve i)
+          (cons i acc)
+          acc))
+      '() (range 2 n))))

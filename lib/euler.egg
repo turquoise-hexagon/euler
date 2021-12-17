@@ -1,6 +1,6 @@
 ((author "camille, camille at lzr dot pw")
  (synopsis "euler project helper functions")
  (license "0BSD")
- (category "maths")
+ (category "math")
  (dependencies srfi-69)
  (components (extension euler)))

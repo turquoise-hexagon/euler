@@ -4,3 +4,5 @@ lib/*
 !lib/euler.scm
 !lib/euler.egg
 !lib/euler-impl.scm
+!lib/tests
+!lib/tests/tests.scm
