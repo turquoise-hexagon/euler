@@ -70,14 +70,13 @@
             (_ -1)))))))
 
 (define (divisors n)
-  (sort (foldl
-          (lambda (acc i)
-            (if (= (modulo n i) 0)
-              (let ((t (quotient n i)))
-                (cons t (cons i acc)))
-              acc))
-          '() (range 1 (sqrt n)))
-        <))
+  (do ((i 1 (+ i 1))
+       (acc '() (if (= (modulo n i) 0)
+                  (let ((q (quotient n i)))
+                    (cons q (cons i acc)))
+                  acc)))
+    ((> (* i i) n)
+     (sort acc <))))
 
 ;; ---
 ;; operations on lists
