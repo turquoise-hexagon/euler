@@ -15,17 +15,17 @@
 
 (define (range start stop #!optional
           ;; set default step
-          (step (cond ((< start stop)  1)
-                      ((> start stop) -1)
+          (step (cond ((> start stop) -1)
+                      ((< start stop)  1)
                       (else 0))))
   ;; set comparator
-  (let ((comparator (cond ((> step 0) >)
-                          ((< step 0) <)
-                          (else =))))
-    (let loop ((i start) (acc '()))
-      (if (comparator i stop)
-        (reverse acc)
-        (loop (+ i step) (cons i acc))))))
+  (let ((comp (cond ((> step 0) <)
+                    ((< step 0) >)
+                    (else =))))
+    (let loop ((i stop) (acc '()))
+      (if (comp i start)
+        acc
+        (loop (- i step) (cons i acc))))))
 
 ;; ---
 ;; math functions
