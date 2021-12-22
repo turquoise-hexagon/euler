@@ -13,11 +13,7 @@
 ;; general utilities
 ;; ---
 
-(define (range start stop #!optional
-          ;; set default step
-          (step (cond ((> start stop) -1)
-                      ((< start stop)  1)
-                      (else 0))))
+(define (range start stop #!optional (step (signum (- stop start))))
   ;; set comparator
   (let ((comp (cond ((> step 0) <)
                     ((< step 0) >)
