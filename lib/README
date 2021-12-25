@@ -2,6 +2,13 @@ euler
 =====
     small library containing some functions useful to solve project euler problems
 
+    * array->list
+    * array-copy
+    * array-dimensions
+    * array-exists?
+    * array-ref
+    * array-set!
+    * array?
     * combinations
     * digitsum
     * discrete-log
@@ -9,6 +16,7 @@ euler
     * expt-mod
     * factorial
     * factorize
+    * list->array
     * list->number
     * number->list
     * palindrome?

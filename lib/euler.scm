@@ -1,11 +1,19 @@
 (module euler
-  (combinations
+  (array->list
+   array-copy
+   array-dimensions
+   array-exists?
+   array-ref
+   array-set!
+   array?
+   combinations
    digitsum
    discrete-log
    divisors
    expt-mod
    factorial
    factorize
+   list->array
    list->number
    number->list
    palindrome?
@@ -19,6 +27,8 @@
           (chicken base)
           (chicken sort)
           (chicken string)
-          (srfi 69))
+          (srfi 1)
+          (srfi 69)
+          (srfi 133))
 
   (include "euler-impl.scm"))

@@ -24,6 +24,65 @@
         (loop (- i step) (cons i acc))))))
 
 ;; ---
+;; arrays
+;; ---
+
+(define-record array content dimensions)
+
+(define (_list-dimensions lst)
+  (let loop ((current lst))
+    (if (list? current)
+      (cons (length current) (loop (car current)))
+      '())))
+
+(define (_list->array lst)
+  (let loop ((current lst))
+    (if (list? current)
+      (list->vector (map loop current))
+      current)))
+
+(define (_array-copy array)
+  (let loop ((current (array-content array)))
+    (if (vector? current)
+      (vector-copy (vector-map loop current))
+      current)))
+
+(define (list->array lst)
+  (make-array
+    (_list->array lst)
+    (_list-dimensions lst)))
+
+(define (array->list array)
+  (let loop ((current (array-content array)))
+    (if (vector? current)
+      (map loop (vector->list current))
+      current)))
+
+(define (array-copy array)
+  (make-array (_array-copy array)
+    (array-dimensions array)))
+
+(define (array-ref array coord)
+  (foldl
+    (lambda (acc index)
+      (vector-ref acc index))
+    (array-content array) coord))
+
+(define (array-set! array coord value)
+  (let loop ((current (array-content array)) (coord coord))
+    (receive (index coord) (car+cdr coord)
+      (let ((next (vector-ref current index)))
+        (if (vector? next)
+          (loop next coord)
+          (vector-set! current index value))))))
+
+(define (array-exists? array coord)
+  (every
+    (lambda (index dimension)
+      (< -1 index dimension))
+    coord (array-dimensions array)))
+
+;; ---
 ;; math functions
 ;; ---
 
@@ -148,7 +207,7 @@
 ;; operations on primes
 ;; ---
 
-(define (trial-division-prime? n)
+(define (_trial-division-prime? n)
   (call/cc
     (lambda (_)
       (for-each
@@ -158,7 +217,7 @@
         STORED-PRIMES)
       (_ #t))))
 
-(define (spsp? n a)
+(define (_spsp? n a)
   ;; programming praxis
   (do ((d (- n 1) (/ d 2))
        (s 0 (+ s 1)))
@@ -176,18 +235,18 @@
   (cond
     ;; handle base cases
     ((< n 2) #f)
-    ((< n 1000000) (trial-division-prime? n))
+    ((< n 1000000) (_trial-division-prime? n))
     (else
       (call/cc
         (lambda (_)
           (for-each
             (lambda (a)
-              (unless (spsp? n a)
+              (unless (_spsp? n a)
                 (_ #f)))
             '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97))
           (_ #t))))))
 
-(define (rho-factor n c)
+(define (_rho-factor n c)
   ;; programming praxis
   (let ((f (lambda (x) (modulo (+ (* x x) c) n))))
     (let loop ((t 2) (h 2) (d 1))
@@ -197,9 +256,9 @@
                     (h (f h))
                     (d (gcd (- t h) n)))
                (loop t h d)))
-            ((= d n) (rho-factor n (+ c 1)))
+            ((= d n) (_rho-factor n (+ c 1)))
             ((prime? d) d)
-            (else    (rho-factor d (+ c 1)))))))
+            (else    (_rho-factor d (+ c 1)))))))
 
 (define (factorize n)
   (let loop ((n n) (acc '()))
@@ -210,7 +269,7 @@
       (else (let loop ((n n) (acc acc))
               (if (prime? n)
                 (cons n acc)
-                (let ((f (rho-factor n 1)))
+                (let ((f (_rho-factor n 1)))
                   (loop (/ n f) (cons f acc)))))))))
 
 (define (primes n)

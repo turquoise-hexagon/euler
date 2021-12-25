@@ -4,6 +4,7 @@
   (chicken sort)
   (srfi 1)
   (srfi 69)
+  (srfi 133)
   (test))
 
 (include-relative "../euler-impl.scm")
@@ -17,6 +18,34 @@
 
   (test-group "factorial"
     (test '(1 1 2 6 24 120 720 5040 40320 362880) (map factorial (iota 10))))
+
+  (test-group "array?"
+    (test #t (array? (make-array (void) (void)))))
+
+  (let* ((lst '((1 2 3) (4 5 6))) (array (list->array lst)))
+    (test-group "list->array"
+      (test #t (array? array)))
+
+    (test-group "array->list"
+      (test lst (array->list array)))
+
+    (test-group "array-copy"
+      (test #t (equal? array (array-copy array))))
+
+    (test-group "array-ref"
+      (test 3 (array-ref array '(0 2)))
+      (test 2 (array-ref array '(0 1))))
+
+    (array-set! array '(1 0) "hello")
+    (array-set! array '(1 1) "world")
+
+    (test-group "array-set!"
+     (test "hello" (array-ref array '(1 0)))
+     (test "world" (array-ref array '(1 1))))
+
+    (test-group "array-exists?"
+      (test #t (array-exists? array '(0 0)))
+      (test #f (array-exists? array '(5 5)))))
 
   (test-group "expt-mod"
     (test 4   (expt-mod 2 50 13))
@@ -67,11 +96,9 @@
     (test #f (palindrome? 14 2))
     (test #t (palindrome? 15 2)))
 
-  (test-group "trial-division-prime?"
-    (test 1060 (foldl + 0 (filter trial-division-prime? (cdr (iota 100 1))))))
-
   (test-group "prime?"
-    (test '(1153577 1396987 1231091 1781453 1568521 1264651 1446617 1620431) (filter prime? '(1153577 1396987 1231091 1781453 1568521 1264651 1446617 1620431 1429708 1410621 1529543 1223174 1746530))))
+
+    (test '(595123 1726489 1914503) (filter prime? '(1201906 595123 1203932 174395 405979 75097 144853 975347 1101943 1054895 1846013 1726489 452776 31845 1527170 965363 1914503 838641 1493418 547829))))
 
   (test-group "factorize"
     (test '(997123)                (factorize 997123))
