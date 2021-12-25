@@ -19,29 +19,35 @@
   (test-group "factorial"
     (test '(1 1 2 6 24 120 720 5040 40320 362880) (map factorial (iota 10))))
 
-  (test-group "array?"
-    (test #t (array? (make-array (void) (void)))))
-
   (let* ((lst '((1 2 3) (4 5 6))) (array (list->array lst)))
-    (test-group "list->array"
+    (test-group "array?"
       (test #t (array? array)))
+
+    (test-group "array-dimensions"
+      (test '(2 3) (array-dimensions array)))
+
+    (test-group "array-indexes"
+      (test '((0 0) (0 1) (0 2) (1 0) (1 1) (1 2)) (array-indexes array)))
 
     (test-group "array->list"
       (test lst (array->list array)))
 
-    (test-group "array-copy"
-      (test #t (equal? array (array-copy array))))
+    (test-group "list->array"
+      (test array (list->array lst)))
 
     (test-group "array-ref"
-      (test 3 (array-ref array '(0 2)))
-      (test 2 (array-ref array '(0 1))))
-
-    (array-set! array '(1 0) "hello")
-    (array-set! array '(1 1) "world")
+      (test 1 (array-ref array '(0 0)))
+      (test 2 (array-ref array '(0 1)))
+      (test 3 (array-ref array '(0 2))))
 
     (test-group "array-set!"
-     (test "hello" (array-ref array '(1 0)))
-     (test "world" (array-ref array '(1 1))))
+      (array-set! array '(0 0) "hello")
+      (array-set! array '(0 1) "world")
+      (test "hello" (array-ref array '(0 0)))
+      (test "world" (array-ref array '(0 1))))
+
+    (test-group "array-copy"
+      (test array (array-copy array)))
 
     (test-group "array-exists?"
       (test #t (array-exists? array '(0 0)))

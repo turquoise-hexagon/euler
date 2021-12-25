@@ -27,19 +27,26 @@
 ;; arrays
 ;; ---
 
-(define-record array content dimensions)
+(define-record array content dimensions indexes)
 
-(define (_list-dimensions lst)
+(define (_array-content lst)
+  (let loop ((current lst))
+    (if (list? current)
+      (list->vector (map loop current))
+      current)))
+
+(define (_array-dimensions lst)
   (let loop ((current lst))
     (if (list? current)
       (cons (length current) (loop (car current)))
       '())))
 
-(define (_list->array lst)
-  (let loop ((current lst))
-    (if (list? current)
-      (list->vector (map loop current))
-      current)))
+(define (_array-indexes lst)
+  (apply product
+    (map
+     (lambda (i)
+       (range 0 (- i 1)))
+     lst)))
 
 (define (_array-copy array)
   (let loop ((current (array-content array)))
@@ -48,9 +55,10 @@
       current)))
 
 (define (list->array lst)
-  (make-array
-    (_list->array lst)
-    (_list-dimensions lst)))
+  (let* ((content (_array-content lst))
+         (dimensions (_array-dimensions lst))
+         (indexes (_array-indexes dimensions)))
+    (make-array content dimensions indexes)))
 
 (define (array->list array)
   (let loop ((current (array-content array)))
@@ -59,8 +67,10 @@
       current)))
 
 (define (array-copy array)
-  (make-array (_array-copy array)
-    (array-dimensions array)))
+  (make-array
+    (_array-copy array)
+    (array-dimensions array)
+    (array-indexes array)))
 
 (define (array-ref array coord)
   (foldl

@@ -3,6 +3,7 @@
    array-copy
    array-dimensions
    array-exists?
+   array-indexes
    array-ref
    array-set!
    array?
