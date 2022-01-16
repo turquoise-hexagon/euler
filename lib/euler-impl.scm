@@ -169,11 +169,12 @@
     '(())
     (if (null? lst)
       '()
-      (append (map
+      (join (list
+              (map
                 (lambda (i)
                   (cons (car lst) i))
                 (powerset (cdr lst) (- n 1)))
-              (powerset (cdr lst) n)))))
+              (powerset (cdr lst) n))))))
 
 (define (permutations lst)
   (if (null? lst)
@@ -181,13 +182,12 @@
     (if (null? (cdr lst))
       `(,lst)
       (let loop ((lst '()) (a (car lst)) (b (cdr lst)))
-        (append (map
-                  (lambda (i)
-                    (cons a i))
-                  (permutations (append lst b)))
+        (join (list
+                (map (cut cons a <>)
+                  (permutations (join (list lst b))))
                 (if (null? b)
                   '()
-                  (loop (cons a lst) (car b) (cdr b))))))))
+                  (loop (cons a lst) (car b) (cdr b)))))))))
 
 ;; ---
 ;; operations on digits
