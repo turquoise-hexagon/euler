@@ -1,13 +1,16 @@
-(import (chicken sort)
-        (euler)
-        (srfi 1))
+(import
+  (chicken sort)
+  (euler))
 
 (define (solve n)
-  (caar (sort (map
-                (lambda (i)
-                  (cons i (discrete-log 10 1 i)))
-                (iota n 1))
-              (lambda (a b)
-                (apply > (map cdr (list a b)))))))
+  (caar
+    (sort
+      (map
+        (lambda (i)
+          (cons i (discrete-log 10 1 i)))
+        (range 1 n))
+      (lambda (a b)
+        (> (cdr a)
+           (cdr b))))))
 
 (print (solve 1000))
