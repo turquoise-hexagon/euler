@@ -12,9 +12,11 @@
 
 (define (f-inverse a)
   ;; n / log(x) ~ n^0.85
-  (let loop ((x (expt a 0.85)) (cnt 0))
-    (if (= cnt 10) (inexact->exact (round x))
-      (loop (f-newton x a) (+ cnt 1)))))
+  (let loop ((x (expt a 0.85)))
+    (let ((_ (f-newton x a)))
+      (if (= x _)
+        (inexact->exact (round x))
+        (loop _)))))
 
 (define (solve n)
   (list-ref (primes (f-inverse n)) n))
