@@ -1,7 +1,7 @@
 CSC      ?= csc
 CSCFLAGS ?= -O5
 
-BIN = $(shell find . -name '*.scm' | sed 's|\.scm$$||g')
+BIN = $(shell find . -name 'problem*.scm' | sed 's|\.scm$$||g')
 
 all : $(BIN)
 
