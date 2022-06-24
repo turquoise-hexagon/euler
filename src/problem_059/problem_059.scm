@@ -14,10 +14,7 @@
   (map string->number (string-split (read-line) ",")))
 
 (define (translate input key)
-  (map
-    (lambda (a b)
-      (bitwise-xor a b))
-    input (apply circular-list key)))
+  (map bitwise-xor input (apply circular-list key)))
 
 (define (count-spaces lst)
   (let ((space (char->integer #\ )))
