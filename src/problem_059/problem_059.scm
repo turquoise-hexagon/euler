@@ -1,38 +1,44 @@
-(import (chicken io)
-        (chicken string)
-        (chicken bitwise)
-        (chicken sort)
-        (matchable)
-        (euler)
-        (srfi 1))
+(import
+  (chicken bitwise)
+  (chicken io)
+  (chicken string)
+  (chicken sort)
+  (euler)
+  (srfi 1))
+
+(define CHARS 
+  (let ((base (char->integer #\a)))
+    (range base (+ base 26))))
 
 (define (import-input)
   (map string->number (string-split (read-line) ",")))
 
+(define (translate input key)
+  (map
+    (lambda (a b)
+      (bitwise-xor a b))
+    input (apply circular-list key)))
+
 (define (count-spaces lst)
   (let ((space (char->integer #\ )))
-    (count (cut = space <>) lst)))
+    (count
+      (lambda (i)
+        (= i space))
+      lst)))
 
-(define (decode input key)
-  (fold-right
-    (lambda (a b acc)
-      (cons (bitwise-xor a b) acc))
-    '() input (apply circular-list key)))
+(define (helper input len)
+  (map
+    (lambda (key)
+      (let ((tmp (translate input key)))
+        (list (count-spaces tmp) (apply + tmp))))
+    (combinations CHARS len)))
 
-(define (numbers->string lst)
-  (list->string (map integer->char lst)))
-
-(define (solve input)
-  (let ((keys (combinations (iota 26 (char->integer #\a)) 3)))
-    (let ((sorted (sort (map
-                          (lambda (lst)
-                            (list (count-spaces lst) lst))
-                          (map (cut decode input <>) keys))
-                        (lambda (a b)
-                          (apply > (map car (list a b)))))))
-      (match sorted
-        (((_ candidate) . _)
-         (list (apply + candidate) (numbers->string candidate)))))))
+(define (solve input len)
+  (cadar
+    (sort (helper input len)
+      (lambda (a b)
+        (> (car a)
+           (car b))))))
 
 (let ((input (import-input)))
-  (for-each print (solve input)))
+  (print (solve input 3)))
