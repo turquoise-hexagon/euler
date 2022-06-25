@@ -1,14 +1,18 @@
-CSC      ?= csc
-CSCFLAGS ?= -O5
+CSC ?= csc
 
-BIN = $(shell find . -name 'problem*.scm' | sed 's|\.scm$$||g')
+SRC = $(wildcard problem*.scm)
+BIN = $(basename $(SRC))
 
+all : CSCFLAGS += -O5
 all : $(BIN)
 
-% : %.scm
-	$(CSC) $(CSCFLAGS) $<
+debug : CSCFLAGS += -O0 -d3
+debug : $(BIN)
+
+$(BIN) : $(SRC)
+	$(CSC) $(CSCFLAGS) $< -o $@
 
 clean :
 	rm -f $(BIN)
 
-.PHONY : all clean
+.PHONY: all debug clean
