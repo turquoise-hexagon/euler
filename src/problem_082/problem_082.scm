@@ -5,8 +5,6 @@
   (srfi 1)
   (srfi 69))
 
-(include-relative "utils/queue.scm")
-
 (define offsets
   '(( 1 0)
     ( 0 1)

@@ -6,7 +6,6 @@
   (srfi 69))
 
 (include-relative "offsets.scm")
-(include-relative "utils/queue.scm")
 
 (define (neighbors array coord)
   (filter

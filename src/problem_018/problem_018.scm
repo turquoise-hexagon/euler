@@ -6,8 +6,6 @@
   (srfi 1)
   (srfi 69))
 
-(include-relative "utils/queue.scm")
-
 (define offsets '((1 0) (1 1)))
 
 (define (neighbors array coord)
