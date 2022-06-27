@@ -1,15 +1,12 @@
-(import (chicken io)
-        (srfi 1))
-
-(define (number->list n)
-  (map
-    (cut - <> (char->integer #\0))
-    (map char->integer (string->list (number->string n)))))
+(import
+  (chicken io))
 
 (define (import-input)
-  (map string->number (read-lines (open-input-file "input"))))
+  (map string->number (read-lines)))
 
-(define (solve n)
-  (apply string-append (map number->string (take (number->list (apply + (import-input))) n))))
+(define (solve input)
+  (let* ((tmp (apply + input)) (len (inexact->exact (ceiling (log tmp 10)))))
+    (quotient tmp (expt 10 (- len 10)))))
 
-(print (solve 10))
+(let ((input (import-input)))
+  (print (solve input)))
