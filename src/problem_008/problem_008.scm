@@ -1,16 +1,20 @@
-(import (chicken io)
-        (srfi 1))
+(import
+  (chicken io)
+  (chicken string)
+  (srfi 1))
 
 (define (import-input)
-  (map string->number (map string (append-map (cut string->list <>) (read-lines (open-input-file "input"))))))
+  (map string->number (string-chop (apply string-append (read-lines)) 1)))
 
-(define (get-sequences lst n)
-  (let get-sequences/h ((lst lst) (acc '()))
-    (if (< (length lst) 13)
-        acc
-        (get-sequences/h (cdr lst) (cons (take lst n) acc)))))
+(define (solve input n)
+  (let loop ((lst input) (acc 0))
+    (if (< (length lst) n)
+      acc
+      (loop (cdr lst)
+        (let ((tmp (apply * (take lst n))))
+          (if (> tmp acc)
+            tmp
+            acc))))))
 
-(define (solve n)
-  (apply max (map (cut apply * <>) (get-sequences (import-input) n))))
-
-(print (solve 13))
+(let ((input (import-input)))
+  (print (solve input 13)))
