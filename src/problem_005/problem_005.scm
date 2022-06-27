@@ -1,6 +1,7 @@
-(import (srfi 1))
+(import
+  (euler))
 
 (define (solve n)
-  (apply lcm (iota n 1)))
+  (apply lcm (range 1 n)))
 
 (print (solve 20))
