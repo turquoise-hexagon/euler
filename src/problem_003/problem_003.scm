@@ -1,4 +1,5 @@
-(import (euler))
+(import
+  (euler))
 
 (define (solve n)
   (apply max (factorize n)))
