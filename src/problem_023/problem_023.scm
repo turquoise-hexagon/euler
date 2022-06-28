@@ -1,30 +1,32 @@
-(import (srfi 1))
+(import
+  (srfi 1))
 
 (define (divisors n)
-  (let ((sieve (make-vector n 0)))
+  (let ((acc (make-vector n 0)))
     (do ((i 1 (+ i 1))) ((>= i n))
       (do ((j (+ i i) (+ j i))) ((>= j n))
-        (vector-set! sieve j (+ i (vector-ref sieve j)))))
-    sieve))
+        (vector-set! acc j (+ (vector-ref acc j) i))))
+    (vector->list acc)))
 
 (define (abundants n)
-  (let ((lst (vector->list (divisors n))))
-    (fold
-      (lambda (a b acc)
-        (if (> a b)
-            (cons b acc)
-            acc))
-      '() lst (iota (length lst)))))
+  (fold
+    (lambda (sum i acc)
+      (if (> sum i)
+        (cons i acc)
+        acc))
+    '() (divisors n) (iota n)))
 
 (define (solve n)
-  (let ((array (list->vector (iota n))) (lst (abundants n)))
+  (let ((acc (list->vector (iota n))) (lst (abundants n)))
     (for-each
-      (lambda (a)
+      (lambda (i)
         (for-each
-          (lambda (b)
-            (when (< (+ a b) n) (vector-set! array (+ a b) 0)))
+          (lambda (j)
+            (let ((tmp (+ i j)))
+              (when (< tmp n)
+                (vector-set! acc tmp 0))))
           lst))
       lst)
-    (apply + (vector->list array))))
-  
+    (apply + (vector->list acc))))
+
 (print (solve 28123))
