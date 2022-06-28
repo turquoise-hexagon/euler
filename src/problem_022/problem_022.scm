@@ -1,19 +1,26 @@
-(import (chicken io)
-        (chicken string)
-        (chicken sort)
-        (srfi 1))
+(import
+  (chicken io)
+  (chicken string)
+  (chicken sort)
+  (srfi 1))
 
 (define (import-input)
-  (string-split (read-line (open-input-file "input")) ",\""))
+  (string-split (read-line) "\","))
 
-(define (get-value str)
-  (apply + (map (cut - <> (char->integer #\A) -1) (map char->integer (string->list str)))))
+(define (convert str)
+  (let ((base (- (char->integer #\A) 1)))
+    (apply +
+      (map
+        (lambda (i)
+          (- (char->integer i) base))
+        (string->list str)))))
 
-(define (solve)
-  (let ((lst (sort (import-input) string<?)))
+(define (solve input)
+  (let ((lst (sort input string<?)))
     (fold
-      (lambda (a b acc)
-        (+ (* b (get-value a)) acc))
+      (lambda (value index acc)
+        (+ acc (* (convert value) index)))
       0 lst (iota (length lst) 1))))
 
-(print (solve))
+(let ((input (import-input)))
+  (print (solve input)))
