@@ -1,31 +1,25 @@
 (import
   (srfi 69))
 
-(define _collatz (make-hash-table))
-
-(define (helper! start lst)
-  (foldl
-    (lambda (cur i)
-      (hash-table-set! _collatz i cur)
-      (+ cur 1))
-    start lst))
+(define _collatz
+  (alist->hash-table '((1 . 1))))
 
 (define (collatz n)
   (let loop ((i n) (acc '()))
     (let ((acc (cons i acc)))
       (if (hash-table-exists? _collatz i)
         (let ((tmp (hash-table-ref _collatz i)))
-          (helper! tmp acc)
+          (foldl
+            (lambda (cur i)
+              (hash-table-set! _collatz i cur)
+              (+ cur 1))
+            tmp acc)
           (+ tmp (length acc)))
-        (if (= i 1)
-          (begin
-            (helper! 1 acc)
-            (length acc))
-          (loop
-            (if (even? i)
-              (quotient i 2)
-              (+ (* 3 i) 1))
-            acc))))))
+        (loop
+          (if (even? i)
+            (quotient i 2)
+            (+ (* 3 i) 1))
+          acc)))))
 
 (define (solve n)
   (let loop ((i 1) (len 0) (acc 0))
