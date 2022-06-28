@@ -1,6 +1,7 @@
-(import (euler))
+(import
+  (euler))
 
 (define (solve n)
-  (digitsum (factorial n)))
+  (digitsum n))
 
-(print (solve 100))
+(print (solve (factorial 100)))
