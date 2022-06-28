@@ -1,6 +1,7 @@
-(import (euler))
+(import
+  (euler))
 
 (define (solve n)
-  (digitsum (expt 2 n)))
+  (digitsum n))
 
-(print (solve 1000))
+(print (solve (expt 2 1000)))
