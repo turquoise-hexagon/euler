@@ -1,21 +1,21 @@
 (import
-  (euler))
+  (srfi 1))
 
-(define (sieve n)
-  (let ((sieve (make-vector (+ n 1) 0)))
+(define (divisors n)
+  (let ((acc (make-vector (+ n 1) 0)))
     (do ((i 1 (+ i 1))) ((> i n))
       (do ((j (+ i i) (+ j i))) ((> j n))
-        (vector-set! sieve j (+ (vector-ref sieve j) i))))
-    sieve))
+        (vector-set! acc j (+ (vector-ref acc j) i))))
+    acc))
 
 (define (solve n)
-  (let ((sieve (sieve n)))
+  (let ((divisors (divisors n)))
     (foldl
       (lambda (acc i)
-        (let ((tmp (vector-ref sieve i)))
-          (if (and (> n tmp) (not (= i tmp)) (= (vector-ref sieve tmp) i))
+        (let ((tmp (vector-ref divisors i)))
+          (if (and (> n tmp) (not (= i tmp)) (= (vector-ref divisors tmp) i))
             (+ acc tmp)
             acc)))
-      0 (range 1 n))))
+      0 (iota n 1))))
 
 (print (solve 10000))
