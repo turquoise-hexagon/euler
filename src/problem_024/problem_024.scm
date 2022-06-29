@@ -1,11 +1,13 @@
-(import (euler)
-        (chicken sort)
-        (srfi 1))
+(import
+  (chicken sort)
+  (euler))
 
-(define (convert lst)
-  (apply string-append (map number->string lst)))
+(define digits
+  (map integer->char
+    (range (char->integer #\0)
+           (char->integer #\9))))
 
 (define (solve n)
-  (list-ref (sort (map convert (permutations (iota 10))) string<?) (- n 1)))
+  (list-ref (sort (map list->string (permutations digits)) string<?) (- n 1)))
 
 (print (solve 1000000))
