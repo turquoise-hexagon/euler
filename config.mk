@@ -10,7 +10,7 @@ debug : CSCFLAGS += -O0 -d3
 debug : $(BIN)
 
 $(BIN) : $(SRC)
-	$(CSC) $(CSCFLAGS) $< -o $@
+	$(CSC) $(CSCFLAGS) $<
 
 clean :
 	rm -f $(BIN)
