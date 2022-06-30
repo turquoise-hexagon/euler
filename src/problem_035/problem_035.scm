@@ -1,22 +1,18 @@
-(import (srfi 1)
-        (euler))
+(import
+  (euler)
+  (srfi 1))
 
-(define (list->number lst)
-  (string->number (apply string-append (map number->string lst))))
+(define (rotations n)
+  (let* ((tmp (number->list n)) (len (length tmp)))
+    (let loop ((i 0) (lst (apply circular-list tmp)) (acc '()))
+      (if (= i len)
+        (map list->number acc)
+        (loop (+ i 1) (cdr lst) (cons (take lst len) acc))))))
 
-(define (rotations lst)
-  (let rotations/h ((cnt (length lst)) (lst lst) (acc '()))
-    (if (= cnt 0)
-        acc
-        (rotations/h (- cnt 1) (append (cdr lst) `(,(car lst))) (cons lst acc)))))
-
-(define (circular-prime? n)
-  (fold
-    (lambda (a acc)
-      (and a acc))
-    #t (map prime? (map list->number (rotations (number->list n))))))
+(define (valid? n)
+  (every prime? (rotations n)))
 
 (define (solve n)
-  (count circular-prime? (iota n)))
+  (count valid? (range 1 n)))
 
 (print (solve 1000000))
