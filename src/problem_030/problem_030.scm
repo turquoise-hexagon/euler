@@ -1,18 +1,28 @@
-(import (euler)
-        (srfi 1))
+(import
+  (euler)
+  (srfi 1))
 
-(define (exponents n)
-  (map (cut expt <> n) (iota 10)))
+(define (upper-bound e)
+  (let ((val (expt 9 e)))
+    (let loop ((i 1))
+      (let ((tmp (expt 10 i)))
+        (if (> tmp (* i val))
+          tmp
+          (loop (+ i 1)))))))
 
-(define (is-valid? n exponents)
-  (= n (apply + (map
-                  (cut list-ref exponents <>)
-                  (number->list n)))))
+(define (valid? n e)
+  (= (apply +
+       (map
+         (lambda (i)
+           (expt i e))
+         (number->list n)))
+     n))
 
-(define (solve n)
-  (let ((lst (exponents n)))
-    (- (apply + (filter
-                  (cut is-valid? <> lst)
-                  (iota 1000000))) 1)))
+(define (solve e)
+  (apply +
+    (filter
+      (lambda (n)
+        (valid? n e))
+      (range 2 (upper-bound e)))))
 
 (print (solve 5))
