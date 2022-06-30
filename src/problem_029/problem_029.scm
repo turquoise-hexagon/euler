@@ -1,15 +1,13 @@
-(import (srfi 1)
-        (srfi 69))
+(import
+  (euler)
+  (srfi 69))
 
-(define (solve x y)
-  (let ((hash (make-hash-table)) (lst (iota (- y x -1) x)))
-    (for-each
-      (lambda (a)
-        (for-each
-          (lambda (b)
-            (hash-table-set! hash (expt a b) 0))
-          lst))
-      lst)
-    (length (hash-table-keys hash))))
+(define (solve n)
+  (hash-table-size
+    (alist->hash-table
+      (map
+        (lambda (i)
+          (cons (apply expt i) #t))
+        (combinations (range 2 n) 2)))))
 
-(print (solve 2 100))
+(print (solve 100))
