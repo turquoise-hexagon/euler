@@ -1,11 +1,13 @@
+(import
+  (euler)
+  (srfi 1))
+
 (define (solve n)
-  (let loop ((i 1) (acc 0))
-    (if (>= i n)
-      acc
-      (loop (+ i 1)
-        (if (or (= (modulo i 3) 0)
-                (= (modulo i 5) 0))
-          (+ acc i)
-          acc)))))
+  (apply +
+    (filter
+      (lambda (i)
+        (or (= (modulo i 3) 0)
+            (= (modulo i 5) 0)))
+      (range 1 n))))
 
 (print (solve 1000))
