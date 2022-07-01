@@ -1,11 +1,13 @@
-(import (euler)
-        (srfi 1))
+(import
+  (euler)
+  (srfi 1))
 
-(define (is-valid? n)
-  (and (palindrome? n  2)
-       (palindrome? n 10)))
+(define (solve n)
+  (apply +
+    (filter
+      (lambda (i)
+        (and (palindrome? i 2)
+             (palindrome? i 10)))
+      (range 1 n))))
 
-(define (solve)
-  (apply + (filter is-valid? (iota 1000000))))
-
-(print (solve))
+(print (solve 1000000))
