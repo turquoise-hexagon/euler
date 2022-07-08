@@ -15,4 +15,4 @@ $(BIN) : $(SRC)
 clean :
 	rm -f $(BIN)
 
-.PHONY: all debug clean
+.PHONY : all debug clean
