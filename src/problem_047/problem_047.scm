@@ -1,15 +1,21 @@
-(import (euler)
-        (srfi 1))
+(import
+  (euler)
+  (srfi 1))
 
-(define (nb-distinct-factors n)
+(define (number-distinct-prime-factors n)
   (length (delete-duplicates (factorize n) =)))
 
+(define (helper i n)
+  (let loop ((i i) (acc 0))
+    (if (= (number-distinct-prime-factors i) n)
+      (loop (+ i 1) (+ acc 1))
+      acc)))
+
 (define (solve n)
-  (let solve/1/h ((i 0))
-    (let ((len (let solve/2/h ((i i) (acc 0))
-                 (if (not (= (nb-distinct-factors i) n)) acc
-                     (solve/2/h (+ i 1) (+ acc 1))))))
-      (if (= len n) i
-          (solve/1/h (+ i (if (= len 0) 1 len)))))))
+  (let loop ((i 1))
+    (let ((t (helper i n)))
+      (if (= t n)
+        i
+        (loop (+ i (max 1 t)))))))
 
 (print (solve 4))
