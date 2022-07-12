@@ -1,23 +1,24 @@
-(import (srfi 1))
+(import
+  (euler))
 
 (define (pentagonal n)
-  (* n (- (* 3 n) 1) 1/2))
+  (/ (* n (- (* 3 n) 1)) 2))
 
 (define (pentagonal? n)
   (integer? (/ (+ (sqrt (+ (* 24 n) 1)) 1) 6)))
 
 (define (solve)
   (call/cc
-    (lambda (return)
-      (let solve/h ((i 1))
-        (let ((x (pentagonal i)))
+    (lambda (_)
+      (let loop ((i 1))
+        (let ((a (pentagonal i)))
           (for-each
             (lambda (j)
-              (let ((y (pentagonal j)))
-                (when (and (pentagonal? (+ x y))
-                           (pentagonal? (- x y)))
-                  (return (abs (- x y))))))
-            (iota i 1)))
-        (solve/h (+ i 1))))))
+              (let ((b (pentagonal j)))
+                (when (and (pentagonal? (+ a b))
+                           (pentagonal? (- a b)))
+                  (_ (abs (- a b))))))
+            (range 1 i)))
+        (loop (+ i 1))))))
 
 (print (solve))
