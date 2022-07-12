@@ -1,10 +1,8 @@
-(import (euler)
-        (srfi 1))
-
-(define (list->number lst)
-  (string->number (apply string-append (map number->string lst))))
+(import
+  (euler)
+  (srfi 1))
 
 (define (solve)
-  (apply max (filter prime? (map list->number (append-map permutations (map (cut iota <> 1) (iota 9 1)))))))
+  (apply max (filter prime? (map list->number (append-map permutations (map (lambda (_) (iota _ 1)) (iota 9 1)))))))
 
 (print (solve))
