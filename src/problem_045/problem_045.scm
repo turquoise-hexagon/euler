@@ -1,11 +1,12 @@
-(define (pentagonal? n)
-  (integer? (/ (+ (sqrt (+ (* 24 n) 1)) 1) 6)))
+(define (pentagonal? n) (integer? (/ (+ (sqrt (+ (* 24 n) 1)) 1) 6)))
+(define ( hexagonal? n) (integer? (/ (+ (sqrt (+ (*  8 n) 1)) 1) 4)))
 
 (define (solve)
-  (let solve/h ((i 144))
-    (let ((t (* i (+ i i -1))))
-      (if (pentagonal? t)
-          t
-          (solve/h (+ i 1))))))
+  (let loop ((i 286))
+    (let ((_ (/ (* i (+ i 1)) 2)))
+      (if (and (pentagonal? _)
+               ( hexagonal? _))
+        _
+        (loop (+ i 1))))))
 
 (print (solve))
