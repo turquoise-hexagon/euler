@@ -1,0 +1,21 @@
+(define (number-solutions n)
+  (do ((a 0 (+ a 1))
+       (r 0 (let ((t (- n a)))
+              (do ((b 0 (+ b 1))
+                   (r r (let ((c (- t b)))
+                          (if (= (+ (* a a) (* b b)) (* c c))
+                            (+ r 1)
+                            r))))
+                ((> b t) r)))))
+    ((> a n) r)))
+
+(define (solve n)
+  (let loop ((i 1) (len 0) (num 0))
+    (if (> i n)
+      num
+      (let ((tmp (number-solutions i)))
+        (if (> tmp len)
+          (loop (+ i 1) tmp i)
+          (loop (+ i 1) len num))))))
+
+(print (solve 1000))
