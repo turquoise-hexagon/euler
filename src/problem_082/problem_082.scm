@@ -43,7 +43,7 @@
 
 (define (path array from)
   (let ((acc (make-hash-table)))
-    (let loop ((queue (priority-queue-insert comp? `(,(array-ref array from) ,from) priority-queue-empty)))
+    (let loop ((queue (list->priority-queue comp? `((,(array-ref array from) ,from)))))
       (if (priority-queue-empty? queue)
         acc
         (apply

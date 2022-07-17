@@ -42,7 +42,7 @@
 
 (define (solve input)
   (let ((acc (make-hash-table)))
-    (let loop ((queue (priority-queue-insert comp? `(,(foldl vector-ref input '(0 0)) (0 0)) priority-queue-empty)))
+    (let loop ((queue (list->priority-queue comp? `((,(foldl vector-ref input '(0 0)) (0 0))))))
       (if (priority-queue-empty? queue)
         (apply max (hash-table-values acc))
         (apply

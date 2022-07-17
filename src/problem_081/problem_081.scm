@@ -40,7 +40,7 @@
 
 (define (solve input from to)
   (let ((acc (make-hash-table)))
-    (let loop ((queue (priority-queue-insert comp? `(,(array-ref input from) ,from) priority-queue-empty)))
+    (let loop ((queue (list->priority-queue comp? `((,(array-ref input from) ,from)))))
       (if (priority-queue-empty? queue)
         (hash-table-ref acc to)
         (apply
