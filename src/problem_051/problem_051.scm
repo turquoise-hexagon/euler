@@ -15,13 +15,13 @@
     (find
       (lambda (lst)
         ;; look for a valid family
-        (= (count prime? lst) n))
+        (= (length lst) n))
       (map
         (lambda (indexes)
           (filter
             (lambda (i)
-              ;; remove small numbers that got generated
-              (= (number-length i) len))
+              ;; remove small / non-primes numbers that got generated
+              (and (= (number-length i) len) (prime? i)))
             (map
               (lambda (digit)
                 ;; generate the new number
