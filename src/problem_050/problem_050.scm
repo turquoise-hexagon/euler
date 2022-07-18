@@ -1,15 +1,15 @@
-(import (euler))
+(import
+  (euler))
 
 (define (solve n)
-  (let ((primes (primes n)))
-    (let solve/1/h ((a primes) (acc 0) (maximum 0))
-      (if (null? a)
-          acc
-          (let solve/2/h ((b a) (num 0) (cnt 0))
-            (if (or (null? b) (> (+ num (car b)) n))
-                (if (and (> cnt maximum) (member num primes))
-                    (solve/1/h (cdr a) num cnt)
-                    (solve/1/h (cdr a) acc maximum))
-                (solve/2/h (cdr b) (+ num (car b)) (+ cnt 1))))))))
+  (let loop/1 ((lst/1 (primes n)) (cnt/1 0) (acc/1 0))
+    (if (null? lst/1)
+      acc/1
+      (let loop/2 ((lst/2 lst/1) (cnt/2 0) (acc/2 0))
+        (if (or (null? lst/2) (> (+ acc/2 (car lst/2)) n))
+          (if (and (> cnt/2 cnt/1) (prime? acc/2))
+            (loop/1 (cdr lst/1) cnt/2 acc/2)
+            (loop/1 (cdr lst/1) cnt/1 acc/1))
+          (loop/2 (cdr lst/2) (+ cnt/2 1) (+ acc/2 (car lst/2))))))))
 
 (print (solve 1000000))
