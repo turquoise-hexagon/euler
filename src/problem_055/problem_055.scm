@@ -1,22 +1,31 @@
-(import (euler)
-        (srfi 1))
+(import
+  (euler))
+
+(define limit 50)
 
 (define (reverse-number n)
-  (foldr
-    (lambda (a acc)
-      (+ a (* acc 10)))
-    0 (number->list n)))
+  (let loop ((i n) (acc 0))
+    (if (= i 0)
+      acc
+      (let ((q (quotient i 10)) (m (modulo i 10)))
+        (loop q (+ (* acc 10) m))))))
 
 (define (lychrel? n)
-  (let lychrel?/h ((n n) (i 0))
-    (if (= i 50)
-        #t
-        (let ((t (+ n (reverse-number n))))
-          (if (palindrome? t)
-              #f
-              (lychrel?/h t (+ i 1)))))))
+  (let loop ((i n) (cnt 0))
+    (if (> cnt limit)
+      #t
+      (let ((tmp (+ i (reverse-number i))))
+        (if (palindrome? tmp)
+          #f
+          (loop tmp (+ cnt 1)))))))
 
 (define (solve n)
-  (count lychrel? (iota n)))
+  (let loop ((i 1) (acc 0))
+    (if (> i n)
+      acc
+      (loop (+ i 1)
+        (if (lychrel? i)
+          (+ acc 1)
+          acc)))))
 
 (print (solve 10000))
