@@ -28,7 +28,7 @@
     (lambda (key)
       (let ((tmp (translate input key)))
         (list (count-spaces tmp) (apply + tmp))))
-    (combinations CHARS len)))
+    (power CHARS len)))
 
 (define (solve input len)
   (cadar

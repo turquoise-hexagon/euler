@@ -37,7 +37,7 @@
           (join
             (map
               (lambda (i)
-                (powerset indexes (+ i 1)))
+                (combinations indexes (+ i 1)))
               indexes)))))))
 
 (define (solve n)

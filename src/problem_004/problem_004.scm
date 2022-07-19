@@ -8,7 +8,7 @@
       (map
         (lambda (pair)
           (apply * pair))
-        (powerset
+        (combinations
           (range (expt 10 (- n 1))
                  (- (expt 10 n) 1))
           2)))))

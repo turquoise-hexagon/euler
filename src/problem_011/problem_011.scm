@@ -5,7 +5,7 @@
   (srfi 1))
 
 (define offsets
-  (delete '(0 0) (combinations '(-1 0 1) 2)))
+  (delete '(0 0) (power '(-1 0 1) 2)))
 
 (define (import-input)
   (list->array

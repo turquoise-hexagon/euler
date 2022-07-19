@@ -8,7 +8,7 @@
       acc)))
 
 (define (solve n)
-  (let ((lst (combinations (range (- n) n) 2)))
+  (let ((lst (power (range (- n) n) 2)))
     (let loop ((lst lst) (len 0) (acc 0))
       (if (null? lst)
         acc

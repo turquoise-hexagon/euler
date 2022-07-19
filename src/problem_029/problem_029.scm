@@ -8,6 +8,6 @@
       (map
         (lambda (i)
           (cons (apply expt i) #t))
-        (combinations (range 2 n) 2)))))
+        (power (range 2 n) 2)))))
 
 (print (solve 100))

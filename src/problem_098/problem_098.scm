@@ -49,14 +49,14 @@
                      (square? b))
               (list a b)
               #f))))
-      (join (map permutations (powerset DIGITS (length chars)))))))
+      (join (map permutations (combinations DIGITS (length chars)))))))
 
 (define (solve input)
   (apply max
     (flatten
       (filter-map (lambda (i) (apply square-anagram? i))
         (filter (lambda (i) (apply anagram? i))
-          (powerset input 2))))))
+          (combinations input 2))))))
 
 (let ((input (import-input)))
   (print (solve input)))

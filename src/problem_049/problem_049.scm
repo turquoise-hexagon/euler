@@ -17,7 +17,7 @@
       (filter
         (lambda (i)
           (apply = (map - i (cdr i))))
-        (powerset (sort lst <) length-sequence))
+        (combinations (sort lst <) length-sequence))
       '())))
 
 (define (convert-to-output lst)
