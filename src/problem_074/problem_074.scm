@@ -1,22 +1,34 @@
-(import (euler)
-        (srfi 1))
+(import
+  (euler)
+  (srfi 69))
 
-(define digit-factorials
-  (map factorial (iota 10)))
+(define factorials
+  (list->vector (map factorial (range 0 9))))
 
-(define (factorial-digitsum n)
-  (apply + (map (cut list-ref digit-factorials <>) (number->list n))))
+(define (sum-factorials-digits n)
+  (let loop ((i n) (acc 0))
+    (if (= i 0)
+      acc
+      (let ((q (quotient i 10)) (m (modulo i 10)))
+        (loop q (+ acc (vector-ref factorials m)))))))
 
-(define (cycle n)
-  (let cycle/h ((n n) (acc '()))
-    (if (member n acc)
+(define (chain n)
+  (let ((mem (make-hash-table)))
+    (let loop ((i n) (acc 0))
+      (if (hash-table-exists? mem i)
         acc
-        (cycle/h (factorial-digitsum n) (cons n acc)))))
+        (begin
+          (hash-table-set! mem i #t)
+          (loop (sum-factorials-digits i)
+            (+ acc 1))))))) 
 
-(define (solve n)
-  (count
-    (lambda (i)
-      (= (length (cycle i)) 60))
-    (iota n)))
+(define (solve lim cnt)
+  (let loop ((i 1) (acc 0))
+    (if (> i lim)
+      acc
+      (loop (+ i 1)
+        (if (= (chain i) cnt)
+          (+ acc 1)
+          acc)))))
 
-(print (solve 1000000))
+(print (solve 1000000 60))
