@@ -1,10 +1,11 @@
-(import (euler))
+(import
+  (euler))
 
 (define (solve n)
-  (let solve/h ((lst (primes n)) (acc 1))
-    (let ((t (* acc (car lst))))
-      (if (> t n)
-          acc
-          (solve/h (cdr lst) t)))))
+  (let loop ((lst (primes n)) (acc 1))
+    (let ((tmp (* acc (car lst))))
+      (if (> tmp n)
+        acc
+        (loop (cdr lst) tmp)))))
 
 (print (solve 1000000))
