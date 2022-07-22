@@ -1,20 +1,28 @@
-(import (euler)
-        (srfi 1)
-        (srfi 69))
+(import
+  (euler)
+  (srfi 69)
+  (srfi 1))
 
-(define (generate lst n e)
-  (let generate/h ((lst lst) (acc '()))
-    (let ((t (expt (car lst) e)))
-      (if (>= t n)
-          (reverse acc)
-          (generate/h (cdr lst) (cons t acc))))))
+(define (generate primes limit exponent)
+  (let loop ((primes primes) (acc '()))
+    (let ((tmp (expt (car primes) exponent)))
+      (if (> tmp limit)
+        acc
+        (loop (cdr primes) (cons tmp acc))))))
 
 (define (solve n)
-  (let ((lst (primes n)) (hash (make-hash-table)))
+  (let ((primes (primes n)) (acc (make-hash-table)))
     (for-each
-      (lambda (lst)
-        (hash-table-set! hash (apply + lst) 0))
-      (apply product (map (cut generate lst n <>) '(2 3 4))))
-    (count (cut < <> n) (hash-table-keys hash))))
+      (lambda (triplet)
+        (hash-table-set! acc (apply + triplet) #t))
+      (apply product
+        (map
+          (lambda (exponent)
+            (generate primes n exponent))
+          '(2 3 4))))
+    (count
+      (lambda (i)
+        (< i n))
+      (hash-table-keys acc))))
 
 (print (solve 50000000))
