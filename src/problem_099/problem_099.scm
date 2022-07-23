@@ -1,6 +1,5 @@
 (import
   (chicken io)
-  (chicken sort)
   (chicken string)
   (euler))
 
@@ -13,14 +12,14 @@
       lst (range 1 (length lst)))))
 
 (define (solve input)
-  (let ((_ (sort input
-             (lambda (a b)
-               (let-values
-                 (((_ i j) (apply values a))
-                  ((_ k l) (apply values b)))
-                 (> (* j (log i))
-                    (* l (log k))))))))
-    (caar _)))
+  (car
+    (extremum input
+      (lambda (lst)
+        (apply
+          (lambda (_ a b)
+            (* b (log a)))
+          lst))
+      >)))
 
 (let ((input (import-input)))
   (print (solve input)))

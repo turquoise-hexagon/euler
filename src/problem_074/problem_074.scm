@@ -20,7 +20,7 @@
         (begin
           (hash-table-set! mem i #t)
           (loop (sum-factorials-digits i)
-            (+ acc 1))))))) 
+            (+ acc 1)))))))
 
 (define (solve lim cnt)
   (let loop ((i 1) (acc 0))

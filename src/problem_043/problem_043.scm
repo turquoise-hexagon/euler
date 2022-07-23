@@ -13,7 +13,7 @@
         (if (= (modulo _ (car divs)) 0)
           (loop (cdr lst) (cdr divs))
           #f)))))
-    
+
 (define (solve)
   (apply + (map list->number (filter valid? (permutations (range 0 9))))))
 

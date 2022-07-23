@@ -1,4 +1,5 @@
 (import
+  (euler)
   (srfi 69))
 
 (define _collatz
@@ -17,12 +18,6 @@
         (+ acc 1)))))
 
 (define (solve n)
-  (let loop ((i 2) (len 0) (acc 0))
-    (if (> i n)
-      acc
-      (let ((tmp (collatz i)))
-        (if (> tmp len)
-          (loop (+ i 1) tmp i)
-          (loop (+ i 1) len acc))))))
+  (extremum (range 1 n) collatz >))
 
 (print (solve 1000000))

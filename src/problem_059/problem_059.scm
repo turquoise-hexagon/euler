@@ -2,40 +2,31 @@
   (chicken bitwise)
   (chicken io)
   (chicken string)
-  (chicken sort)
   (euler)
   (srfi 1))
 
-(define CHARS 
+(define chars
   (let ((base (char->integer #\a)))
     (range base (+ base 26))))
 
 (define (import-input)
   (map string->number (string-split (read-line) ",")))
 
-(define (translate input key)
-  (map bitwise-xor input (apply circular-list key)))
+(define (translate lst key)
+  (map bitwise-xor lst (apply circular-list key)))
 
-(define (count-spaces lst)
-  (let ((space (char->integer #\ )))
-    (count
-      (lambda (i)
-        (= i space))
-      lst)))
-
-(define (helper input len)
+(define (translate-all lst len)
   (map
     (lambda (key)
-      (let ((tmp (translate input key)))
-        (list (count-spaces tmp) (apply + tmp))))
-    (power CHARS len)))
+      (translate lst key))
+    (power chars len)))
+
+(define (count-spaces lst)
+  (let ((space (char->integer #\space)))
+    (count (lambda (_) (= _ space)) lst)))
 
 (define (solve input len)
-  (cadar
-    (sort (helper input len)
-      (lambda (a b)
-        (> (car a)
-           (car b))))))
+  (apply + (extremum (translate-all input len) count-spaces >)))
 
 (let ((input (import-input)))
   (print (solve input 3)))

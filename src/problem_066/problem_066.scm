@@ -1,11 +1,16 @@
+(import
+  (euler))
+
+(define // quotient)
+
 (define (solve-pell n)
   (let ((x (inexact->exact (floor (sqrt n)))))
     (if (= (* x x) n)
       '(1 . 0)
       (let loop ((y x) (z 1) (r (* 2 x)) (e '(1 . 0)) (f '(0 . 1)) (a 0) (b 0))
         (let* ((y (- (* r z) y))
-               (z (quotient (- n (* y y)) z))
-               (r (quotient (+ x y) z))
+               (z (// (- n (* y y)) z))
+               (r (// (+ x y) z))
                (e (cons (cdr e) (+ (* r (cdr e)) (car e))))
                (f (cons (cdr f) (+ (* r (cdr f)) (car f))))
                (a (+ (cdr e) (* x (cdr f))))
@@ -15,12 +20,6 @@
             (loop y z r e f a b)))))))
 
 (define (solve n)
-  (let loop ((i 1) (val 0) (acc 0))
-    (if (> i n)
-      acc
-      (let ((tmp (car (solve-pell i))))
-        (if (> tmp val)
-          (loop (+ i 1) tmp i)
-          (loop (+ i 1) val acc))))))
+  (extremum (range 1 1000) (lambda (_) (car (solve-pell _))) >))
 
 (print (solve 1000))

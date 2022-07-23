@@ -8,16 +8,10 @@
       acc)))
 
 (define (solve n)
-  (let ((lst (power (range (- n) n) 2)))
-    (let loop ((lst lst) (len 0) (acc 0))
-      (if (null? lst)
-        acc
-        (apply
-          (lambda (a b)
-            (let ((tmp (count-successive-primes a b)))
-              (if (> tmp len)
-                (loop (cdr lst) tmp (* a b))
-                (loop (cdr lst) len acc))))
-          (car lst))))))
+  (apply *
+    (extremum (power (range (- n) n) 2)
+      (lambda (_)
+        (apply count-successive-primes _))
+      >)))
 
 (print (solve 1000))

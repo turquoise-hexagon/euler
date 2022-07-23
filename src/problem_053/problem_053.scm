@@ -1,17 +1,17 @@
 (import
-  (euler))
+  (euler)
+  (srfi 1))
 
-(define limit 1000000)
+(define (choose a b)
+  (/ (factorial a) (* (factorial b) (factorial (- a b)))))
 
-(define (solve n)
-  (foldl
-    (lambda (acc i)
-      (foldl
-        (lambda (acc j)
-          (if (> (/ (factorial i) (factorial j) (factorial (- i j))) limit)
-            (+ acc 1)
-            acc))
-        acc (range 1 i)))
-    0 (range 1 n)))
+(define (solve n limit)
+  (count
+    (lambda (_)
+      (> _ limit))
+    (map
+      (lambda (_)
+        (apply choose _))
+      (power (range 1 n) 2))))
 
-(print (solve 100))
+(print (solve 100 1000000))

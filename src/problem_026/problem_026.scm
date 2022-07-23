@@ -1,16 +1,7 @@
 (import
-  (chicken sort)
   (euler))
 
 (define (solve n)
-  (caar
-    (sort
-      (map
-        (lambda (i)
-          (cons i (discrete-log 10 1 i)))
-        (range 1 n))
-      (lambda (a b)
-        (> (cdr a)
-           (cdr b))))))
+  (extremum (range 1 1000) (lambda (_) (discrete-log 10 1 _)) >))
 
 (print (solve 1000))

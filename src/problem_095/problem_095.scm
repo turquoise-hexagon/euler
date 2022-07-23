@@ -1,4 +1,5 @@
 (import
+  (euler)
   (srfi 1))
 
 (define (divisors n)
@@ -21,12 +22,6 @@
 
 (define (solve n)
   (let ((divisors (divisors n)))
-    (let loop ((i 1) (cur 0) (acc 0))
-      (if (> i n)
-        (apply min acc)
-        (let* ((lst (chain divisors n i)) (len (length lst)))
-          (if (> len cur)
-            (loop (+ i 1) len lst)
-            (loop (+ i 1) cur acc)))))))
+    (extremum (range 1 n) (lambda (_) (length (chain divisors n _))) >)))
 
 (print (solve 1000000))

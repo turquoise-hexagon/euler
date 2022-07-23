@@ -1,10 +1,10 @@
 (import
   (euler))
 
-(define (binomial-coefficient a b)
+(define (choose a b)
   (/ (factorial a) (* (factorial b) (factorial (- a b)))))
 
 (define (solve n)
-  (binomial-coefficient (* 2 n) n))
+  (choose (* 2 n) n))
 
 (print (solve 20))

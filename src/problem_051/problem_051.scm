@@ -47,4 +47,4 @@
         (apply min tmp)
         (loop (cdr lst))))))
 
-(print (solve 8)) 
+(print (solve 8))

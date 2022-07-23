@@ -1,3 +1,6 @@
+(import
+  (euler))
+
 (define (number-solutions n)
   (do ((a 0 (+ a 1))
        (r 0 (let ((t (- n a)))
@@ -10,12 +13,6 @@
     ((> a n) r)))
 
 (define (solve n)
-  (let loop ((i 1) (len 0) (num 0))
-    (if (> i n)
-      num
-      (let ((tmp (number-solutions i)))
-        (if (> tmp len)
-          (loop (+ i 1) tmp i)
-          (loop (+ i 1) len num))))))
+  (extremum (range 1 n) number-solutions >))
 
 (print (solve 1000))
