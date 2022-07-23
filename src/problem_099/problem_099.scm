@@ -1,25 +1,26 @@
-(import (chicken io)
-        (chicken string)
-        (chicken sort)
-        (matchable)
-        (srfi 1))
+(import
+  (chicken io)
+  (chicken sort)
+  (chicken string)
+  (euler))
 
 (define (import-input)
-  (map (cut map string->number <>) (map (cut string-split <> ",") (read-lines))))
-
-(define (generate-list input)
-  (fold
-    (lambda (a b acc)
-      (cons (list a b) acc))
-    '() (iota (length input) 1) input))
+  (let ((lst (read-lines)))
+    (map
+      (lambda (str index)
+        (let ((_ (map string->number (string-split str ","))))
+          (cons index _)))
+      lst (range 1 (length lst)))))
 
 (define (solve input)
-  (let ((lst (generate-list input)))
-    (caar (sort lst (lambda (a b)
-                      (match-let
-                        (((_ (i j)) a)
-                         ((_ (k l)) b))
-                        (> (* j (log i))
-                           (* l (log k)))))))))
+  (let ((_ (sort input
+             (lambda (a b)
+               (let-values
+                 (((_ i j) (apply values a))
+                  ((_ k l) (apply values b)))
+                 (> (* j (log i))
+                    (* l (log k))))))))
+    (caar _)))
 
-(print (solve (import-input)))
+(let ((input (import-input)))
+  (print (solve input)))
