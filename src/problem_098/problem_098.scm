@@ -42,7 +42,7 @@
             (lambda (char digit)
               (hash-table-set! acc char digit))
             chars digits)
-          ;; get out candidate numbers out of this
+          ;; get our candidate numbers out of this
           (let ((a (list->number (map (lambda (i) (hash-table-ref acc i)) a)))
                 (b (list->number (map (lambda (i) (hash-table-ref acc i)) b))))
             (if (and (square? a)
