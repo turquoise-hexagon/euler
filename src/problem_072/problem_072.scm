@@ -13,11 +13,19 @@
     acc))
 
 (define (phi factors n)
-  (let ((factors (vector-ref factors n)))
-    (apply * (cons n (map (lambda (_) (- 1 (/ 1 _))) factors)))))
+  (apply *
+    (cons n
+      (map
+        (lambda (_)
+          (- 1 (/ 1 _)))
+        (vector-ref factors n)))))
 
 (define (solve n)
   (let ((factors (factors n)))
-    (foldl + 0 (map (lambda (_) (phi factors _)) (range 2 n)))))
+    (foldl + 0
+      (map
+        (lambda (_)
+          (phi factors _))
+        (range 2 n)))))
 
 (print (solve 1000000))
