@@ -1,21 +1,16 @@
-(import
-  (euler)
-  (srfi 1))
+(define // quotient)
 
-(define (solve n)
-  (count
-    (lambda (i)
-      (< 1/3 i 1/2))
-    (flatten
-      (map
-        (lambda (d)
-          (map
-            (lambda (n)
-              (/ n d))
-            (filter
-              (lambda (n)
-                (= (gcd n d) 1))
-              (range 1 (- d 1) 1))))
-        (range 1 n)))))
-
-(print (solve 12000))
+(define (solve a b n)
+  (let ((a (numerator a)) (b (denominator a))
+        (c (numerator b)) (d (denominator b)))
+    (let loop ((a a) (b b) (x (// n b)) (y (- n 1)) (acc 0))
+      (if (and (= x c)
+               (= y d))
+        acc
+        (let ((_ (// (+ n b) y)))
+          (loop x y
+            (- (* _ x) a)
+            (- (* _ y) b)
+            (+ acc 1)))))))
+    
+(print (solve 1/3 1/2 12000))
