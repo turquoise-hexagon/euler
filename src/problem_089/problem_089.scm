@@ -12,4 +12,5 @@
   (- (apply + (map string-length input))
      (apply + (map string-length (map minimize input)))))
 
-(print (solve (import-input)))
+(let ((input (import-input)))
+  (print (solve input)))
