@@ -13,5 +13,6 @@ depends on
     * make
     * chicken
     * matchable
+    * format
     * srfi-1
     * srfi-69
