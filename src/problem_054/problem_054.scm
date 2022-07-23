@@ -26,10 +26,11 @@
 (define (parse-card str)
   (apply
     (lambda (value suit)
-      (cond ((string->number value) number? =>
-             (lambda (_) (cons _ suit)))
-            ((assoc value cards) pair? =>
-             (lambda (_) (cons (cdr _) suit)))))
+      (cond
+        ((string->number value) number? =>
+         (lambda (_) (cons _ suit)))
+        ((assoc value cards) pair? =>
+         (lambda (_) (cons (cdr _) suit)))))
     (string-chop str 1)))
 
 (define (parse-line str)
@@ -45,11 +46,12 @@
     (lambda (acc card)
       (apply
         (lambda (value _)
-          (cond ((assoc value acc) pair? =>
-                 (lambda (_)
-                   (cons (cons value (+ (cdr _) 1))
-                     (delete _ acc))))
-                (else (cons (cons value 1) acc))))
+          (cond
+            ((assoc value acc) pair? =>
+             (lambda (_)
+               (cons (cons value (+ (cdr _) 1))
+                 (delete _ acc))))
+            (else (cons (cons value 1) acc))))
         card))
     '() lst))
 
@@ -94,15 +96,12 @@
   (= (length (delete-duplicates (map cdr lst) string=?)) 1))
 
 (define (special-value lst)
-  (let* ((score (rank lst))
-         (score (if (flush? lst)
-                  5
-                  score)))
-    (cond ((straight? lst)
-           (if (= score 5)
-             8
-             4))
-          (else score))))
+  (let ((score (if (flush? lst) 5 (rank lst))))
+    (if (straight? lst)
+      (if (= score 5)
+        8
+        4)
+      score)))
 
 (define (winner lst)
   (apply
