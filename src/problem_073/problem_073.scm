@@ -1,16 +1,14 @@
 (define // quotient)
 
-(define (solve a b n)
-  (let ((a (numerator a)) (b (denominator a))
-        (c (numerator b)) (d (denominator b)))
-    (let loop ((a a) (b b) (x (// n b)) (y (- n 1)) (acc 0))
-      (if (and (= x c)
-               (= y d))
-        acc
-        (let ((_ (// (+ n b) y)))
-          (loop x y
-            (- (* _ x) a)
-            (- (* _ y) b)
-            (+ acc 1)))))))
+(define (solve x y n)
+  (let loop ((a 1) (b x) (c (// n x)) (d (- n 1)) (acc 0))
+    (if (and (= c 1)
+             (= d y))
+      acc
+      (let ((_ (// (+ n b) d)))
+        (loop c d
+          (- (* _ c) a)
+          (- (* _ d) b)
+          (+ acc 1))))))
     
-(print (solve 1/3 1/2 12000))
+(print (solve 3 2 12000))
