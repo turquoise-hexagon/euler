@@ -1,11 +1,10 @@
-(define e 1504170715041707)
-(define m 4503599627370517)
+(define (solve n m)
+  (let loop ((a n) (b n) (acc n))
+    (if (= a 1)
+      acc
+      (let ((t (modulo (+ a b) m)))
+        (cond
+          ((> t b) (loop a t acc))
+          ((< t a) (loop t b (+ acc t))))))))
 
-(define (solve)
-  (let solve/h ((s e) (b e) (acc e))
-    (if (= s 1) acc
-        (let ((t (modulo (+ s b) m)))
-          (cond ((> t b) (solve/h s t acc))
-                ((< t s) (solve/h t b (+ acc t))))))))
-
-(print (solve))
+(print (solve 1504170715041707 4503599627370517))
