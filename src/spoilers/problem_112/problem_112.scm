@@ -1,19 +1,20 @@
-(import (chicken sort)
-        (euler))
+(import
+  (chicken sort)
+  (euler))
 
 (define (bouncy? n)
-  (let ((lst (number->list n)))
-    (not (or (equal? lst (sort lst <))
-             (equal? lst (sort lst >))))))
+  (let ((tmp (number->list n)))
+    (not (or (equal? tmp (sort tmp <))
+             (equal? tmp (sort tmp >))))))
 
 (define (solve n)
   (let ((n (/ n 100)))
-    (let solve/h ((i 100) (acc 0))
-      (let ((t (if (bouncy? i)
-                   (+ acc 1)
-                   acc)))
-        (if (= (/ t i) n)
+    (let loop ((i 100) (acc 0))
+      (let ((tmp (if (bouncy? i)
+                     (+ acc 1)
+                     acc)))
+        (if (= (/ tmp i) n)
             i
-            (solve/h (+ i 1) t))))))
+            (loop (+ i 1) tmp))))))
 
 (print (solve 99))
