@@ -15,7 +15,7 @@
       (loop (+ count prime) (jump prime count factorial)))))
 
 (define (solve n)
-  (let ((acc (make-vector (+ n 1) 0)))
+  (let ((mem (make-vector (+ n 1) 0)))
     (for-each
       (lambda (prime)
         (let loop ((i 0) (power prime))
@@ -25,11 +25,14 @@
                            power)))
               (let subloop ((multiple power))
                 (unless (> multiple n)
-                  (vector-set! acc multiple
-                    (max (vector-ref acc multiple) value))
+                  (when (> value (vector-ref mem multiple))
+                    (vector-set! mem multiple value))
                   (subloop (+ multiple power)))))
             (loop (+ i 1) (* power prime)))))
       (primes n))
-    (foldl + 0 (vector->list acc))))
+    (let loop ((i 0) (acc 0))
+      (if (> i n)
+        acc
+        (loop (+ i 1) (+ acc (vector-ref mem i)))))))
 
 (print (solve 100000000))
