@@ -22,12 +22,20 @@
           (vector-ref factors n))))))
 
 (define (make-chain primes n)
-  (let ((phi (make-phi primes n)))
+  (let ((phi (make-phi primes n)) (cache (make-vector (+ n 1) #f)))
+    (vector-set! cache 1 1) ;; init cache
     (lambda (n)
-      (let loop ((i n) (acc 1))
-        (if (= i 1)
-          acc
-          (loop (phi i) (+ acc 1)))))))
+      (let loop ((n n) (acc '()))
+        (let ((_ (vector-ref cache n)))
+          (if _
+            (let subloop ((lst acc) (i (+ _ 1)))
+              (let ((a (car lst))
+                    (b (cdr lst)))
+                (vector-set! cache a i)
+                (if (null? b)
+                  i
+                  (subloop b (+ i 1)))))
+            (loop (phi n) (cons n acc))))))))
 
 (define (solve limit chain-length)
   (let* ((primes (primes limit)) (chain (make-chain primes limit)))
@@ -37,4 +45,4 @@
           (= (chain _) chain-length))
         primes))))
 
-(print (solve 40000000 25))
+(print (solve 40000000 25)) 
