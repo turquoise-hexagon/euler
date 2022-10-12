@@ -2,11 +2,7 @@
   (euler))
 
 (define (find-limit target)
-  (let ((_ (log 2)))
-    (let loop ((i 1))
-      (if (> (* i _) target)
-        i
-        (loop (+ i 1))))))
+  (inexact->exact (ceiling (/ target (log 2)))))
 
 (define (make-search n)
   (let* ((target (* n (log n))) (primes (list->vector (primes (find-limit target)))))
