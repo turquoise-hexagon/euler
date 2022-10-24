@@ -1,14 +1,16 @@
+(define-syntax _anagram?
+  (syntax-rules ()
+    ((_ acc n increment)
+     (let loop ((n n))
+       (unless (= n 0)
+         (let ((_ (modulo n 10)))
+           (vector-set! acc _ (+ (vector-ref acc _) increment)))
+         (loop (quotient n 10)))))))
+
 (define (anagram? a b)
   (let ((acc (make-vector 10 0)))
-    (define (_anagram? n increment)
-      (let loop ((n n))
-        (unless (= n 0)
-          (let ((_ (modulo n 10)))
-            (vector-set! acc _
-              (+ (vector-ref acc _) increment)))
-          (loop (quotient n 10)))))
-    (_anagram? a +1)
-    (_anagram? b -1)
+    (_anagram? acc a +1)
+    (_anagram? acc b -1)
     (let loop ((i 0))
       (if (> i 9)
         #t
