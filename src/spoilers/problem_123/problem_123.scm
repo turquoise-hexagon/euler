@@ -17,4 +17,4 @@
               (_ index)))
           primes (range 1 (length primes)))))))
 
-(print (solve (expt 10 10)))
+(print (solve #e1e10))
