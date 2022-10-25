@@ -25,4 +25,4 @@
 (define (solve n)
   (modulo (S n) 1000000007))
 
-(print (solve (expt 10 14)))
+(print (solve #e1e14))
