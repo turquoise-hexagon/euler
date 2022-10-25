@@ -11,4 +11,4 @@
           (loop (+ i 1) cnt acc))
         (loop (+ i 1) cnt acc)))))
 
-(print (solve (expt 10 9) 40))
+(print (solve #e1e9 40))
