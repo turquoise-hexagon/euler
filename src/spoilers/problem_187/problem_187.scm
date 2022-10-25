@@ -11,4 +11,4 @@
             acc
             (subloop (cdr b) (+ acc 1))))))))
 
-(print (solve (expt 10 8)))
+(print (solve #e1e8))
