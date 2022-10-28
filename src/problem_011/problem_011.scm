@@ -11,41 +11,43 @@
   (list->array
     (map
       (lambda (str)
-        (map string->number (string-split str " ")))
+        (map string->number
+          (string-split str " ")))
       (read-lines))))
 
 (define (neighbors array coord offset)
-  (let ((tmp (foldl
-               (lambda (acc _)
-                 (cons (map + (car acc) offset) acc))
-               (list coord) '(_ _ _))))
+  (let ((coords
+          (foldl
+            (lambda (acc _)
+              (cons (map + offset (car acc)) acc))
+            (list coord) '(_ _ _))))
     (if (every
           (lambda (coord)
             (array-exists? array coord))
-          tmp)
-      tmp
+          coords)
+      coords
       #f)))
 
-(define (helper array lst)
+(define (get-product array coords)
   (apply *
     (map
       (lambda (coord)
         (array-ref array coord))
-      lst)))
+      coords)))
 
 (define (solve input)
   (apply max
     (map
-      (lambda (lst)
-        (helper input lst))
+      (lambda (coords)
+        (get-product input coords))
       (join
         (map
-          (lambda (offset)
+          (lambda (coord)
             (filter-map
-              (lambda (coord)
+              (lambda (offset)
                 (neighbors input coord offset))
-              (array-indexes input)))
-          offsets)))))
+              offsets))
+          (array-indexes input))))))
 
 (let ((input (import-input)))
   (print (solve input)))
