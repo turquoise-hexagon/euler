@@ -1,6 +1,6 @@
 CSC ?= csc
 
-SRC = $(wildcard problem*.scm)
+SRC = solution.scm
 BIN = $(basename $(SRC))
 
 all : CSCFLAGS += -O5
@@ -10,7 +10,7 @@ debug : CSCFLAGS += -O0 -d3
 debug : $(BIN)
 
 $(BIN) : $(SRC)
-	$(CSC) $(CSCFLAGS) $@
+	$(CSC) $(CSCFLAGS) $<
 
 clean :
 	rm -f $(BIN)

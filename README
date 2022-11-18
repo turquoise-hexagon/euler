@@ -6,7 +6,7 @@ usage
 -----
     * cd src/$problem
     * make
-    * ./$problem
+    * ./solution
 
 depends on
 ----------
