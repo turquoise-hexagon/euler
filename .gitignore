@@ -1,2 +1,1 @@
-src/problem_*/problem_[0-9][0-9][0-9]
-src/spoilers/problem_*/problem_[0-9][0-9][0-9]
+**/solution
