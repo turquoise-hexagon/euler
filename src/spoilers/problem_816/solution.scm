@@ -1,0 +1,35 @@
+(import
+  (chicken sort))
+
+(define (make-generator)
+  (set! i 290797)
+  (lambda ()
+    (let ((_ i))
+      (set! i (modulo (* i i) 50515093))
+      _)))
+
+(define (distance a b)
+  (sqrt (apply + (map (lambda (_) (* _ _)) (map - a b)))))
+
+(define (generate limit)
+  (let ((generator (make-generator)))
+    (let loop ((i 1) (acc '()))
+      (if (> i limit)
+        acc
+        (loop (+ i 1)
+          (cons (list (generator) (generator)) acc))))))
+
+(define (solve limit)
+  (let ((_ (map car
+             (sort
+               (map
+                 (lambda (_)
+                   (cons _ (distance _ '(0 0))))
+                 (generate limit))
+               (lambda (a b)
+                 (< (cdr a)
+                    (cdr b)))))))
+    (foldl min +inf.0
+      (map distance _ (cdr _)))))
+
+(print (solve #e2e6))
