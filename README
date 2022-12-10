@@ -11,8 +11,8 @@ usage
 depends on
 ----------
     system
-        * make
         * chicken
+        * make
     eggs
         * matchable
         * format
