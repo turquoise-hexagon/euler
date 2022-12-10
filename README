@@ -10,11 +10,13 @@ usage
 
 depends on
 ----------
-    * make
-    * chicken
-    * matchable
-    * format
-    * srfi-1
-    * srfi-69
-    * srfi-152
-    * srfi-209
+    system
+        * make
+        * chicken
+    eggs
+        * matchable
+        * format
+        * srfi-1
+        * srfi-69
+        * srfi-152
+        * srfi-209
