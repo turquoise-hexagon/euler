@@ -27,4 +27,5 @@
           (not (integer? (sqrt i))))
         (range 1 lim)))))
 
-(print (solve 100 100))
+(let ((_ (solve 100 100)))
+  (print _) (assert (= _ 40886)))

@@ -12,6 +12,7 @@
     (map
       (lambda (_)
         (apply choose _))
-      (power (range 1 n) 2))))
+      (combinations (range n 1) 2))))
 
-(print (solve 100 1000000))
+(let ((_ (solve 100 #e1e6)))
+  (print _) (assert (= _ 4075)))

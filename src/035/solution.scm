@@ -15,4 +15,5 @@
 (define (solve n)
   (count valid? (range 1 n)))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 55)))

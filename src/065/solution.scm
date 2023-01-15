@@ -12,4 +12,5 @@
              acc)
            tmp)))))
 
-(print (solve 100))
+(let ((_ (solve 100)))
+  (print _) (assert (= _ 272)))

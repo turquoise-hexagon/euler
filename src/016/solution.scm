@@ -4,4 +4,5 @@
 (define (solve n)
   (digitsum n))
 
-(print (solve (expt 2 1000)))
+(let ((_ (solve (expt 2 1000))))
+  (print _) (assert (= _ 1366)))

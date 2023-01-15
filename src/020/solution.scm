@@ -4,4 +4,5 @@
 (define (solve n)
   (digitsum n))
 
-(print (solve (factorial 100)))
+(let ((_ (solve (factorial 100))))
+  (print _) (assert (= _ 648)))

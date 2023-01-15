@@ -8,4 +8,5 @@
         (digitsum (apply expt pairs)))
       (power (range 1 n) 2))))
 
-(print (solve 100))
+(let ((_ (solve 100)))
+  (print _) (assert (= _ 972)))

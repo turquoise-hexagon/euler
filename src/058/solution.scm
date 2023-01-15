@@ -15,4 +15,5 @@
         (+ (* 2 i) 1)
         (loop (+ i 1) primes total)))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 26241)))

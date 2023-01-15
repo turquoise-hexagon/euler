@@ -26,4 +26,5 @@
 (define (solve)
   (apply + (filter valid? (range 3 upper-bound))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 40730)))

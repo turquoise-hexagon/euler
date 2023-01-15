@@ -6,4 +6,5 @@
         (_solve 5))
      (_solve 15)))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 233168)))

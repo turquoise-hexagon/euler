@@ -19,4 +19,5 @@
         (loop (+ i 2))
         i))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 5777)))

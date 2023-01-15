@@ -35,4 +35,5 @@
             tmp
             acc))))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 932718654)))

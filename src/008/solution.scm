@@ -16,5 +16,5 @@
             tmp
             acc))))))
 
-(let ((input (import-input)))
-  (print (solve input 13)))
+(let ((_ (solve (import-input) 13)))
+  (print _) (assert (= _ 23514624000)))

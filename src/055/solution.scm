@@ -28,4 +28,5 @@
           (+ acc 1)
           acc)))))
 
-(print (solve 10000))
+(let ((_ (solve 10000)))
+  (print _) (assert (= _ 249)))

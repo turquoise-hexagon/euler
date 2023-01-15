@@ -11,4 +11,5 @@
           (- (* _ d) b)
           (+ acc 1))))))
 
-(print (solve 3 2 12000))
+(let ((_ (solve 3 2 12000)))
+  (print _) (assert (= _ 7295372)))

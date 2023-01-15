@@ -12,4 +12,5 @@
             (loop/1 (cdr lst/1) cnt/1 acc/1))
           (loop/2 (cdr lst/2) (+ cnt/2 1) (+ acc/2 (car lst/2))))))))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 997651)))

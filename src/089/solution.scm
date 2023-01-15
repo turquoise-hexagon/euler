@@ -12,5 +12,5 @@
   (- (apply + (map string-length input))
      (apply + (map string-length (map minimize input)))))
 
-(let ((input (import-input)))
-  (print (solve input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 743)))

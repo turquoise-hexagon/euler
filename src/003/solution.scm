@@ -4,4 +4,5 @@
 (define (solve n)
   (apply max (factorize n)))
 
-(print (solve 600851475143))
+(let ((_ (solve 600851475143)))
+  (print _) (assert (= _ 6857)))

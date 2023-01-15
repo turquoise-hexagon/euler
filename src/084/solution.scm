@@ -171,4 +171,5 @@
           (string-pad (number->string (car _)) 2 #\0))
         (take _ 3)))))
 
-(print (solve 2 4))
+(let ((_ (solve 2 4)))
+  (print _) (assert (string=? _ "101524")))

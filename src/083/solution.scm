@@ -1,1 +1,1 @@
-../problem_081/solution.scm
+../081/solution.scm

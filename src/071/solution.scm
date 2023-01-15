@@ -12,4 +12,5 @@
           (loop ln ld mn md mn md)
           (loop mn md hn hd mn md))))))
 
-(print (car (solve 1000000 3 7)))
+(let ((_ (car (solve #e1e6 3 7))))
+  (print _) (assert (= _ 428570)))

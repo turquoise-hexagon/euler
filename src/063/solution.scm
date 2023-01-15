@@ -36,4 +36,5 @@
         pair))
     (product (range 1 bound/1) (range 1 bound/2))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 49)))

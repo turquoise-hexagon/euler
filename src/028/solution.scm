@@ -7,4 +7,5 @@
                 13)))
        3)))
 
-(print (solve 1001))
+(let ((_ (solve 1001)))
+  (print _) (assert (= _ 669171001)))

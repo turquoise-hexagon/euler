@@ -10,4 +10,5 @@
           (loop (+ i 1) (* index 10) total (* acc (list-ref lst (- len (- total index) 1))))
           (loop (+ i 1) index total acc))))))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 210)))

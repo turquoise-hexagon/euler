@@ -34,13 +34,13 @@
         (if (< cost (hash-table-ref/default table coord +inf.0))
           (begin
             (hash-table-set! table coord cost)
-            (priority-queue-insert comp? `(,cost ,coord) queue))
+            (priority-queue-insert queue `(,cost ,coord)))
           queue)))
-    (priority-queue-rest comp? queue) (neighbors array coord)))
+    (priority-queue-rest queue) (neighbors array coord)))
 
 (define (solve input from to)
   (let ((acc (make-hash-table)))
-    (let loop ((queue (list->priority-queue comp? `((,(array-ref input from) ,from)))))
+    (let loop ((queue (list->priority-queue `((,(array-ref input from) ,from)) comp?)))
       (if (priority-queue-empty? queue)
         (hash-table-ref acc to)
         (apply

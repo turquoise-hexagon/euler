@@ -40,4 +40,5 @@
                 acc)))
           (loop tmp))))))
 
-(print (solve 5))
+(let ((_ (solve 5)))
+  (print _) (assert (= _ 26033)))

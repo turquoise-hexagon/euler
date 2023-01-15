@@ -47,4 +47,5 @@
         (apply min tmp)
         (loop (cdr lst))))))
 
-(print (solve 8))
+(let ((_ (solve 8)))
+  (print _) (assert (= _ 121313)))

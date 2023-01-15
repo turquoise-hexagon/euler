@@ -7,4 +7,5 @@
       acc
       (loop b (+ a b) (+ acc 1)))))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 4782)))

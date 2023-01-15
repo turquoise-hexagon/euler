@@ -35,4 +35,5 @@
               (filter prime? (range start stop))))
           equal?)))))
 
-(print (solve 4 3))
+(let ((_ (solve 4 3)))
+  (print _) (assert (= _ 296962999629)))

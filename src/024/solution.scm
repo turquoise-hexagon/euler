@@ -10,4 +10,5 @@
 (define (solve n)
   (list-ref (sort (map list->string (permutations digits)) string<?) (- n 1)))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (string=? _ "2783915460")))

@@ -50,4 +50,5 @@
 (define (solve input)
   (list->string (path input)))
 
-(print (solve (import-input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (string=? _ "73162890")))

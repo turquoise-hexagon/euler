@@ -15,4 +15,5 @@
             (+ acc 1)
             acc))))))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 153)))

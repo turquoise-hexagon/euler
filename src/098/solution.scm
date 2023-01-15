@@ -58,5 +58,5 @@
         (filter (lambda (i) (apply anagram? i))
           (combinations input 2))))))
 
-(let ((input (import-input)))
-  (print (solve input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 18769)))

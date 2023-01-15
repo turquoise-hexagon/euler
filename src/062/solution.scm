@@ -18,4 +18,5 @@
           (apply min acc)
           (loop (+ i 1)))))))
 
-(print (solve 5))
+(let ((_ (solve 5)))
+  (print _) (assert (= _ 127035954683)))

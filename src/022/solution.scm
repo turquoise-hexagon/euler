@@ -22,5 +22,5 @@
         (+ acc (* (convert value) index)))
       0 lst (iota (length lst) 1))))
 
-(let ((input (import-input)))
-  (print (solve input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 871198282)))

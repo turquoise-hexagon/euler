@@ -36,13 +36,13 @@
         (if (> cost (hash-table-ref/default table coord -inf.0))
           (begin
             (hash-table-set! table coord cost)
-            (priority-queue-insert comp? `(,cost ,coord) queue))
+            (priority-queue-insert queue `(,cost ,coord)))
           queue)))
-    (priority-queue-rest comp? queue) (neighbors array coord)))
+    (priority-queue-rest queue) (neighbors array coord)))
 
 (define (solve input)
   (let ((acc (make-hash-table)))
-    (let loop ((queue (list->priority-queue comp? `((,(foldl vector-ref input '(0 0)) (0 0))))))
+    (let loop ((queue (list->priority-queue `((,(foldl vector-ref input '(0 0)) (0 0))) comp?)))
       (if (priority-queue-empty? queue)
         (apply max (hash-table-values acc))
         (apply
@@ -50,5 +50,4 @@
             (loop (helper! input acc queue cost coord)))
           (priority-queue-first queue))))))
 
-(let ((input (import-input)))
-  (print (solve input)))
+(print (solve (import-input)))

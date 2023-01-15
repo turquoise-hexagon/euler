@@ -21,4 +21,5 @@
   (let ((phi (make-phi n)))
     (foldl + 0 (map phi (range 2 n)))))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 303963552391)))

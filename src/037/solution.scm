@@ -21,4 +21,5 @@
         (loop (+ i 1) (+ cnt 1) (+ acc i))
         (loop (+ i 1) cnt acc)))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 748317)))

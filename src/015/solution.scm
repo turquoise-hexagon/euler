@@ -7,4 +7,5 @@
 (define (solve n)
   (choose (* 2 n) n))
 
-(print (solve 20))
+(let ((_ (solve 20)))
+  (print _) (assert (= _ 137846528820)))

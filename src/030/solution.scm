@@ -33,4 +33,5 @@
           (valid? n powers))
         (range 2 (upper-bound e))))))
 
-(print (solve 5))
+(let ((_ (solve 5)))
+  (print _) (assert (= _ 443839)))

@@ -25,4 +25,5 @@
         (< i n))
       (hash-table-keys acc))))
 
-(print (solve 50000000))
+(let ((_ (solve #e5e7)))
+  (print _) (assert (= _ 1097343)))

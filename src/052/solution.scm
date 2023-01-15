@@ -27,4 +27,5 @@
           (subloop (+ m 1))
           (loop (+ i 1)))))))
 
-(print (solve 6))
+(let ((_ (solve 6)))
+  (print _) (assert (= _ 142857)))

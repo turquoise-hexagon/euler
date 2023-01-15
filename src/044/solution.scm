@@ -21,4 +21,5 @@
             (range 1 i)))
         (loop (+ i 1))))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 5482660)))

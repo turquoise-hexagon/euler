@@ -70,4 +70,5 @@
   (for-each solve-sudoku input)
   (apply + (map get-value input)))
 
-(print (solve (import-input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 24702)))

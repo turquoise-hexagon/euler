@@ -31,4 +31,5 @@
           (+ acc 1)
           acc)))))
 
-(print (solve 1000000 60))
+(let ((_ (solve #e1e6 60)))
+  (print _) (assert (= _ 402)))

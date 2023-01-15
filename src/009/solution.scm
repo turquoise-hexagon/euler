@@ -7,4 +7,5 @@
             (when (= (+ (* i i) (* j j)) (* k k))
               (_ (* i j k)))))))))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 31875000)))

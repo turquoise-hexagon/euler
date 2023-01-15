@@ -17,4 +17,5 @@
 (define (solve)
   (apply + (map list->number (filter valid? (permutations (range 0 9))))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 16695334890)))

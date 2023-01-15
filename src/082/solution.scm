@@ -37,13 +37,13 @@
         (if (< cost (hash-table-ref/default table coord +inf.0))
           (begin
             (hash-table-set! table coord cost)
-            (priority-queue-insert comp? `(,cost ,coord) queue))
+            (priority-queue-insert queue `(,cost ,coord)))
           queue)))
-    (priority-queue-rest comp? queue) (neighbors array coord)))
+    (priority-queue-rest queue) (neighbors array coord)))
 
 (define (path array from)
   (let ((acc (make-hash-table)))
-    (let loop ((queue (list->priority-queue comp? `((,(array-ref array from) ,from)))))
+    (let loop ((queue (list->priority-queue `((,(array-ref array from) ,from)) comp?)))
       (if (priority-queue-empty? queue)
         acc
         (apply
@@ -68,5 +68,5 @@
               r)))))
     (array-dimensions input)))
 
-(let ((input (import-input)))
-  (print (solve input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 260324)))

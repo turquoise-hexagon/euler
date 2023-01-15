@@ -19,4 +19,5 @@
              (combinations (range 10 99) 2))))
     (denominator (apply / (apply map * _)))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 100)))

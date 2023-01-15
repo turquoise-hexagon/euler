@@ -29,4 +29,6 @@
       lst)
     (apply + (vector->list acc))))
 
-(print (solve 28123))
+
+(let ((_ (solve 28123)))
+  (print _) (assert (= _ 4179871)))

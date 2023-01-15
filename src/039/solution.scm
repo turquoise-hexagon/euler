@@ -15,4 +15,5 @@
 (define (solve n)
   (extremum (range 1 n) number-solutions >))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 840)))

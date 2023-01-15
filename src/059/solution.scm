@@ -28,5 +28,5 @@
 (define (solve input len)
   (apply + (extremum (translate-all input len) count-spaces >)))
 
-(let ((input (import-input)))
-  (print (solve input 3)))
+(let ((_ (solve (import-input) 3)))
+  (print _) (assert (= _ 129448)))

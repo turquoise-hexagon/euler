@@ -14,4 +14,5 @@
 (define (solve n)
   (apply + (map helper (range 1 1000))))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 21124)))

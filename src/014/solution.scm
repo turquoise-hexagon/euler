@@ -20,5 +20,6 @@
 (define (solve n)
   (let ((collatz (make-collatz)))
     (extremum (range 1 n) collatz >)))
- 
-(print (solve #e1e6))
+
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 837799)))

@@ -20,6 +20,7 @@
             (loop y z r e f a b)))))))
 
 (define (solve n)
-  (extremum (range 1 1000) (lambda (_) (car (solve-pell _))) >))
+  (extremum (range 1 n) (lambda (_) (car (solve-pell _))) >))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 661)))

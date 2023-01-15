@@ -24,4 +24,5 @@
   (let ((divisors (divisors n)))
     (extremum (range 1 n) (lambda (_) (length (chain divisors n _))) >)))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 14316)))

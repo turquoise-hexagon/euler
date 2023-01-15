@@ -9,4 +9,5 @@
         _
         (loop (+ i 1))))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 1533776805)))

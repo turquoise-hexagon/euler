@@ -4,4 +4,5 @@
 (define (solve n)
   (foldl + 0 (primes n)))
 
-(print (solve 2000000))
+(let ((_ (solve #e2e6)))
+  (print _) (assert (= _ 142913828922)))

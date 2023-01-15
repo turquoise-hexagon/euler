@@ -18,4 +18,5 @@
             acc)))
       0 (iota n 1))))
 
-(print (solve 10000))
+(let ((_ (solve 10000)))
+  (print _) (assert (= _ 31626)))

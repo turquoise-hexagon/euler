@@ -42,4 +42,5 @@
     (helper! acc 1 9 1000 9999)
     (apply + (hash-table-keys acc))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 45228)))

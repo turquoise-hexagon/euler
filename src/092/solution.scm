@@ -30,4 +30,5 @@
           (+ acc 1)
           acc)))))
 
-(print (solve 10000000))
+(let ((_ (solve #e1e7)))
+  (print _) (assert (= _ 8581146)))

@@ -10,4 +10,5 @@
           (cons (apply expt i) #t))
         (power (range 2 n) 2)))))
 
-(print (solve 100))
+(let ((_ (solve 100)))
+  (print _) (assert (= _ 9183)))

@@ -7,4 +7,5 @@
       a
       (loop (+ a b) (+ b 1)))))
 
-(print (solve 500))
+(let ((_ (solve 500)))
+  (print _) (assert (= _ 76576500)))

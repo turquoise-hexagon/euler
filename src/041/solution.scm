@@ -5,4 +5,5 @@
 (define (solve)
   (apply max (filter prime? (map list->number (append-map permutations (map (lambda (_) (iota _ 1)) (iota 9 1)))))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 7652413)))

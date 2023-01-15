@@ -8,5 +8,5 @@
   (let* ((tmp (apply + input)) (len (inexact->exact (ceiling (log tmp 10)))))
     (quotient tmp (expt 10 (- len 10)))))
 
-(let ((input (import-input)))
-  (print (solve input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 5537376230)))

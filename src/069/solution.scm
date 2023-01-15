@@ -8,4 +8,5 @@
         acc
         (loop (cdr lst) tmp)))))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= 510510)))

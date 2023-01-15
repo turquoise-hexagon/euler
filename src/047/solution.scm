@@ -18,4 +18,5 @@
         i
         (loop (+ i (max 1 t)))))))
 
-(print (solve 4))
+(let ((_ (solve 4)))
+  (print _) (assert (= _ 134043)))

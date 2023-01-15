@@ -13,4 +13,5 @@
                  (- (expt 10 n) 1))
           2)))))
 
-(print (solve 3))
+(let ((_ (solve 3)))
+  (print _) (assert (= _ 906609)))
