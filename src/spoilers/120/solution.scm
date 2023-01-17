@@ -5,4 +5,5 @@
       (loop (+ i 1)
         (+ acc (* 2 i (quotient (- i 1) 2)))))))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 333082500)))

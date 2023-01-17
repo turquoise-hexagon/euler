@@ -15,4 +15,5 @@
             (+ acc i)
             acc))))))
 
-(print (solve 64000000))
+(let ((_ (solve #e64e6)))
+  (print _) (assert (= _ 1922364685)))

@@ -11,4 +11,5 @@
         acc
         (loop (+ i 1) acc)))))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 173)))

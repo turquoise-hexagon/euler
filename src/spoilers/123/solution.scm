@@ -17,4 +17,5 @@
               (_ index)))
           primes (range 1 (length primes)))))))
 
-(print (solve #e1e10))
+(let ((_ (solve #e1e10)))
+  (print _) (assert (= _ 21035)))

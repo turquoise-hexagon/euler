@@ -25,4 +25,5 @@
           (loop (+ i 1) (+ acc (- _ i)))
           acc)))))
 
-(print (solve 800800))
+(let ((_ (solve 800800)))
+  (print _) (assert (= _ 1412403576)))

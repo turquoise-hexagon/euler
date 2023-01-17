@@ -25,4 +25,5 @@
 (define (solve n)
   (modulo (S n) 1000000007))
 
-(print (solve #e1e14))
+(let ((_ (solve #e1e14)))
+  (print _) (assert (= _ 94586478)))

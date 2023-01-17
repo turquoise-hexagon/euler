@@ -11,4 +11,5 @@
           (loop (+ i 1) cnt acc))
         (loop (+ i 1) cnt acc)))))
 
-(print (solve #e1e9 40))
+(let ((_ (solve #e1e9 40)))
+  (print _) (assert (= _ 843296)))

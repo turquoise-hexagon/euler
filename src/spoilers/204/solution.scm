@@ -17,4 +17,5 @@
             (loop _ (* (car _) n)))
           lst)))))
 
-(print (solve 100 1000000000))
+(let ((_ (solve 100 #e1e9)))
+  (print _) (assert (= _ 2944730)))

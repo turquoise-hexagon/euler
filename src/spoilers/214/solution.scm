@@ -45,4 +45,5 @@
           (= (chain _) chain-length))
         primes))))
 
-(print (solve 40000000 25)) 
+(let ((_ (solve #e4e7 25)))
+  (print _) (assert (= _ 1677366278943)))

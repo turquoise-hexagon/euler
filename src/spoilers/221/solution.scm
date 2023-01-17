@@ -23,4 +23,5 @@
             (alexandrians i))
           (loop (+ i 1)))))))
 
-(print (solve 150000))
+(let ((_ (solve 150000)))
+  (print _) (assert (= _ 1884161251122450)))

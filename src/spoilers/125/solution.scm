@@ -19,4 +19,5 @@
               (hash-table-set! acc sum #t)
               (subloop (cdr tmp) (+ sum (car tmp))))))))))
 
-(print (solve 100000000))
+(let ((_ (solve #e1e8)))
+  (print _) (assert (= _ 2906969179)))

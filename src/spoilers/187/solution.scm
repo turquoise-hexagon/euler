@@ -11,4 +11,5 @@
             acc
             (subloop (cdr b) (+ acc 1))))))))
 
-(print (solve #e1e8))
+(let ((_ (solve #e1e8)))
+  (print _) (assert (= _ 17427258)))

@@ -17,4 +17,5 @@
             i
             (loop (+ i 1) tmp))))))
 
-(print (solve 99))
+(let ((_ (solve 99)))
+  (print _) (assert (= _ 1587000)))

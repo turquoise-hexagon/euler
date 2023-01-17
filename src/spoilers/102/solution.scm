@@ -39,5 +39,5 @@
         (in-triangle? origin _))
       input)))
 
-(let ((input (import-input)))
-  (print (solve input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 228)))

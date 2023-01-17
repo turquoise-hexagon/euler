@@ -7,4 +7,5 @@
       i
       (loop (+ i 1)))))
 
-(print (solve 1000))
+(let ((_ (solve 1000)))
+  (print _) (assert (= _ 180180)))

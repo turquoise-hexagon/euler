@@ -22,4 +22,5 @@
               (loop (+ i 2) (+ acc s) (+ cnt 1))
               (loop (+ i 2) acc cnt))))))))
    
-(print (solve 50))
+(let ((_ (solve 50)))
+  (print _) (assert (= _ 3807504276997394)))

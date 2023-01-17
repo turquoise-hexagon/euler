@@ -12,4 +12,5 @@
       i
       (loop (+ i 2)))))
 
-(print (solve 1000000))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 1000023)))

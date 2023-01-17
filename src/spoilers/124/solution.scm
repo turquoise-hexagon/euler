@@ -17,4 +17,5 @@
                   (cdr b))))))
     (car (list-ref _ (- b 1)))))
 
-(print (solve 100000 10000))
+(let ((_ (solve #e1e5 #e1e4)))
+  (print _) (assert (= _ 21417)))

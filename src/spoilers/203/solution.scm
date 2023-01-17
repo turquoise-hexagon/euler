@@ -25,4 +25,5 @@
       (range 1 limit))
     (apply + (hash-table-keys acc))))
 
-(print (solve 50))
+(let ((_ (solve 50)))
+  (print _) (assert (= _ 34029210557338)))

@@ -28,4 +28,5 @@
         acc
         (loop (+ i 1) (+ acc (a factorials i)))))))
 
-(print (modulo (solve 2022) 1000000007))
+(let ((_ (modulo (solve 2022) 1000000007)))
+  (print _) (assert (= _ 471745499)))

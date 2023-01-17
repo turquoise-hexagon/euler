@@ -30,4 +30,5 @@
       i
       (loop (- i 10)))))
 
-(print (solve))
+(let ((_ (solve)))
+  (print _) (assert (= _ 1389019170)))

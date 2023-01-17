@@ -1,30 +1,33 @@
 (import
   (euler))
 
-(define lst
-  '(1 3 7 9 13 27))
+(define-constant lst '(1 3 7 9 13 27))
 
-(define (valid? n)
-  (let ((squared (* n n)))
-    (let loop ((i 1))
-      (if (> i 27)
-        #t
-        (let ((tmp (+ squared i)))
+(define (valid? i)
+  (if (or (= (modulo i  3) 0)
+          (= (modulo i  7) 0)
+          (= (modulo i 13) 0))
+    #f
+    (let ((_ (* i i)))
+      (let loop ((i 1))
+        (if (> i 27)
+          #t
           (if (member i lst)
-            (if (prime? tmp)
+            (if (prime? (+ _ i))
               (loop (+ i 1))
               #f)
-            (if (prime? tmp)
+            (if (prime? (+ i _))
               #f
               (loop (+ i 1)))))))))
 
 (define (solve n)
-  (let loop ((i 10) (acc 0))
+  (let loop ((i 0) (acc 0))
     (if (> i n)
       acc
       (loop (+ i 10)
-         (if (valid? i)
-           (+ acc i)
-           acc)))))
+        (if (valid? i)
+          (+ acc i)
+          acc)))))
 
-(print (solve 150000000))
+(let ((_ (solve #e15e7)))
+  (print _) (assert (= _ 676333270)))

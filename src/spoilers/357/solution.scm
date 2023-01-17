@@ -27,4 +27,5 @@
                 a)))
       ((> i n) a))))
 
-(print (solve 100000000))
+(let ((_ (solve #e1e8)))
+  (print _) (assert (= _ 1739023853137)))

@@ -24,4 +24,5 @@
         (loop (+ i 1))))
     (foldl + 0 (hash-table-values acc))))
 
-(print (solve 10000000))
+(let ((_ (solve #e1e7)))
+  (print _) (assert (= _ 11109800204052)))

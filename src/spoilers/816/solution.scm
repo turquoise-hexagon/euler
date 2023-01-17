@@ -1,5 +1,7 @@
 (import
-  (chicken sort))
+  (chicken sort)
+  (chicken flonum)
+  (chicken format))
 
 (define (make-generator)
   (set! i 290797)
@@ -38,4 +40,8 @@
                    (cdr b)))))))
     (foldl min +inf.0 (map distance _ (cdr _)))))
 
-(print (solve #e2e6))
+(define (output n)
+  (flonum-print-precision 11) (format "~a" n))
+
+(let ((_ (output (solve #e2e6))))
+  (print _) (assert (string=? _ "20.880613018")))

@@ -27,4 +27,5 @@
           (max (* i (search _ (quotient limit i))) acc))
         0 (helper 0 (quotient len 2) 1)))))
 
-(print (modulo (solve 190) #e1e16))
+(let ((_ (modulo (solve 190) #e1e16)))
+  (print _) (assert (= _ 1096883702440585)))

@@ -25,4 +25,5 @@
             (+ acc (* i i))
             acc))))))
 
-(print (solve 1e12))
+(let ((_ (solve 1e12)))
+  (print _) (assert (= _ 128088830547982)))

@@ -22,4 +22,5 @@ c => number of colors
 (define (output n)
   (first (string-chop (->string (exact->inexact n)) 11)))
 
-(print (output (solve 70 20 7)))
+(let ((_ (output (solve 70 20 7))))
+  (print _) (assert (string=? _ "6.818741802")))
