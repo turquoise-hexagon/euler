@@ -1,22 +1,23 @@
 (import
   (only (srfi 152) substring))
 
-(define (_pandigital? n)
-  (let ((acc (make-vector 10 #f)))
-    (let loop ((n n))
-      (vector-set! acc (modulo n 10) #t)
-      (if (= n 0)
-        (let loop ((i 0))
-          (if (= i 10)
-            #t
-            (if (vector-ref acc i)
-              (loop (+ i 1))
-              #f)))
-        (loop (quotient n 10))))))
-
 (define (pandigital? n)
   (if (= (modulo n 9) 0)
-    (_pandigital? n)
+    (let ((acc (make-vector 10 #f)))
+      (let loop ((n n))
+        (let ((_ (modulo n 10)))
+          (if (vector-ref acc _)
+            #f
+            (begin
+              (vector-set! acc _ #t)
+              (if (= n 0)
+                (let loop ((i 0))
+                  (if (= i 10)
+                    #t
+                    (if (vector-ref acc i)
+                      (loop (+ i 1))
+                      #f)))
+                (loop (quotient n 10))))))))
     #f))
 
 (define (first-9 n)
