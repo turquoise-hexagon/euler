@@ -20,7 +20,7 @@
     (let loop ((a 1) (acc 0))
       (if (fx> a l)
         acc
-        (let ((i (if (fx= (fxmod a 2) 0) 2 1)))
+        (let ((i (if (fxeven? a) 2 1)))
           (let subloop ((b (fx+ a 1)) (acc acc))
             (let ((c (fx+ a b)))
               (if (fx> c n)
