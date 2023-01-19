@@ -13,7 +13,7 @@
     (let loop ((n (fx+ n (reverse-number n))))
       (if (fx= n 0)
         #t
-        (if (fx= (fxmod (fxmod n 10) 2) 0)
+        (if (fxeven? (fxmod n 10))
           #f
           (loop (fx/ n 10)))))))
 
