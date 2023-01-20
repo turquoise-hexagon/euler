@@ -1,34 +1,37 @@
 (import
+  (chicken fixnum)
   (srfi 69))
 
 (define (f n)
-  (let loop ((i n) (acc 0))
-    (if (= i 0)
+  (let loop ((n n) (acc 0))
+    (if (fx= n 0)
       acc
-      (let ((q (quotient i 10)) (m (modulo i 10)))
-        (loop q (+ acc (* m m)))))))
+      (loop (fx/ n 10)
+        (let ((_ (fxmod n 10)))
+          (fx+ acc (fx* _ _)))))))
 
-(define cache
-  (alist->hash-table
-    '((1  . #f)
-      (89 . #t))))
-
-(define (chain n)
-  (let loop ((i n))
-    (if (hash-table-exists? cache i)
-      (let ((_ (hash-table-ref cache i)))
-        (hash-table-set! cache n _)
-        _)
-      (loop (f i)))))
+(define (make-chain)
+  (let ((cache (make-hash-table)))
+    ;; init cache
+    (hash-table-set! cache  1 #f)
+    (hash-table-set! cache 89 #t)
+    (define (chain n)
+      (if (hash-table-exists? cache n)
+        (hash-table-ref cache n)
+        (let ((_ (chain (f n))))
+          (hash-table-set! cache n _)
+          _)))
+    chain))
 
 (define (solve n)
-  (let loop ((i 1) (acc 0))
-    (if (> i n)
-      acc
-      (loop (+ i 1)
-        (if (chain i)
-          (+ acc 1)
-          acc)))))
+  (let ((chain (make-chain)))
+    (let loop ((i 1) (acc 0))
+      (if (fx> i n)
+        acc
+        (loop (fx+ i 1)
+          (if (chain i)
+            (fx+ acc 1)
+            acc))))))
 
 (let ((_ (solve #e1e7)))
   (print _) (assert (= _ 8581146)))
