@@ -1,25 +1,30 @@
 (import
-  (euler)
   (srfi 69))
 
 (define (make-collatz)
-  (let ((mem (make-hash-table)))
-    (hash-table-set! mem 1 1) ;; init cache
-    (lambda (n)
-      (let loop ((i n) (acc 0))
-        (if (hash-table-exists? mem i)
-          (let ((_ (+ acc (hash-table-ref mem i))))
-            (hash-table-set! mem n _)
-            _)
-          (loop
-            (if (even? i) 
-              (quotient i 2)
-              (+ (* 3 i) 1))
-            (+ acc 1)))))))
+  (let ((acc (make-hash-table)))
+    (hash-table-set! acc 1 1)
+    (define (collatz n)
+      (if (hash-table-exists? acc n)
+        (hash-table-ref acc n)
+        (let ((_ (+ (collatz
+                      (if (even? n)
+                        (quotient n 2)
+                        (+ (* 3 n) 1)))
+                    1)))
+          (hash-table-set! acc n _)
+          _)))
+    collatz))
 
 (define (solve n)
   (let ((collatz (make-collatz)))
-    (extremum (range 1 n) collatz >)))
+    (let loop ((i 1) (tmp 0) (acc 0))
+      (if (> i n)
+        acc
+        (let ((_ (collatz i)))
+          (if (> _ tmp)
+            (loop (+ i 1) _ i)
+            (loop (+ i 1) tmp acc)))))))
 
 (let ((_ (solve #e1e6)))
   (print _) (assert (= _ 837799)))
