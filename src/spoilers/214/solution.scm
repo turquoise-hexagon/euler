@@ -1,6 +1,5 @@
 (import
-  (euler)
-  (srfi 69))
+  (euler))
 
 (define (make-phi primes limit)
   (let ((acc (make-vector (+ limit 1))))
@@ -20,13 +19,14 @@
     phi))
 
 (define (make-chain primes limit)
-  (let ((acc (make-hash-table)) (phi (make-phi primes limit)))
-    (hash-table-set! acc 1 1)
+  (let ((acc (make-vector (+ limit 1) 0)) (phi (make-phi primes limit)))
+    (vector-set! acc 1 1)
     (define (chain n)
-      (if (hash-table-exists? acc n)
-        (hash-table-ref acc n)
-        (let ((_ (+ (chain (phi n)) 1)))
-          (hash-table-set! acc n _)
+      (let ((_ (vector-ref acc n)))
+        (if (= _ 0)
+          (let ((_ (+ (chain (phi n)) 1)))
+            (vector-set! acc n _)
+            _)
           _)))
     chain))
 
