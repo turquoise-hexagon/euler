@@ -1,7 +1,6 @@
 (import
   (chicken fixnum)
-  (euler)
-  (srfi 69))
+  (euler))
 
 (define (reverse-number n)
   (let loop ((n n) (acc 0))
