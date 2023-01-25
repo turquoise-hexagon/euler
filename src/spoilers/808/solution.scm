@@ -1,26 +1,39 @@
 (import
-  (euler))
+  (chicken fixnum)
+  (euler)
+  (srfi 69))
 
 (define (reverse-number n)
   (let loop ((n n) (acc 0))
-    (if (= n 0)
+    (if (fx= n 0)
       acc
-      (loop (quotient n 10)
-        (+ (* acc 10) (modulo n 10))))))
+      (loop (fx/ n 10) (fx+ (fx* acc 10) (fxmod n 10))))))
+
+(define (fxabs n)
+  (if (fx< n 0)
+    (fxneg n)
+    n))
+
+(define (square-root n)
+  (let loop ((i n))
+    (let ((_ (fx/ (fx+ i (fx/ n i)) 2)))
+      (if (fx<= (fxabs (fx- i _)) 1)
+        _
+        (loop _)))))
 
 (define (solve n)
-  (let loop ((i 1) (acc 0) (cnt 0))
-    (if (= cnt n)
+  (let loop ((i 1) (cnt 0) (acc 0))
+    (if (fx= cnt n)
       acc
-      (let* ((s (* i i)) (r (reverse-number s)))
-        (if (= s r)
-          (loop (+ i 2) acc cnt)
-          (let ((_ (sqrt r)))
-            (if (and (integer? _)
-                     (prime? _)
-                     (prime? i))
-              (loop (+ i 2) (+ acc s) (+ cnt 1))
-              (loop (+ i 2) acc cnt))))))))
-   
+      (let* ((s (fx* i i)) (r (reverse-number s)))
+        (if (fx= s r)
+          (loop (fx+ i 2) cnt acc)
+          (let ((_ (square-root r)))
+            (if (and (fx= (fx* _ _) r)
+                     (prime? i)
+                     (prime? _))
+              (loop (fx+ i 2) (fx+ cnt 1) (fx+ acc s))
+              (loop (fx+ i 2) cnt acc))))))))
+
 (let ((_ (solve 50)))
   (print _) (assert (= _ 3807504276997394)))
