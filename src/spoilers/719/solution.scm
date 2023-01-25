@@ -1,29 +1,28 @@
 (import
-  (euler))
+  (chicken fixnum))
 
-(define (S? n)
-  (let main ((root n) (square (* n n)))
+(define (valid? n)
+  (let main ((r n) (s (fx* n n)))
     (cond
-      ((> root square) #f)
-      ((= root square) #t)
+      ((fx> r s) #f)
+      ((fx= r s) #t)
       (else
-        (let loop ((i 10))
-          (let ((q (quotient square i)) (m (modulo square i)))
-            (if (> square i)
-              (if (and (> root m) (main (- root m) q))
-                #t
-                (loop (* i 10)))
-              #f)))))))
+       (let loop ((i 10))
+         (let ((q (fx/ s i)) (m (fxmod s i)))
+           (if (fx> s i)
+             (if (and (fx> r m) (main (fx- r m) q))
+               #t
+               (loop (fx* i 10)))
+             #f)))))))
 
 (define (solve n)
-  (let ((n (sqrt n)))
-    (let loop ((i 2) (acc 0))
-      (if (> i n)
-        acc
-        (loop (+ i 1)
-          (if (S? i)
-            (+ acc (* i i))
-            acc))))))
+  (let loop ((i 2) (acc 0))
+    (if (fx> (fx* i i) n)
+      acc
+      (loop (fx+ i 1)
+        (if (valid? i)
+          (fx+ acc (fx* i i))
+          acc)))))
 
-(let ((_ (solve 1e12)))
+(let ((_ (solve #e1e12)))
   (print _) (assert (= _ 128088830547982)))
