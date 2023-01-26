@@ -1,0 +1,30 @@
+(import
+  (chicken fixnum))
+
+(define (make-number-solutions n)
+  (let ((acc (make-vector n 0)))
+    (let loop ((i 1))
+      (unless (fx= i n)
+        (let subloop ((j (fx/ (fx+ i 3) 4)))
+          (unless (fx= j i)
+            (let ((_ (fx* (fx- (fx* j 4) i) i)))
+              (unless (fx>= _ n)
+                (vector-set! acc _ (fx+ (vector-ref acc _) 1))
+                (subloop (fx+ j 1))))))
+        (loop (fx+ i 1))))
+    (define (number-solutions n)
+      (vector-ref acc n))
+    number-solutions))
+
+(define (solve l n)
+  (let ((number-solutions (make-number-solutions l)))
+    (let loop ((i 1) (acc 0))
+      (if (fx= i l)
+        acc
+        (loop (fx+ i 1)
+          (if (fx= (number-solutions i) n)
+            (fx+ acc 1)
+            acc))))))
+
+(print (solve #e5e7 1))
+; (print (solve #e1e6 10))
