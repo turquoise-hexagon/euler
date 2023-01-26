@@ -26,5 +26,5 @@
             (fx+ acc 1)
             acc))))))
 
-(print (solve #e5e7 1))
-; (print (solve #e1e6 10))
+(let ((_ (solve #e5e7 1)))
+  (print _) (assert (= _ 2544559)))
