@@ -1,29 +1,32 @@
 (import
   (euler)
-  (srfi 69)
-  (srfi 1))
+  (srfi 69))
 
-(define (generate primes limit exponent)
-  (let loop ((primes primes) (acc '()))
-    (let ((tmp (expt (car primes) exponent)))
-      (if (> tmp limit)
-        acc
-        (loop (cdr primes) (cons tmp acc))))))
+(define (make-generate n)
+  (let-values (((root _) (exact-integer-sqrt n)))
+    (let ((primes (primes root)) (limit n))
+      (define (generate exponent)
+        (let loop ((lst primes) (acc '()))
+          (if (null? lst)
+            acc
+            (let ((_ (expt (car lst) exponent)))
+              (if (> _ limit)
+                acc
+                (loop (cdr lst) (cons _ acc)))))))
+      generate)))
 
 (define (solve n)
-  (let ((primes (primes n)) (acc (make-hash-table)))
+  (let ((generate (make-generate n)) (acc (make-hash-table)))
     (for-each
-      (lambda (triplet)
-        (hash-table-set! acc (apply + triplet) #t))
-      (apply product
-        (map
-          (lambda (exponent)
-            (generate primes n exponent))
-          '(2 3 4))))
-    (count
-      (lambda (i)
-        (< i n))
-      (hash-table-keys acc))))
+      (lambda (lst)
+        (let ((_ (apply + lst)))
+          (unless (> _ n)
+            (hash-table-set! acc _ #t))))
+      (product
+        (generate 2)
+        (generate 3)
+        (generate 4)))
+    (hash-table-size acc)))
 
 (let ((_ (solve #e5e7)))
   (print _) (assert (= _ 1097343)))
