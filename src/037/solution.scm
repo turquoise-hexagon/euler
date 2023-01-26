@@ -1,25 +1,30 @@
 (import
+  (chicken fixnum)
   (euler))
 
-(define (number-length n)
-  (inexact->exact (ceiling (log n 10))))
+(define (order n)
+  (let loop ((i 1))
+    (let ((_ (fx* i 10)))
+      (if (fx> _ n)
+        i
+        (loop _)))))
 
 (define (valid? n)
-  (let loop ((a n) (b n) (m (expt 10 (- (number-length n) 1))))
-    (if (= a 0)
+  (let loop ((a n) (b n) (d (order n)))
+    (if (fx= a 0)
       #t
       (if (and (prime? a)
                (prime? b))
-        (loop (quotient a 10) (modulo b m) (quotient m 10))
+        (loop (fx/ a 10) (fxmod b d) (fx/ d 10))
         #f))))
 
 (define (solve)
-  (let loop ((i 8) (cnt 0) (acc 0))
-    (if (= cnt 11)
+  (let loop ((i 9) (cnt 0) (acc 0))
+    (if (fx= cnt 11)
       acc
       (if (valid? i)
-        (loop (+ i 1) (+ cnt 1) (+ acc i))
-        (loop (+ i 1) cnt acc)))))
+        (loop (fx+ i 2) (fx+ cnt 1) (fx+ acc i))
+        (loop (fx+ i 2) cnt acc)))))
 
 (let ((_ (solve)))
   (print _) (assert (= _ 748317)))
