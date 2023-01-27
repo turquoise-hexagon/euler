@@ -1,6 +1,5 @@
 (import
-  (euler)
-  (srfi 69))
+  (euler))
 
 (define (make-generate n)
   (let-values (((root _) (exact-integer-sqrt n)))
@@ -16,17 +15,20 @@
       generate)))
 
 (define (solve n)
-  (let ((generate (make-generate n)) (acc (make-hash-table)))
+  (let ((generate (make-generate n)) (mem (make-vector (+ n 1) 0)))
     (for-each
       (lambda (lst)
         (let ((_ (apply + lst)))
           (unless (> _ n)
-            (hash-table-set! acc _ #t))))
+            (vector-set! mem _ 1))))
       (product
         (generate 2)
         (generate 3)
         (generate 4)))
-    (hash-table-size acc)))
+    (let loop ((i 0) (acc 0))
+      (if (> i n)
+        acc
+        (loop (+ i 1) (+ acc (vector-ref mem i)))))))
 
 (let ((_ (solve #e5e7)))
   (print _) (assert (= _ 1097343)))
