@@ -3,26 +3,30 @@
   (chicken sort)
   (euler))
 
-(define (solve n i)
-  (let ((acc/1 (make-vector (fx+ n 1) 1))
-        (acc/2 (make-vector (fx+ n 1) 0)))
-    (let loop ((i 0))
-      (unless (fx> i n)
-        (vector-set! acc/2 i i)
-        (loop (fx+ i 1))))
+(define (make-radical n)
+  (let ((acc (make-vector (fx+ n 1) 1)))
     (for-each
       (lambda (p)
         (let loop ((m p))
           (unless (fx> m n)
-            (vector-set! acc/1 m (fx* (vector-ref acc/1 m) p))
+            (vector-set! acc m (fx* (vector-ref acc m) p))
             (loop (fx+ m p)))))
       (primes n))
+    (define (radical n)
+      (vector-ref acc n))
+    radical))
+
+(define (solve n i)
+  (let ((acc (make-vector (fx+ n 1) 0)) (radical (make-radical n)))
+    (let loop ((i 0))
+      (unless (fx> i n)
+        (vector-set! acc i i)
+        (loop (fx+ i 1))))
     (vector-ref
-      (sort acc/2
+      (sort acc
         (lambda (a b)
-          (fx<
-            (vector-ref acc/1 a)
-            (vector-ref acc/1 b))))
+          (fx< (radical a)
+               (radical b))))
       i)))
 
 (let ((_ (solve #e1e5 #e1e4)))
