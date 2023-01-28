@@ -1,6 +1,5 @@
 (import
   (euler)
-  (srfi 69)
   (only
     (srfi 1)
     every
@@ -15,13 +14,13 @@
       (loop (quotient i 10) (* a 10)))))
 
 (define (make-prime? n)
-  (let ((acc (make-hash-table)))
+  (let ((acc (make-vector (+ n 1) #f)))
     (for-each
       (lambda (_)
-        (hash-table-set! acc _ #t))
+        (vector-set! acc _ #t))
       (primes n))
     (define (prime? n)
-      (hash-table-exists? acc n))
+      (vector-ref acc n))
     prime?))
 
 (define (make-group n)
