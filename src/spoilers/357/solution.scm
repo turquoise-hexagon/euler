@@ -1,16 +1,15 @@
 (import
   (chicken fixnum)
-  (euler)
-  (srfi 69))
+  (euler))
 
 (define (make-prime? n)
-  (let ((acc (make-hash-table)))
+  (let ((acc (make-vector (fx+ n 1) #f)))
     (for-each
       (lambda (p)
-        (hash-table-set! acc p #t))
+        (vector-set! acc p #t))
       (primes (fx+ n 1)))
     (define (prime? n)
-      (hash-table-exists? acc n))
+      (vector-ref acc n))
     prime?))
 
 (define (solve n)
