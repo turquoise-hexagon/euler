@@ -1,7 +1,6 @@
 (import
   (chicken fixnum)
-  (euler)
-  (srfi 69))
+  (euler))
 
 (define-syntax f
   (syntax-rules ()
@@ -11,16 +10,17 @@
           b))))
 
 (define (make-number-primes n)
-  (let ((acc (make-hash-table)))
+  (let* ((l (f n n n)) (acc (make-vector l #f)))
     (for-each
       (lambda (p)
-        (hash-table-set! acc p #t))
-      (primes (f n n n)))
+        (vector-set! acc p #t))
+      (primes l))
     (define (number-primes a b)
       (let loop ((n 0))
-        (if (hash-table-exists? acc (f a b n))
-          (loop (fx+ n 1))
-          (fx- n 1))))
+        (let ((_ (f a b n)))
+          (if (and (fx>= _ 0) (vector-ref acc _))
+            (loop (fx+ n 1))
+            (fx- n 1)))))
     number-primes))
 
 (define (solve n)
