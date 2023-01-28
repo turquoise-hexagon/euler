@@ -7,7 +7,7 @@
   (srfi 209)
   (only (srfi 1) take))
 
-(define board 
+(define board
   (make-enum-type
     '(go   a1 cc1 a2  t1 r1 b1  ch1 b2 b3
       jail c1 u1  c2  c3 r2 d1  cc2 d2 d3
