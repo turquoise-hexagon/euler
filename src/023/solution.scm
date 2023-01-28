@@ -1,6 +1,8 @@
 (import
   (chicken fixnum))
 
+(define-constant limit 28123)
+
 (define (make-sum-divisors n)
   (let ((acc (make-vector (fx+ n 1) 0)))
     (do ((i 1 (fx+ i 1))) ((fx> i n))
@@ -33,13 +35,13 @@
       (vector-ref acc n))
     valid?))
 
-(define (solve n)
-  (let ((valid? (make-valid? n)))
+(define (solve)
+  (let ((valid? (make-valid? limit)))
     (do ((i 0 (fx+ i 1))
          (acc 0 (if (valid? i)
                   (fx+ i acc)
                   acc)))
-      ((fx> i n) acc))))
+      ((fx> i limit) acc))))
 
-(let ((_ (solve 28123)))
+(let ((_ (solve)))
   (print _) (assert (= _ 4179871)))
