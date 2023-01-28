@@ -25,7 +25,7 @@
      (let loop ((i n))
        (unless (fx= i 0)
          (let ((_ (fxmod i 10)))
-           (vector-set! vec _ (+ (vector-ref vec _) inc)))
+           (vector-set! vec _ (fx+ (vector-ref vec _) inc)))
          (loop (fx/ i 10)))))))
 
 (define (permutation? a b)
