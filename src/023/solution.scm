@@ -21,16 +21,16 @@
       ((fx> i n) acc))))
 
 (define (make-valid? n)
-  (let ((acc (make-vector (fx+ n 1) #t)) (lst (abundants n)))
-    (for-each
-      (lambda (i)
+  (let ((acc (make-vector (fx+ n 1) #t)))
+    (let loop ((lst (abundants n)))
+      (unless (null? lst)
         (for-each
-          (lambda (j)
-            (let ((_ (fx+ i j)))
+          (lambda (i)
+            (let ((_ (fx+ i (car lst))))
               (unless (fx> _ n)
                 (vector-set! acc _ #f))))
-          lst))
-      lst)
+          lst)
+        (loop (cdr lst))))
     (define (valid? n)
       (vector-ref acc n))
     valid?))
