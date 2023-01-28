@@ -1,14 +1,8 @@
 (import
-  (chicken sort)
   (euler))
 
-(define digits
-  (map integer->char
-    (range (char->integer #\0)
-           (char->integer #\9))))
-
 (define (solve n)
-  (list-ref (sort (map list->string (permutations digits)) string<?) (- n 1)))
+  (list->number (list-ref (permutations (range 0 9)) (- n 1))))
 
 (let ((_ (solve #e1e6)))
-  (print _) (assert (string=? _ "2783915460")))
+  (print _) (assert (= _ 2783915460)))
