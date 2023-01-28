@@ -2,6 +2,8 @@
   (chicken fixnum)
   (euler))
 
+(define-constant limit #e5e5)
+
 (define (make-factors n)
   (let ((acc (make-vector (fx+ n 1) '())))
     (for-each
@@ -34,7 +36,7 @@
     valid?))
 
 (define (solve n)
-  (let ((valid? (make-valid? #e5e5)))
+  (let ((valid? (make-valid? limit)))
     (let loop ((i 2))
       (if (valid? i n)
         i
