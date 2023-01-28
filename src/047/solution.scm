@@ -4,41 +4,34 @@
 
 (define-constant limit #e5e5)
 
-(define (make-factors n)
-  (let ((acc (make-vector (fx+ n 1) '())))
+(define (make-number-factors n)
+  (let loop ((acc (make-vector (fx+ n 1) 0)))
     (for-each
       (lambda (p)
         (let loop ((m p))
           (unless (fx> m n)
-            (let subloop ((i m) (tmp 1))
-              (if (fx= (fxmod i p) 0)
-                (subloop (fx/ i p) (fx* tmp p))
-                (vector-set! acc m (cons tmp (vector-ref acc m)))))
+            (vector-set! acc m (fx+ (vector-ref acc m) 1))
             (loop (fx+ m p)))))
       (primes n))
-    (define (factors n)
+    (define (number-factors n)
       (vector-ref acc n))
-    factors))
+    number-factors))
 
 (define (make-valid? n)
-  (let ((factors (make-factors n)))
+  (let ((number-factors (make-number-factors n)))
     (define (valid? n l)
-      (let loop ((i 0) (acc '()))
+      (let loop ((i 0))
         (if (fx= i l)
-          (fx= (length acc) (fx* l l))
-          (loop (fx+ i 1)
-            (foldl
-              (lambda (acc f)
-                (if (member f acc)
-                  acc
-                  (cons f acc)))
-              acc (factors (fx+ n i)))))))
+          #t
+          (if (fx= (number-factors (fx+ n i)) l)
+            (loop (fx+ i 1))
+            #f))))
     valid?))
 
-(define (solve n)
+(define (solve l)
   (let ((valid? (make-valid? limit)))
     (let loop ((i 2))
-      (if (valid? i n)
+      (if (valid? i l)
         i
         (loop (fx+ i 1))))))
 
