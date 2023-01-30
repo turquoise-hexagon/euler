@@ -33,7 +33,7 @@
                                   (c (fx- (fx* j (fx* k k)) 1)))
                               (if (and (prime? b)
                                        (prime? c))
-                                (foldl fx+ acc (list a b c))
+                                (fx+ acc (fx+ a (fx+ b c)))
                                 acc))
                             acc))))
                     acc))))))))))
