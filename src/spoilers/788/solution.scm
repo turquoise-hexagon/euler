@@ -1,32 +1,25 @@
-(define (factorials n)
+(define (make-factorial n)
   (let ((acc (make-vector (+ n 1) 1)))
     (let loop ((i 1))
-      (if (> i n)
-        acc
-        (begin
-          (vector-set! acc i (* (vector-ref acc (- i 1)) i))
-          (loop (+ i 1)))))))
+      (unless (> i n)
+        (vector-set! acc i (* (vector-ref acc (- i 1)) i))
+        (loop (+ i 1))))
+    (define (factorial n)
+      (vector-ref acc n))
+    factorial))
 
-(define (choose factorials a b)
-  (let ((a (vector-ref factorials a))
-        (b (vector-ref factorials b))
-        (t (vector-ref factorials (- a b))))
-    (/ a (* b t))))
-
-(define (a factorials n)
-  (let loop ((i (+ (quotient n 2) 1)) (acc 0))
-    (if (> i n)
-      acc
-      (loop (+ i 1)
-        (let ((_ (* (choose factorials n i) (expt 9 (- n i -1)))))
-          (+ acc _))))))
+(define (make-choose n)
+  (let ((factorial (make-factorial n)))
+    (define (choose n k)
+      (/ (factorial n) (* (factorial k) (factorial (- n k)))))
+    choose))
 
 (define (solve n)
-  (let ((factorials (factorials n)))
-    (let loop ((i 1) (acc 0))
-      (if (> i n)
+  (let ((choose (make-choose (+ n 1))))
+    (let loop ((k 1) (e 9) (acc 0))
+      (if (> k (/ n 2))
         acc
-        (loop (+ i 1) (+ acc (a factorials i)))))))
+        (loop (+ k 1) (* e 9) (+ acc (* e (- (choose (+ n 1) k) (choose (- (* 2 k) 1) k)))))))))
 
 (let ((_ (modulo (solve 2022) 1000000007)))
   (print _) (assert (= _ 471745499)))
