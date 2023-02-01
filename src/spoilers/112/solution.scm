@@ -1,21 +1,29 @@
 (import
-  (chicken sort)
-  (euler))
+  (chicken fixnum))
+
+(define-syntax test?
+  (syntax-rules ()
+   ((_ n compare?)
+    (let loop ((c (fx/ n 10)) (p (fxmod n 10)))
+      (if (fx= c 0)
+        #t
+        (let ((t (fxmod c 10)))
+          (if (compare? p t)
+            (loop (fx/ c 10) t)
+            #f)))))))
 
 (define (bouncy? n)
-  (let ((tmp (number->list n)))
-    (not (or (equal? tmp (sort tmp <))
-             (equal? tmp (sort tmp >))))))
+  (not (or (test? n <=)
+           (test? n >=))))
 
 (define (solve n)
-  (let ((n (/ n 100)))
-    (let loop ((i 100) (acc 0))
-      (let ((tmp (if (bouncy? i)
-                     (+ acc 1)
-                     acc)))
-        (if (= (/ tmp i) n)
-            i
-            (loop (+ i 1) tmp))))))
+  (let loop ((i 100) (c 0))
+    (let ((t (if (bouncy? i)
+                 (fx+ c 1)
+                 c)))
+      (if (fx= (fx/ (fx* t 100) i) n)
+        i
+        (loop (fx+ i 1) t)))))
 
 (let ((_ (solve 99)))
   (print _) (assert (= _ 1587000)))
