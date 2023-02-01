@@ -1,29 +1,21 @@
 (import
-  (euler))
+  (chicken fixnum))
 
-(define (helper lim array n i)
-  (- (floor (/ n (* i i)))
-     (foldl + 0
-       (map
-         (lambda (j)
-           (vector-ref array (* i j)))
-         (range 2 (floor (/ lim i)) 1)))))
+(define (solve n m)
+  (let-values (((lim _) (exact-integer-sqrt n)))
+    (let ((mem (make-vector (+ lim 1) 1)))
+      (vector-set! mem 0 0)
+      (let loop ((i lim))
+        (unless (fx= i 0)
+          (let loop ((t 2) (acc 0))
+            (if (fx> t (fx/ lim i))
+              (vector-set! mem i (fx- (fx/ n (fx* i i)) acc))
+              (loop (fx+ t 1) (fx+ acc (vector-ref mem (fx* i t))))))
+          (loop (fx- i 1))))
+      (let loop ((i 0) (acc 0))
+        (if (fx> i lim)
+          acc
+          (loop (fx+ i 1) (fxmod (fx+ acc (fx* (vector-ref mem i) (fx* i i))) m)))))))
 
-(define (S n)
-  (let* ((lim (inexact->exact (floor (sqrt n)))) (acc (make-vector (+ lim 1) 1)))
-    (vector-set! acc 0 0)
-    (for-each
-      (lambda (i)
-        (vector-set! acc i (helper lim acc n i)))
-      (range lim 1 -1))
-    (foldl + 0
-      (map
-        (lambda (i)
-          (* i i (vector-ref acc i)))
-        (range 0 lim)))))
-
-(define (solve n)
-  (modulo (S n) 1000000007))
-
-(let ((_ (solve #e1e14)))
+(let ((_ (solve #e1e14 1000000007)))
   (print _) (assert (= _ 94586478)))
