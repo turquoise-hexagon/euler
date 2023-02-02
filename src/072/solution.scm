@@ -2,24 +2,23 @@
   (euler))
 
 (define (make-phi n)
-  (let ((factors (make-vector (+ n 1) '())))
+  (let ((acc (make-vector (+ n 1) 1)))
+    (do ((i 0 (+ i 1))) ((> i n))
+      (vector-set! acc i i))
     (for-each
       (lambda (p)
-        (do ((i p (+ i p))) ((> i n))
-          (let ((_ (vector-ref factors i)))
-            (unless (member p _)
-              (vector-set! factors i (cons p _))))))
+        (do ((m p (+ m p))) ((> m n))
+          (vector-set! acc m (* (vector-ref acc m) (- 1 (/ 1 p))))))
       (primes n))
-    (lambda (n)
-      (foldl * n
-        (map
-          (lambda (_)
-            (- 1 (/ 1 _)))
-          (vector-ref factors n))))))
+    (define (phi n)
+      (vector-ref acc n))
+    phi))
 
 (define (solve n)
   (let ((phi (make-phi n)))
-    (foldl + 0 (map phi (range 2 n)))))
+    (do ((i 2 (+ i 1))
+         (acc 0 (+ acc (phi i))))
+      ((> i n) acc))))
 
 (let ((_ (solve #e1e6)))
   (print _) (assert (= _ 303963552391)))
