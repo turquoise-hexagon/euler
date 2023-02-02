@@ -1,37 +1,24 @@
 (import
-  (euler))
+  (chicken fixnum))
 
-(define (jump prime count factorial)
-  (let loop ((prime prime) (count count) (factorial factorial))
-    (if (= prime 0)
-      factorial
-      (let ((_ (+ count 1)))
-        (loop (- prime 1) _ (* factorial _))))))
-
-(define (s prime n)
-  (let loop ((count 0) (factorial 1))
-    (if (= (modulo factorial n) 0)
-      count
-      (loop (+ count prime) (jump prime count factorial)))))
+(define (helper i j)
+  (let loop ((x i) (y i))
+    (if (fx= (fxmod x j) 0)
+      y
+      (let ((y (fx+ y i)))
+        (loop (fx* x y) y)))))
 
 (define (solve n)
-  (let ((mem (make-vector (+ n 1) 0)))
-    (for-each
-      (lambda (prime)
-        (let loop ((i #f) (power prime))
-          (unless (> power n)
-            (let ((value (if i (s prime power) prime)))
-              (let subloop ((multiple power))
-                (unless (> multiple n)
-                  (when (> value (vector-ref mem multiple))
-                    (vector-set! mem multiple value))
-                  (subloop (+ multiple power)))))
-            (loop #t (* power prime)))))
-      (primes n))
-    (let loop ((i 0) (acc 0))
-      (if (> i n)
-        acc
-        (loop (+ i 1) (+ acc (vector-ref mem i)))))))
+  (let ((mem (make-vector (fx+ n 1) 0)))
+    (do ((i 2 (fx+ i 1))) ((fx> i n))
+      (when (fx= (vector-ref mem i) 0)
+        (vector-set! mem i i)
+        (do ((j i (fx* j i))) ((fx> j n))
+          (do ((k 1 (fx+ k 1))) ((fx> (fx* j k) n))
+            (vector-set! mem (fx* j k) (fxmax (helper i j) (vector-ref mem (fx* j k))))))))
+    (do ((i 2 (fx+ i 1))
+         (acc 0 (fx+ acc (vector-ref mem i))))
+      ((fx> i n) acc))))
 
 (let ((_ (solve #e1e8)))
   (print _) (assert (= _ 476001479068717)))
