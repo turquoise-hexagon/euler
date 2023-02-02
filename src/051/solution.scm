@@ -1,50 +1,69 @@
 (import
-  (euler)
-  (srfi 1))
+  (chicken fixnum)
+  (euler))
 
-(define digits
-  (iota 10))
+(define-constant limit #e1e6)
 
-(define (number-length n)
-  (if (> n 0)
-    (inexact->exact (ceiling (log n 10)))
-    1))
+(define (reverse-number n)
+  (let loop ((n n) (acc 0))
+    (if (fx= n 0)
+      acc
+      (loop (fx/ n 10) (fx+ (fxmod n 10) (fx* acc 10))))))
 
-(define (generate-family i n)
-  (let ((lst (number->list i)) (len (number-length i)))
-    (find
-      (lambda (lst)
-        ;; look for a valid family
-        (= (length lst) n))
-      (map
-        (lambda (indexes)
-          (filter
-            (lambda (i)
-              ;; remove small / non-primes numbers that got generated
-              (and (= (number-length i) len) (prime? i)))
-            (map
-              (lambda (digit)
-                ;; generate the new number
-                (let ((tmp (list->vector lst)))
-                  (for-each
-                    (lambda (index)
-                      (vector-set! tmp index digit))
-                    indexes)
-                  (list->number (vector->list tmp))))
-              digits)))
-        ;; generate all indexes to edit
-        (let ((indexes (iota len)))
-          (join
-            (map
-              (lambda (i)
-                (combinations indexes (+ i 1)))
-              indexes)))))))
+(define (edit-number n d r)
+  (let loop ((n n) (acc 0))
+    (if (fx= n 0)
+      (reverse-number acc)
+      (loop (fx/ n 10)
+        (let ((i (fxmod n 10)))
+          (fx+ (if (fx= i d) r i) (fx* acc 10)))))))
 
-(define (solve n)
-  (let loop ((lst (primes 1000000)))
-    (let ((tmp (generate-family (car lst) n)))
-      (if tmp
-        (apply min tmp)
+(define (digits-count n)
+  (let ((acc (make-vector 10 0)))
+    (let loop ((n n))
+      (if (fx= n 0)
+        acc
+        (begin
+          (let ((i (fxmod n 10)))
+            (vector-set! acc i (fx+ (vector-ref acc i) 1)))
+          (loop (fx/ n 10)))))))
+
+(define (make-prime? primes limit)
+  (let ((acc (make-vector (fx+ limit 1) #f)))
+    (for-each
+      (lambda (i)
+        (vector-set! acc i #t))
+      primes)
+    (define (prime? n)
+      (vector-ref acc n))
+    prime?))
+
+(define (make-valid? primes limit)
+  (let ((prime? (make-prime? primes limit)))
+    (define (valid? n l)
+      (let ((mem (digits-count n)))
+        (let loop ((d 0))
+          (if (fx= d 10)
+            #f
+            (if (fx> (vector-ref mem d) 1)
+              (let subloop ((r 0) (acc 0))
+                (if (fx= acc l)
+                  #t
+                  (if (fx= r 10)
+                    (loop (fx+ d 1))
+                    (subloop (fx+ r 1)
+                      (let ((i (edit-number n d r)))
+                        (if (and (fx>= i n) (prime? i))
+                          (fx+ acc 1)
+                          acc))))))
+              (loop (fx+ d 1)))))))
+    valid?))
+
+(define (solve l)
+  (let* ((primes (primes limit)) (valid? (make-valid? primes limit)))
+    (let loop ((lst primes))
+      (if (valid? (car lst) l)
+        (car lst)
         (loop (cdr lst))))))
 
 (let ((_ (solve 8)))
