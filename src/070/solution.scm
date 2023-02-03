@@ -12,7 +12,7 @@
       (lambda (p)
         (let loop ((m p))
           (unless (fx> m n)
-            (vector-set! acc m (* (vector-ref acc m) (- 1 (/ 1 p))))
+            (vector-set! acc m (fx- (vector-ref acc m) (fx/ (vector-ref acc m) p)))
             (loop (fx+ m p)))))
       (primes n))
     (define (phi n)
