@@ -1,7 +1,8 @@
 (import
+  (chicken flonum)
+  (chicken format)
   (chicken string)
-  (euler)
-  (srfi 1))
+  (euler))
 
 (define (choose n k)
   (let ((_ (- n k)))
@@ -20,7 +21,7 @@ c => number of colors
                  (choose t p))))))
 
 (define (output n)
-  (first (string-chop (->string (exact->inexact n)) 11)))
+  (flonum-print-precision 11) (format "~a" (exact->inexact n)))
 
 (let ((_ (output (solve 70 20 7))))
   (print _) (assert (string=? _ "6.818741802")))
