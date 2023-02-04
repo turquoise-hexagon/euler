@@ -1,32 +1,26 @@
-(import
-  (euler))
-
-(define limit 50)
-
 (define (reverse-number n)
-  (let loop ((i n) (acc 0))
-    (if (= i 0)
+  (let loop ((n n) (acc 0))
+    (if (= n 0)
       acc
-      (let ((q (quotient i 10)) (m (modulo i 10)))
-        (loop q (+ (* acc 10) m))))))
+      (loop (quotient n 10) (+ (* acc 10) (modulo n 10))))))
 
-(define (lychrel? n)
-  (let loop ((i n) (cnt 0))
-    (if (> cnt limit)
+(define (valid? n)
+  (let loop ((n (+ n (reverse-number n))) (acc 1))
+    (if (> acc 50)
       #t
-      (let ((tmp (+ i (reverse-number i))))
-        (if (palindrome? tmp)
+      (let ((r (reverse-number n)))
+        (if (= n r)
           #f
-          (loop tmp (+ cnt 1)))))))
+          (loop (+ n r) (+ acc 1)))))))
 
 (define (solve n)
-  (let loop ((i 1) (acc 0))
+  (let loop ((i 0) (acc 0))
     (if (> i n)
       acc
       (loop (+ i 1)
-        (if (lychrel? i)
+        (if (valid? i)
           (+ acc 1)
           acc)))))
 
-(let ((_ (solve 10000)))
+(let ((_ (solve #e1e4)))
   (print _) (assert (= _ 249)))
