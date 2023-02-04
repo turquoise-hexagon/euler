@@ -1,18 +1,28 @@
-(import
-  (euler)
-  (srfi 1))
+(define (make-factorial n)
+  (let ((acc (make-vector (+ n 1) 0)))
+    (vector-set! acc 0 1)
+    (do ((i 1 (+ i 1))) ((> i n))
+      (vector-set! acc i (* (vector-ref acc (- i 1)) i)))
+    (define (factorial n)
+      (vector-ref acc n))
+    factorial))
 
-(define (choose a b)
-  (/ (factorial a) (* (factorial b) (factorial (- a b)))))
+(define (make-choose n)
+  (let ((factorial (make-factorial n)))
+    (define (choose n k)
+      (/ (factorial n) (* (factorial k) (factorial (- n k)))))
+    choose))
 
-(define (solve n limit)
-  (count
-    (lambda (_)
-      (> _ limit))
-    (map
-      (lambda (_)
-        (apply choose _))
-      (combinations (range n 1) 2))))
+(define (solve a b)
+  (let ((choose (make-choose a)))
+    (do ((n 1 (+ n 1))
+         (acc 0 (+ acc
+                   (do ((k 1 (+ k 1))
+                        (acc 0 (if (> (choose n k) b)
+                                 (+ acc 1)
+                                 acc)))
+                      ((> k n) acc)))))
+      ((> n a) acc))))
 
 (let ((_ (solve 100 #e1e6)))
   (print _) (assert (= _ 4075)))
