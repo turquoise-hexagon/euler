@@ -6,7 +6,7 @@
   (apply +
     (filter
       (lambda (p)
-        (not (= (expt-mod 10 #e1e16 (* 9 p)) 1)))
+        (not (= (modular-expt 10 #e1e16 (* 9 p)) 1)))
       (primes n))))
 
 (let ((_ (solve #e1e5)))

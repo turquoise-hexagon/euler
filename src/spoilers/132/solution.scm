@@ -6,7 +6,7 @@
     (if (= cnt n)
       acc
       (if (prime? i)
-        (if (= (expt-mod 10 k (* i 9)) 1)
+        (if (= (modular-expt 10 k (* i 9)) 1)
           (loop (+ i 1) (+ cnt 1) (+ acc i))
           (loop (+ i 1) cnt acc))
         (loop (+ i 1) cnt acc)))))
