@@ -8,17 +8,12 @@
       acc
       (loop (fx/ n 10) (fx+ (fx* acc 10) (fxmod n 10))))))
 
-(define (fxabs n)
-  (if (fx< n 0)
-    (fxneg n)
-    n))
-
 (define (square-root n)
   (let loop ((i n))
     (let ((_ (fx/ (fx+ i (fx/ n i)) 2)))
-      (if (fx<= (fxabs (fx- i _)) 1)
-        _
-        (loop _)))))
+      (if (fx< _ i)
+        (loop _)
+        i))))
 
 (define (solve n)
   (let loop ((i 1) (cnt 0) (acc 0))
