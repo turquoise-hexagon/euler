@@ -2,12 +2,11 @@
   (euler))
 
 (define (nth-permutation l n)
-  (let ((i (length l)))
-    (let loop ((l l) (i i) (n (- n 1)))
-      (if (null? l)
-        '()
-        (let-values (((q r) (quotient&remainder n (factorial (- i 1)))))
-          (cons (list-ref l q) (loop (delete-at l q) (- i 1) r)))))))
+  (let loop ((l l) (i (length l)) (n (- n 1)))
+    (if (null? l)
+      '()
+      (let-values (((q r) (quotient&remainder n (factorial (- i 1)))))
+        (cons (list-ref l q) (loop (delete-at l q) (- i 1) r))))))
 
 (define (solve n)
   (list->number (nth-permutation (range 0 9) n)))
