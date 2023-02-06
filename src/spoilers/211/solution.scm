@@ -14,17 +14,12 @@
       (vector-ref acc n))
     sum-square-divisors))
 
-(define (fxabs n)
-  (if (fx< n 0)
-    (fxneg n)
-    n))
-
 (define (square? n)
   (let loop ((i n))
     (let ((_ (fx/ (fx+ i (fx/ n i)) 2)))
-      (if (fx<= (fxabs (fx- i _)) 1)
-        (fx= (fx* _ _) n)
-        (loop _)))))
+      (if (fx< _ i)
+        (loop _)
+        (fx= (fx* _ _) n)))))
 
 (define (solve n)
   (let ((sum-square-divisors (make-sum-square-divisors n)))
