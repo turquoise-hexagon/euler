@@ -1,23 +1,25 @@
 (import
   (euler)
-  (srfi 69)
-  (srfi 1))
+  (srfi 69))
 
 (define (squares n)
-  (do ((i 1 (+ i 1)) (acc '() (cons (* i i) acc)))
-    ((>= (* i i) n) (reverse acc))))
+  (let loop ((i 1))
+    (let ((_ (* i i)))
+      (if (> _ n)
+        '()
+        (cons _ (loop (+ i 1)))))))
 
 (define (solve n)
   (let ((acc (make-hash-table)))
-    (let loop ((lst (squares n)))
-      (if (null? (cddr lst))
-        (apply + (filter palindrome? (hash-table-keys acc)))
-        (let subloop ((tmp (cddr lst)) (sum (+ (car lst) (cadr lst))))
-          (if (or (null? tmp) (> sum n))
-            (loop (cdr lst))
-            (begin
-              (hash-table-set! acc sum #t)
-              (subloop (cdr tmp) (+ sum (car tmp))))))))))
+    (let loop ((a (squares n)))
+      (unless (null? (cddr a))
+        (let loop ((b (cddr a)) (sum (+ (car a) (cadr a))))
+          (unless (or (null? b) (> sum n))
+            (when (palindrome? sum) ;; testing first is faster
+              (hash-table-set! acc sum #t))
+            (loop (cdr b) (+ sum (car b)))))
+        (loop (cdr a))))
+    (apply + (hash-table-keys acc))))
 
 (let ((_ (solve #e1e8)))
   (print _) (assert (= _ 2906969179)))
