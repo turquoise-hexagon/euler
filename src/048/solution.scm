@@ -1,8 +1,11 @@
 (import
   (euler))
 
-(define (solve n)
-  (modulo (apply + (map (lambda (i) (expt i i)) (range 1 1000))) (expt 10 n)))
+(define (solve l n)
+  (let ((m (expt 10 n)))
+    (do ((i 1 (+ i 1))
+         (acc 0 (modulo (+ acc (modular-expt i i m)) m)))
+      ((> i l) acc))))
 
-(let ((_ (solve 10)))
+(let ((_ (solve 1000 10)))
   (print _) (assert (= _ 9110846700)))
