@@ -11,7 +11,7 @@
     (map
       (lambda (i)
         (modular-inverse n i))
-      (foldl delete-once (primes l) (factorize n)))))
+      (foldl delete-once (primes l) (factors n)))))
 
 (let ((_ (solve 10 #e1e7)))
   (print _) (assert (= _ 1601912348822)))

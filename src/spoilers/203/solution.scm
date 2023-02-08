@@ -10,7 +10,7 @@
   (every
     (lambda (lst)
       (= (car lst) 1))
-    (run-length (factorize n))))
+    (run-length (factors n))))
 
 (define (solve limit)
   (let ((acc (make-hash-table)))

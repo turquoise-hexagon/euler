@@ -6,7 +6,7 @@
   (foldl
     (lambda (acc p)
       (- acc (quotient acc p)))
-    n (delete-duplicates (factorize n))))
+    n (delete-duplicates (factors n))))
 
 (define (resilience n)
   (/ (phi n) (- n 1)))

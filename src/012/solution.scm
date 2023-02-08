@@ -6,7 +6,7 @@
     (map
       (lambda (_)
         (+ (car _) 1))
-      (run-length (factorize n)))))
+      (run-length (factors n)))))
 
 (define (solve n)
   (let loop ((i 0) (acc 0))
