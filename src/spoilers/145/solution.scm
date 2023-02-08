@@ -1,30 +1,18 @@
-(import
-  (chicken fixnum))
-
-(define (reverse-number n)
-  (let loop ((n n) (acc 0))
-    (if (fx= n 0)
+(define (a n)
+  (let loop ((i 0) (acc 0))
+    (if (> (+ (* 4 i) 3) n)
       acc
-      (loop (fx/ n 10) (fx+ (fx* acc 10) (fxmod n 10))))))
+      (loop (+ i 1) (+ acc (* 100 (expt 500 i)))))))
 
-(define (reversible? n)
-  (if (fx= (fxmod n 10) 0)
-    #f
-    (let loop ((n (fx+ n (reverse-number n))))
-      (if (fx= n 0)
-        #t
-        (if (fxeven? (fxmod n 10))
-          #f
-          (loop (fx/ n 10)))))))
+(define (b n)
+  (let loop ((i 1) (acc 0))
+    (if (> (* 2 i) n)
+      acc
+      (loop (+ i 1) (+ acc (* 20 (expt 30 (- i 1))))))))
 
 (define (solve n)
-  (let loop ((i 0) (acc 0))
-    (if (fx> i n)
-      acc
-      (loop (fx+ i 1)
-        (if (reversible? i)
-          (fx+ acc 1)
-          acc)))))
+  (+ (a n)
+     (b n)))
 
-(let ((_ (solve #e1e9)))
+(let ((_ (solve 9)))
   (print _) (assert (= _ 608720)))
