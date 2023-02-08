@@ -30,11 +30,11 @@
   (< (car a)
      (car b)))
 
-(define (find-path array fs ts)
+(define (find-path array froms tos)
   (let ((acc (make-hash-table)))
-    (let loop ((queue (list->priority-queue (map (lambda (i) (list (array-ref array i) i)) fs) compare?)))
+    (let loop ((queue (list->priority-queue (map (lambda (coord) (list (array-ref array coord) coord)) froms) compare?)))
       (if (priority-queue-empty? queue)
-        (apply min (map (lambda (coord) (hash-table-ref acc coord)) ts))
+        (apply min (map (lambda (coord) (hash-table-ref acc coord)) tos))
         (loop
           (apply
             (lambda (cost coord)
