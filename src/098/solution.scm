@@ -2,61 +2,105 @@
   (chicken io)
   (chicken string)
   (euler)
-  (srfi 1)
-  (srfi 69))
+  (srfi 1))
 
-(define DIGITS (range 1 9))
+(define digits (range 1 9))
 
 (define (import-input)
   (map
-    (lambda (lst)
-      (map char->integer lst))
-    (map string->list (string-split (read-line) "\", "))))
+    (lambda (s)
+      (map char->integer (string->list s)))
+    (string-split (read-line) "\",")))
 
-(define-syntax increment!
+(define-syntax helper!
   (syntax-rules ()
-    ((_ array index proc)
-     (vector-set! array index
-       (proc (vector-ref array index))))))
+    ((_ acc l i)
+     (for-each
+       (lambda (c)
+         (vector-set! acc c (+ (vector-ref acc c) i)))
+       l))))
 
 (define (anagram? a b)
-  ;; attempt at fast-ish anagram testing
   (let ((acc (make-vector 256 0)))
-    (for-each (lambda (i) (increment! acc i (lambda (_) (+ _ 1)))) a)
-    (for-each (lambda (i) (increment! acc i (lambda (_) (- _ 1)))) b)
-    (call/cc
-      (lambda (_)
-        (for-each (lambda (i) (unless (= (vector-ref acc i) 0) (_ #f))) a)
-        (for-each (lambda (i) (unless (= (vector-ref acc i) 0) (_ #f))) b)
-        (_ #t)))))
+    (helper! acc a +1)
+    (helper! acc b -1)
+    (let loop ((l (append a b)))
+      (if (null? l)
+        #t
+        (if (= (vector-ref acc (car l)) 0)
+          (loop (cdr l))
+          #f)))))
+
+(define (make-mappings)
+  (let ((cache (make-vector 26 #f)))
+    (define (mappings c)
+      (let* ((l (length c)) (m (vector-ref cache l)))
+        (if m m
+          (let ((m (join (map permutations (combinations digits l)))))
+            (vector-set! cache l m)
+            m))))
+    mappings))
+
+(define (dictionary c m)
+  (let ((acc (make-vector 256 0)))
+    (for-each
+      (lambda (c d)
+        (vector-set! acc c d))
+      c m)
+    acc))
+
+(define (translate d l)
+  (list->number
+    (map
+      (lambda (c)
+        (vector-ref d c))
+      l)))
+
+(define (make-squares)
+  (let ((mappings (make-mappings)))
+    (define (squares a b)
+      (let ((c (delete-duplicates a)))
+        (join
+          (filter-map
+            (lambda (m)
+              (let ((d (dictionary c m)))
+                (let ((a (translate d a))
+                      (b (translate d b)))
+                  (if (and (square? a)
+                           (square? b))
+                    (list a b)
+                    #f))))
+            (mappings c)))))
+    squares))
 
 (define (square? n)
-  (integer? (sqrt n)))
+  ;; (integer? (sqrt n))
+  (let loop ((i n))
+    (let ((_ (quotient (+ (quotient n i) i) 2)))
+      (if (< _ i)
+        (loop _)
+        (= (* i i) n)))))
 
-(define (square-anagram? a b)
-  (let ((chars (delete-duplicates a =)))
-    (filter-map
-      (lambda (digits)
-        (let ((acc (make-hash-table)))
-          (for-each
-            (lambda (char digit)
-              (hash-table-set! acc char digit))
-            chars digits)
-          ;; get our candidate numbers out of this
-          (let ((a (list->number (map (lambda (i) (hash-table-ref acc i)) a)))
-                (b (list->number (map (lambda (i) (hash-table-ref acc i)) b))))
-            (if (and (square? a)
-                     (square? b))
-              (list a b)
-              #f))))
-      (join (map permutations (combinations DIGITS (length chars)))))))
+(define (make-square-anagram?)
+  (let ((squares (make-squares)))
+    (define (square-anagram? a b)
+      (if (and (= (length a)
+                  (length b))
+               (anagram? a b))
+        (let ((_ (squares a b)))
+          (if (null? _)
+            #f
+            _))
+        #f))
+    square-anagram?))
 
 (define (solve input)
-  (apply max
-    (flatten
-      (filter-map (lambda (i) (apply square-anagram? i))
-        (filter (lambda (i) (apply anagram? i))
+  (let ((square-anagram? (make-square-anagram?)))
+    (apply max
+      (flatten
+        (filter-map
+          (lambda (l)
+            (apply square-anagram? l))
           (combinations input 2))))))
 
-(let ((_ (solve (import-input))))
-  (print _) (assert (= _ 18769)))
+(print (solve (import-input)))
