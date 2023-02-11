@@ -56,6 +56,13 @@
         (vector-ref d c))
       l)))
 
+(define (square? n)
+  (let loop ((i n))
+    (let ((_ (quotient (+ (quotient n i) i) 2)))
+      (if (< _ i)
+        (loop _)
+        (= (* i i) n)))))
+
 (define (make-squares)
   (let ((mappings (make-mappings)))
     (define (squares a b)
@@ -72,14 +79,6 @@
                     #f))))
             (mappings c)))))
     squares))
-
-(define (square? n)
-  ;; (integer? (sqrt n))
-  (let loop ((i n))
-    (let ((_ (quotient (+ (quotient n i) i) 2)))
-      (if (< _ i)
-        (loop _)
-        (= (* i i) n)))))
 
 (define (make-square-anagram?)
   (let ((squares (make-squares)))
