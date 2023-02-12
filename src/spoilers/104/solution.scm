@@ -1,5 +1,6 @@
-(import
-  (only (srfi 152) substring))
+(define-constant phi (/ (+ 1 (sqrt 5)) 2))
+(define-constant log_phi_sqrt_5 (log (sqrt 5) phi))
+(define-constant log_phi_10 (log 10 phi))
 
 (define (pandigital? n)
   (let ((acc (make-vector 10 0)))
@@ -18,15 +19,15 @@
 (define (last-9 n)
   (modulo n #e1e9))
 
-(define (first-9 n)
-  (string->number (substring (number->string n) 0 9)))
+(define (first-9 i n)
+  (quotient n (expt 10 (- (inexact->exact (ceiling (/ (- i log_phi_sqrt_5) log_phi_10))) 9))))
 
 (define (solve)
-  (let loop ((a 1) (b 0) (acc 1))
-    (if (and (pandigital? (last-9  a))
-             (pandigital? (first-9 a)))
-      acc
-      (loop (+ a b) a (+ acc 1)))))
+  (let loop ((a 1) (b 0) (i 1))
+    (if (and (pandigital? (last-9 a))
+             (pandigital? (first-9 i a)))
+      i
+      (loop (+ a b) a (+ i 1)))))
 
 (let ((_ (solve)))
   (print _) (assert (= _ 329468)))
