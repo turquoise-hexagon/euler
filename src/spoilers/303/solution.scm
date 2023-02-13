@@ -1,5 +1,4 @@
 (import
-  (euler)
   (srfi 69))
 
 (define-constant inf #e1e64)
@@ -9,7 +8,7 @@
     (hash-table-set! mem 0 0)
     (let loop ((t 1) (acc inf))
       (if (= acc inf)
-        (let ((m (modulo (- (modular-expt 10 t n)) n)))
+        (let ((m (modulo (- (modulo (expt 10 t) n)) n)))
           (for-each
             (lambda (a)
               (for-each
