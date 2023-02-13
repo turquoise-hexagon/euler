@@ -4,13 +4,15 @@
   (srfi 69))
 
 (define (pandigital? n)
-  (let loop ((i n) (cnt 0) (acc 0))
-    (if (= i 0)
-      (= acc (- (arithmetic-shift 1 cnt) 1))
-      (let ((tmp (bitwise-ior acc (arithmetic-shift 1 (- (modulo i 10) 1)))))
-        (if (= tmp acc)
-          #f
-          (loop (quotient i 10) (+ cnt 1) tmp))))))
+  (if (= n 0)
+    #f
+    (let loop ((n n) (c 0) (d 0))
+      (if (= n 0)
+        (= d (- (arithmetic-shift 1 c) 1))
+        (let ((t (bitwise-ior d (arithmetic-shift 1 (- (modulo n 10) 1)))))
+          (if (= d t)
+            #f
+            (loop (quotient n 10) (+ c 1) t)))))))
 
 (define (concatenate a b)
   (let loop ((i b) (a a))

@@ -4,18 +4,15 @@
 (define-constant limit 987654321)
 
 (define (pandigital? n)
-  (let ((acc (make-vector 10 0)))
-    (let loop ((n n))
-      (let ((_ (fxmod n 10)))
-        (vector-set! acc _ (fx+ (vector-ref acc _) 1)))
-      (unless (fx= n 0)
-        (loop (fx/ n 10))))
-    (let loop ((i 0))
-      (if (fx= i 10)
-        #t
-        (if (fx= (vector-ref acc i) 1)
-          (loop (fx+ i 1))
-          #f)))))
+  (if (fx= n 0)
+    #f
+    (let loop ((n n) (c 0) (d 0))
+      (if (fx= n 0)
+        (fx= d (fx- (fxshl 1 c) 1))
+        (let ((t (fxior d (fxshl 1 (fx- (fxmod n 10) 1)))))
+          (if (fx= d t)
+            #f
+            (loop (fx/ n 10) (fx+ c 1) t)))))))
 
 (define (concatenate a b)
   (let loop ((i b) (a a))
