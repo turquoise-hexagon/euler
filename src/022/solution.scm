@@ -2,25 +2,21 @@
   (chicken io)
   (chicken string)
   (chicken sort)
-  (srfi 1))
+  (euler))
 
 (define (import-input)
-  (string-split (read-line) "\","))
-
-(define (convert str)
-  (let ((base (- (char->integer #\A) 1)))
-    (apply +
-      (map
-        (lambda (i)
-          (- (char->integer i) base))
-        (string->list str)))))
+  (let ((base (char->integer #\A)))
+    (map
+      (lambda (str)
+        (apply +
+          (map
+            (lambda (char)
+              (- (char->integer char) base -1))
+            (string->list str))))
+      (sort (string-split (read-line) "\",") string<?))))
 
 (define (solve input)
-  (let ((lst (sort input string<?)))
-    (fold
-      (lambda (value index acc)
-        (+ acc (* (convert value) index)))
-      0 lst (iota (length lst) 1))))
+  (apply + (map * input (range 1 (length input)))))
 
 (let ((_ (solve (import-input))))
   (print _) (assert (= _ 871198282)))
