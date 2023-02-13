@@ -1,34 +1,35 @@
 (import
   (chicken fixnum)
-  (euler)
-  (srfi 69))
+  (euler))
+
+(define-constant limit #e1e6)
 
 (define (order n)
-  (let loop ((i 1))
-    (let ((_ (fx* i 10)))
+  (let loop ((acc 1))
+    (let ((_ (fx* acc 10)))
       (if (fx> _ n)
-        i
+        acc
         (loop _)))))
 
-(define (make-valid? primes)
-  (let ((acc (make-hash-table)))
+(define (make-valid? primes limit)
+  (let ((acc (make-vector (fx+ limit 1) #f)))
     (for-each
-      (lambda (_)
-        (hash-table-set! acc _ #t))
+      (lambda (i)
+        (vector-set! acc i #t))
       primes)
     (define (valid? n)
-      (let loop ((a n) (b n) (d (order n)))
+      (let loop ((a n) (b n) (c (order n)))
         (if (fx= a 0)
           #t
-          (if (and (hash-table-exists? acc a)
-                   (hash-table-exists? acc b))
-            (loop (fx/ a 10) (fxmod b d) (fx/ d 10))
+          (if (and (vector-ref acc a)
+                   (vector-ref acc b))
+            (loop (fx/ a 10) (fxmod b c) (fx/ c 10))
             #f))))
     valid?))
 
 (define (solve)
-  (let* ((primes (primes #e1e6)) (valid? (make-valid? primes)))
-    (let loop ((lst (cddddr primes)) (cnt 0) (acc 0))
+  (let* ((primes (primes limit)) (valid? (make-valid? primes limit)))
+    (let loop ((lst (list-tail primes 4)) (cnt 0) (acc 0))
       (if (fx= cnt 11)
         acc
         (let ((i (car lst)))
