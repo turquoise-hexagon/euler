@@ -1,38 +1,43 @@
 (import
-  (chicken bitwise))
+  (chicken fixnum))
 
-(define limit 987654321)
+(define-constant limit 987654321)
 
 (define (pandigital? n)
-  (let loop ((i n) (cnt 0) (acc 0))
-    (if (= i 0)
-      (= acc (- (arithmetic-shift 1 cnt) 1))
-      (let ((tmp (bitwise-ior acc (arithmetic-shift 1 (- (modulo i 10) 1)))))
-        (if (= tmp acc)
-          #f
-          (loop (quotient i 10) (+ cnt 1) tmp))))))
+  (let ((acc (make-vector 10 0)))
+    (let loop ((n n))
+      (let ((_ (fxmod n 10)))
+        (vector-set! acc _ (fx+ (vector-ref acc _) 1)))
+      (unless (fx= n 0)
+        (loop (fx/ n 10))))
+    (let loop ((i 0))
+      (if (fx= i 10)
+        #t
+        (if (fx= (vector-ref acc i) 1)
+          (loop (fx+ i 1))
+          #f)))))
 
 (define (concatenate a b)
   (let loop ((i b) (a a))
-    (if (= i 0)
-      (+ a b)
-      (loop (quotient i 10) (* a 10)))))
+    (if (fx= i 0)
+      (fx+ a b)
+      (loop (fx/ i 10) (fx* a 10)))))
 
 (define (generate n)
-  (let loop ((i 1) (acc 0))
-    (let ((tmp (concatenate acc (* n i))))
-      (if (> tmp limit)
+  (let loop ((i 2) (acc n))
+    (let ((_ (concatenate acc (fx* n i))))
+      (if (fx> _ limit)
         acc
-        (loop (+ i 1) tmp)))))
+        (loop (fx+ i 1) _)))))
 
 (define (solve)
   (let loop ((i 1) (acc 0))
-    (if (> i 9999)
+    (if (fx> i 9999)
       acc
-      (loop (+ i 1)
-        (let ((tmp (generate i)))
-          (if (and (pandigital? tmp) (> tmp acc))
-            tmp
+      (loop (fx+ i 1)
+        (let ((_ (generate i)))
+          (if (pandigital? _)
+            (fxmax _ acc)
             acc))))))
 
 (let ((_ (solve)))
