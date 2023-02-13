@@ -8,7 +8,7 @@
     (hash-table-set! mem 0 0)
     (let loop ((t 1) (acc inf))
       (if (= acc inf)
-        (let ((m (modulo (- (modulo (expt 10 t) n)) n)))
+        (let ((m (- n (modulo (expt 10 t) n))))
           (for-each
             (lambda (a)
               (for-each
