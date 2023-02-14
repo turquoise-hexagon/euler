@@ -2,11 +2,11 @@
   (euler)
   (srfi 69))
 
-(define (make-partition)
+(define partition 
   (let ((cache (make-hash-table)))
     (hash-table-set! cache 0 1)
     (hash-table-set! cache 1 1)
-    (define (partition n)
+    (lambda (n)
       (if (hash-table-exists? cache n)
         (hash-table-ref cache n)
         (let loop ((i 1) (acc 0))
@@ -27,15 +27,13 @@
                 (begin
                   (hash-table-set! cache n acc)
                   acc)
-                (loop (+ i 1) acc)))))))
-    partition))
+                (loop (+ i 1) acc)))))))))
 
 (define (solve n)
-  (let ((partition (make-partition)))
-    (let loop ((i 1))
-      (if (= (modulo (partition i) n) 0)
-        i
-        (loop (+ i 1))))))
+  (let loop ((i 1))
+    (if (= (modulo (partition i) n) 0)
+      i
+      (loop (+ i 1)))))
 
 (let ((_ (solve #e1e6)))
   (print _) (assert (= _ 55374)))
