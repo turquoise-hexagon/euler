@@ -31,8 +31,8 @@
   (let* ((primes (primes limit)) (chain (make-chain primes limit)))
     (foldl
       (lambda (acc i)
-        (if (= (chain i) chain-length)
-          (+ acc i)
+        (if (fx= (chain i) chain-length)
+          (fx+ acc i)
           acc))
       0 primes)))
 
