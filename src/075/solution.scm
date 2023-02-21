@@ -11,13 +11,11 @@
                         (fx* (fx* i j) 2))))
             (do ((k 1 (fx+ k 1))) ((fx> (fx* k p) n))
               (vector-set! mem (fx* k p) (fx+ (vector-ref mem (fx* k p)) 1)))))))
-    (let loop ((i 0) (acc 0))
-      (if (fx> i n)
-        acc
-        (loop (fx+ i 1)
-          (if (fx= (vector-ref mem i) 1)
-            (fx+ acc 1)
-            acc))))))
+    (do ((i 0 (fx+ i 1))
+         (acc 0 (if (fx= (vector-ref mem i) 1)
+                  (fx+ acc 1)
+                  acc)))
+      ((fx> i n) acc))))
 
 (let ((_ (solve #e15e5)))
   (print _) (assert (= _ 161667)))
