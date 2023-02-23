@@ -1,16 +1,17 @@
 (import
   (chicken sort)
+  (chicken string)
   (euler)
   (srfi 69))
 
 (define (id n)
-  (sort (number->list n) <))
+  (string-intersperse (map number->string (sort (number->list n) <)) ":"))
 
 (define (solve n)
-  (let ((cache (make-hash-table)))
+  (let ((mem (make-hash-table)))
     (let loop ((i 1))
-      (let* ((value (expt i 3)) (id (id value))
-             (acc (hash-table-update!/default cache id
+      (let* ((value (* i i i))
+             (acc (hash-table-update!/default mem (id value)
                     (lambda (_)
                       (cons value _))
                     '())))
