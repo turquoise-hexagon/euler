@@ -4,8 +4,6 @@
   (chicken irregex)
   (chicken string))
 
-(define-constant SIZE 9)
-
 (define-syntax grid-ref
   (syntax-rules ()
     ((_ grid x y)
@@ -29,8 +27,8 @@
 (define (find-empty? grid)
   (call/cc
     (lambda (_)
-      (do ((i 0 (fx+ i 1))) ((fx= i SIZE))
-        (do ((j 0 (fx+ j 1))) ((fx= j SIZE))
+      (do ((i 0 (fx+ i 1))) ((fx= i 9))
+        (do ((j 0 (fx+ j 1))) ((fx= j 9))
           (when (fx= (grid-ref grid i j) 0)
             (_ (list i j)))))
       #f)))
@@ -41,10 +39,10 @@
       (unless (fx= (grid-ref grid x y) 0)
         (_ #f))
 
-      (do ((i 0 (fx+ i 1))) ((fx= i SIZE))
+      (do ((i 0 (fx+ i 1))) ((fx= i 9))
         (when (fx= (grid-ref grid i y) n)
           (_ #f)))
-      (do ((i 0 (fx+ i 1))) ((fx= i SIZE))
+      (do ((i 0 (fx+ i 1))) ((fx= i 9))
         (when (fx= (grid-ref grid x i) n)
           (_ #f)))
 
@@ -64,7 +62,7 @@
         (if result
           (apply
             (lambda (x y)
-              (do ((i 1 (fx+ i 1))) ((fx> i SIZE))
+              (do ((i 1 (fx+ i 1))) ((fx> i 9))
                 (when (can-place? grid x y i)
                   (grid-set! grid x y i)
                   (when (solve-sudoku! grid)
