@@ -1,74 +1,87 @@
 (import
+  (chicken fixnum)
   (chicken io)
-  (chicken string)
   (chicken irregex)
-  (matchable)
-  (srfi 1))
+  (chicken string))
 
-(define X 9)
-(define Y 9)
+(define-constant SIZE 9)
 
-(define (find-empty grid)
+(define-syntax grid-ref
+  (syntax-rules ()
+    ((_ grid x y)
+     (vector-ref (vector-ref grid x) y))))
+
+(define-syntax grid-set!
+  (syntax-rules ()
+    ((_ grid x y n)
+     (vector-set! (vector-ref grid x) y n))))
+
+(define (parse-chunk chunk)
+  (list->vector
+    (map
+      (lambda (str)
+        (list->vector (map string->number (string-chop str 1))))
+      (string-split chunk "\n"))))
+
+(define (import-input)
+  (map parse-chunk (irregex-split "Grid [0-9]+\n" (read-string))))
+
+(define (find-empty? grid)
   (call/cc
-    (lambda (return)
-      (for-each
-        (lambda (i)
-          (for-each
-            (lambda (j)
-              (when (= (vector-ref (vector-ref grid i) j) 0)
-                (return (list i j))))
-            (iota Y)))
-        (iota X))
+    (lambda (_)
+      (do ((i 0 (fx+ i 1))) ((fx= i SIZE))
+        (do ((j 0 (fx+ j 1))) ((fx= j SIZE))
+          (when (fx= (grid-ref grid i j) 0)
+            (_ (list i j)))))
       #f)))
 
 (define (can-place? grid x y n)
   (call/cc
-    (lambda (return)
-      (for-each (lambda (i) (when (= (vector-ref (vector-ref grid i) y) n) (return #f))) (iota X))
-      (for-each (lambda (i) (when (= (vector-ref (vector-ref grid x) i) n) (return #f))) (iota Y))
-      (for-each
-        (lambda (i)
-          (for-each
-            (lambda (j)
-              (when (= (vector-ref (vector-ref grid i) j) n)
-                (return #f)))
-            (iota 3 (- y (modulo y 3)))))
-        (iota 3 (- x (modulo x 3))))
-      (= (vector-ref (vector-ref grid x) y) 0))))
+    (lambda (_)
+      (unless (fx= (grid-ref grid x y) 0)
+        (_ #f))
 
-(define (solve-sudoku grid)
+      (do ((i 0 (fx+ i 1))) ((fx= i SIZE))
+        (when (fx= (grid-ref grid i y) n)
+          (_ #f)))
+      (do ((i 0 (fx+ i 1))) ((fx= i SIZE))
+        (when (fx= (grid-ref grid x i) n)
+          (_ #f)))
+
+      (let ((a (fx- x (fxmod x 3)))
+            (b (fx- y (fxmod y 3))))
+        (do ((i a (fx+ i 1))) ((fx= i (fx+ a 3)))
+          (do ((j b (fx+ j 1))) ((fx= j (fx+ b 3)))
+            (when (fx= (grid-ref grid i j) n)
+              (_ #f)))))
+
+      #t)))
+
+(define (solve-sudoku! grid)
   (call/cc
-    (lambda (return)
-      (match (find-empty grid)
-        ((x y)
-         (for-each
-           (lambda (i)
-             (when (can-place? grid x y i)
-               (vector-set! (vector-ref grid x) y i)
-               (when (solve-sudoku grid)
-                 (return #t))
-               (vector-set! (vector-ref grid x) y 0)))
-           (iota X 1))
-         #f)
-        (_ #t)))))
+    (lambda (_)
+      (let ((result (find-empty? grid)))
+        (if result
+          (apply
+            (lambda (x y)
+              (do ((i 1 (fx+ i 1))) ((fx> i SIZE))
+                (when (can-place? grid x y i)
+                  (grid-set! grid x y i)
+                  (when (solve-sudoku! grid)
+                    (_ #t))
+                  (grid-set! grid x y 0)))
+              #f)
+            result)
+          #t)))))
 
 (define (get-value grid)
-  (let ((lst (vector->list (vector-ref grid 0))))
-    (let ((lst (map number->string (take lst 3))))
-      (string->number (apply string-append lst)))))
-
-(define (import-input)
-  (map
-    (lambda (str)
-      (list->vector (map
-                      (lambda (str)
-                        (list->vector (map string->number (string-chop str 1))))
-                      (string-split str "\n"))))
-   (irregex-split "Grid [0-9]+\n" (read-string #f))))
+  (do ((i 0 (fx+ i 1))
+       (acc 0 (fx+ (fx* acc 10) (grid-ref grid 0 i))))
+    ((fx= i 3) acc)))
 
 (define (solve input)
-  (for-each solve-sudoku input)
-  (apply + (map get-value input)))
+  (for-each solve-sudoku! input)
+  (foldl fx+ 0 (map get-value input)))
 
 (let ((_ (solve (import-input))))
   (print _) (assert (= _ 24702)))
