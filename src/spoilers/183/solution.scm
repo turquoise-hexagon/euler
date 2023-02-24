@@ -9,10 +9,7 @@
       (cond
         ((= (modulo i 2) 0) (loop (quotient i 2)))
         ((= (modulo i 5) 0) (loop (quotient i 5)))
-        ((= i 1)
-         (- n))
-        (else
-         n)))))
+        ((= i 1) (- n)) (else n)))))
 
 (define (solve n)
   (let loop ((i 5) (acc 0))
