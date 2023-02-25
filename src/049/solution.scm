@@ -1,39 +1,45 @@
 (import
   (chicken sort)
   (euler)
-  (srfi 1))
+  (srfi 1)
+  (srfi 69))
 
-(define (helper number start stop)
-  (filter
-    (lambda (i)
-      (and (<= start i stop) (prime? i)))
-    (delete-duplicates
-      (map list->number (permutations (number->list number)))
-      =)))
+(define (candidates nb-digits)
+  (let ((l (expt 10 (- nb-digits 1)))
+        (h (- (expt 10 nb-digits) 1)))
+    (drop-while
+      (lambda (i)
+        (< i l))
+      (primes h))))
 
-(define (generate-sequences number start stop length-sequence)
-  (let ((lst (helper number start stop)))
-    (if (>= (length lst) length-sequence)
-      (filter
-        (lambda (i)
-          (apply = (map - i (cdr i))))
-        (combinations (sort lst <) length-sequence))
-      '())))
+(define (identifier n)
+  (list->string (sort (string->list (number->string n)) char<?)))
 
-(define (convert-to-output lst)
-  (list->number (join (map number->list lst))))
+(define (groups nb-digits nb-numbers)
+  (let ((acc (make-hash-table)))
+    (for-each
+      (lambda (i)
+        (hash-table-update!/default acc (identifier i)
+          (lambda (_) (cons i _)) '()))
+      (candidates nb-digits))
+    (delete '(1487 4817 8147)
+      (append-map
+        (lambda (lst)
+          (combinations (reverse lst) nb-numbers))
+        (hash-table-values acc)))))
 
-(define (solve number-digits length-sequence)
-  (let ((start (expt 10 (- number-digits 1))) (stop (- (expt 10 number-digits) 1)))
-    (convert-to-output
-      (second
-        (delete-duplicates
-          (join
-            (filter-map
-              (lambda (i)
-                (generate-sequences i start stop length-sequence))
-              (filter prime? (range start stop))))
-          equal?)))))
+(define (sequence? group)
+  (apply
+    (lambda (a b c)
+      (= (- c b)
+         (- b a)))
+    group))
 
-(let ((_ (solve 4 3)))
+(define (convert group)
+  (string->number (apply string-append (map number->string group))))
+
+(define (solve nb-numbers nb-digits)
+  (convert (find sequence? (groups nb-digits nb-numbers))))
+
+(let ((_ (solve 3 4)))
   (print _) (assert (= _ 296962999629)))
