@@ -6,12 +6,6 @@
 
 (define-constant limit #e1e9)
 
-(define (square n)
-  (fx* n n))
-
-(define (cube n)
-  (fx* n (fx* n n)))
-
 (define (generate limit proc)
   (let loop ((i 1) (acc '()))
     (let ((_ (proc i)))
@@ -27,8 +21,8 @@
 
 (define (compute limit)
   (let ((acc (make-hash-table))
-        (a (generate limit square))
-        (b (generate limit cube)))
+        (a (generate limit (lambda (n) (fx* n n))))
+        (b (generate limit (lambda (n) (fx* n (fx* n n))))))
     (for-each
       (lambda (a)
         (for-each
