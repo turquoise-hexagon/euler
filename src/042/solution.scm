@@ -1,7 +1,6 @@
 (import
   (chicken io)
   (chicken string)
-  (euler)
   (srfi 1))
 
 (define (import-input)
@@ -10,8 +9,8 @@
       (lambda (str)
         (apply +
           (map
-            (lambda (i)
-              (- (char->integer i) base -1))
+            (lambda (char)
+              (- (char->integer char) base -1))
             (string->list str))))
       (string-split (read-line) "\","))))
 
