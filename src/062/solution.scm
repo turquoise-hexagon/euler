@@ -1,11 +1,10 @@
 (import
   (chicken sort)
-  (chicken string)
   (euler)
   (srfi 69))
 
 (define (id n)
-  (string-intersperse (map number->string (sort (number->list n) <)) ":"))
+  (list->string (sort (string->list (number->string n)) char<?)))
 
 (define (solve n)
   (let ((mem (make-hash-table)))
