@@ -4,9 +4,9 @@
 
 (define (solve n)
   (apply +
-    (filter
-      (lambda (p)
-        (not (= (modular-expt 10 #e1e16 (* 9 p)) 1)))
+    (remove
+      (lambda (i)
+        (= (modular-expt 10 #e1e16 (* 9 i)) 1))
       (primes n))))
 
 (let ((_ (solve #e1e5)))
