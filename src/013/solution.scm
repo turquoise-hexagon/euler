@@ -2,11 +2,13 @@
   (chicken io))
 
 (define (import-input)
-  (map string->number (read-lines)))
+  (apply + (map string->number (read-lines))))
+
+(define (number-length n)
+  (inexact->exact (ceiling (log n 10))))
 
 (define (solve input)
-  (let* ((tmp (apply + input)) (len (inexact->exact (ceiling (log tmp 10)))))
-    (quotient tmp (expt 10 (- len 10)))))
+  (quotient input (expt 10 (- (number-length input) 10))))
 
 (let ((_ (solve (import-input))))
   (print _) (assert (= _ 5537376230)))
