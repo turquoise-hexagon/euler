@@ -1,33 +1,32 @@
 (import
   (chicken fixnum)
-  (euler)
-  (srfi 69))
+  (euler))
+
+(define-constant limit #e5e6)
 
 (define factorials (list->vector (map factorial (range 0 9))))
 
-(define (sum-factorial-digits n)
+(define (f n)
   (let loop ((n n) (acc 0))
     (if (fx= n 0)
       acc
       (loop (fx/ n 10) (fx+ acc (vector-ref factorials (fxmod n 10)))))))
 
 (define chain
-  (let ((cache (make-hash-table)))
+  (let ((cache (make-vector limit)))
     (lambda (n)
-      (let ((mem (make-hash-table)))
-        (let loop ((n n))
-          (if (hash-table-exists? cache n)
-            (hash-table-ref cache n)
-            (if (hash-table-exists? mem n)
+      (let loop ((n n) (acc '()))
+        (let ((_ (vector-ref cache n)))
+          (if (number? _)
+            _
+            (if (member n acc)
               0
-              (begin
-                (hash-table-set! mem n #t)
-                (let ((_ (fx+ (loop (sum-factorial-digits n)) 1)))
-                  (hash-table-set! cache n _)
-                  _)))))))))
+              (let ((_ (fx+ (loop (f n) (cons n acc)) 1)))
+                (vector-set! cache n _)
+                _))))))))
 
 (define (solve n)
-  (let loop ((i 0) (acc 0))
+  (let loop ((i 1) (acc 0))
     (if (fx> i n)
       acc
       (loop (fx+ i 1)
