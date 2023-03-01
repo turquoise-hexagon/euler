@@ -1,31 +1,24 @@
 (import
-  (srfi 69))
+  (chicken fixnum))
 
-(define-syntax f
-  (syntax-rules ()
-    ((_ n)
-     (if (even? n)
-       (quotient n 2)
-       (+ (* n 3) 1)))))
-
-(define collatz
-  (let ((cache (make-hash-table)))
-    (hash-table-set! cache 1 1)
-    (lambda (n)
-      (if (hash-table-exists? cache n)
-        (hash-table-ref cache n)
-        (let ((acc (+ (collatz (f n)) 1)))
-          (hash-table-set! cache n acc)
-          acc)))))
+(define (collatz n)
+  (let loop ((n n) (acc 1))
+    (if (fx= n 1)
+      acc
+      (loop
+        (if (fxodd? n)
+          (fx+ (fx* 3 n) 1)
+          (fx/ n 2))
+        (fx+ acc 1)))))
 
 (define (solve n)
   (let loop ((i 1) (res 0) (acc 0))
-    (if (> i n)
+    (if (fx> i n)
       acc
       (let ((tmp (collatz i)))
-        (if (> tmp res)
-          (loop (+ i 1) tmp i)
-          (loop (+ i 1) res acc))))))
+        (if (fx> tmp res)
+          (loop (fx+ i 1) tmp i)
+          (loop (fx+ i 1) res acc))))))
 
 (let ((_ (solve #e1e6)))
   (print _) (assert (= _ 837799)))
