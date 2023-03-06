@@ -1,0 +1,10 @@
+(define (solve n)
+  (do ((a 1 (+ a 1))
+       (s 0 (do ((b 1 (+ b 1))
+                 (s s (+ s (* 2 (min (quotient (* (- b 0) (gcd a b)) a)
+                                     (quotient (* (- n a) (gcd a b)) b))))))
+              ((> b n) s))))
+    ((> a n) (+ (* 3 n n) s))))
+
+(let ((_ (solve 50)))
+  (print _) (assert (= _ 14234)))
