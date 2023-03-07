@@ -1,5 +1,7 @@
-(define-inline (f n)
-  (quotient (* n (+ n 1) (+ n n 1)) 6))
+(define-syntax f
+  (syntax-rules ()
+    ((_ n)
+     (quotient (* n (+ n 1) (+ n n 1)) 6))))
 
 (define (solve n m)
   (let loop ((i 1) (acc 0))
