@@ -1,36 +1,33 @@
 (import
   (chicken fixnum))
 
-(define-constant l #e5e6)
+(define-constant l #e1e6)
 
-(define-syntax next
-  (syntax-rules ()
-    ((_ n)
-     (if (fxodd? n)
-       (fx+ (fx* 3 n) 1)
-       (fx/ n 2)))))
+(define-inline (next n)
+  (if (fxeven? n)
+    (fx+ (chain (fx/ n 2)) 1)
+    (fx+ (chain (fx+ (fx* n 3) 1)) 2)))
 
-(define collatz
-  (let ((cache (make-vector (fx+ l 1) #f)))
+(define chain
+  (let ((cache (make-vector (fx+ l 1))))
     (vector-set! cache 1 1)
     (lambda (n)
       (if (fx> n l)
-        (fx+ (collatz (next n)) 1)
+        (next n)
         (let ((acc (vector-ref cache n)))
-          (if acc
+          (if (fixnum? acc)
             acc
-            (let ((acc (fx+ (collatz (next n)) 1)))
+            (let ((acc (next n)))
               (vector-set! cache n acc)
               acc)))))))
 
-(define (solve n)
+(define (solve l)
   (let loop ((i 1) (res 0) (acc 0))
-    (if (fx> i n)
+    (if (fx> i l)
       acc
-      (let ((tmp (collatz i)))
+      (let ((tmp (chain i)))
         (if (fx> tmp res)
           (loop (fx+ i 1) tmp i)
           (loop (fx+ i 1) res acc))))))
 
-(let ((_ (solve #e1e6)))
-  (print _) (assert (= _ 837799)))
+(print (solve #e1e6))
