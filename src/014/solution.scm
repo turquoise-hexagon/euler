@@ -30,4 +30,5 @@
           (loop (fx+ i 1) tmp i)
           (loop (fx+ i 1) res acc))))))
 
-(print (solve #e1e6))
+(let ((_ (solve #e1e6)))
+  (print _) (assert (= _ 837799)))
