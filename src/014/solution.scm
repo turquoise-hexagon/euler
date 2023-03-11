@@ -6,7 +6,7 @@
 (define-inline (next n)
   (if (fxeven? n)
     (fx+ (chain (fx/ n 2)) 1)
-    (fx+ (chain (fx+ (fx* n 3) 1)) 2)))
+    (fx+ (chain (fx/ (fx+ (fx* n 3) 1) 2)) 2)))
 
 (define chain
   (let ((cache (make-vector (fx+ l 1))))
