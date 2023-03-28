@@ -31,15 +31,14 @@
           (loop (cdr l))
           #f)))))
 
-(define (make-mappings)
+(define mappings
   (let ((cache (make-vector 26 #f)))
-    (define (mappings c)
+    (lambda (c)
       (let* ((l (length c)) (m (vector-ref cache l)))
         (if m m
           (let ((m (join (map permutations (combinations digits l)))))
             (vector-set! cache l m)
-            m))))
-    mappings))
+            m))))))
 
 (define (dictionary c m)
   (let ((acc (make-vector 256 0)))
@@ -63,43 +62,37 @@
         (loop _)
         (= (* i i) n)))))
 
-(define (make-squares)
-  (let ((mappings (make-mappings)))
-    (define (squares a b)
-      (let ((c (delete-duplicates a)))
-        (join
-          (filter-map
-            (lambda (m)
-              (let ((d (dictionary c m)))
-                (let ((a (translate d a))
-                      (b (translate d b)))
-                  (if (and (square? a)
-                           (square? b))
-                    (list a b)
-                    #f))))
-            (mappings c)))))
-    squares))
+(define (squares a b)
+  (let ((c (delete-duplicates a)))
+    (join
+      (filter-map
+        (lambda (m)
+          (let ((d (dictionary c m)))
+            (let ((a (translate d a))
+                  (b (translate d b)))
+              (if (and (square? a)
+                       (square? b))
+                (list a b)
+                #f))))
+        (mappings c)))))
 
-(define (make-square-anagram?)
-  (let ((squares (make-squares)))
-    (define (square-anagram? a b)
-      (if (and (= (length a)
-                  (length b))
-               (anagram? a b))
-        (let ((_ (squares a b)))
-          (if (null? _)
-            #f
-            _))
-        #f))
-    square-anagram?))
+(define (square-anagram? a b)
+  (if (and (= (length a)
+              (length b))
+           (anagram? a b))
+    (let ((_ (squares a b)))
+      (if (null? _)
+        #f
+        _))
+    #f))
 
 (define (solve input)
-  (let ((square-anagram? (make-square-anagram?)))
-    (apply max
-      (flatten
-        (filter-map
-          (lambda (l)
-            (apply square-anagram? l))
-          (combinations input 2))))))
+  (apply max
+    (flatten
+      (filter-map
+        (lambda (l)
+          (apply square-anagram? l))
+        (combinations input 2)))))
 
-(print (solve (import-input)))
+(let ((_ (solve (import-input))))
+  (print _) (assert (= _ 18769)))
