@@ -1,0 +1,57 @@
+(import
+  (chicken fixnum))
+
+(define (fxexpt b e)
+  (if (fx= e 0)
+    1
+    (let loop ((s b) (i e) (a 1))
+      (let ((a (if (fxodd? i)
+                 (fx* a s)
+                 a))
+            (i (fx/ i 2)))
+        (if (fx= i 0)
+          a
+          (loop (fx* s s) i a))))))
+
+(define _helper
+  (let ((cache (make-vector #e1e8 #f)))
+    (vector-set! cache 1 1)
+    (vector-set! cache 2 3)
+    (lambda (n)
+      (if (vector-ref cache n)
+        (vector-ref cache n)
+        (let ((acc (fx+ (fx* 2 (_helper (fx- n 2))) 3)))
+          (vector-set! cache n acc)
+          acc)))))
+
+(define (helper p e)
+  (if (fx= p 2)
+    (fx* (_helper (fx+ e 1)) (fxexpt 2 e))
+    (fx* (fxexpt p (fx- e 1))
+         (fx- (fx+ (fxexpt p (fx+ (fx/ e 2) 1))
+                   (fxexpt p (fx/ (fx+ e 1) 2)))
+              1))))
+
+(define (number-digits n b)
+  (do ((n n (fx/ n b))
+       (acc 0 (fx+ acc 1)))
+    ((fx= n 0) acc)))
+
+(define (solve n)
+  (let* ((m (fx/ n 2))
+         (acc (make-vector (fx+ m 1)  1))
+         (mem (make-vector (fx+ m 1) #f)))
+    (do ((p 2 (fx+ p 1))) ((fx> p m))
+      (unless (vector-ref mem p)
+        (do ((e (fx- (number-digits m p) 1) (fx- e 1))) ((fx< e 1))
+          (let ((_ (fxexpt p e)))
+            (do ((i _ (fx+ i _))) ((fx> i m))
+              (unless (fx= (fxmod i (fxexpt p (fx+ e 1))) 0)
+                (vector-set! acc i (fx* (vector-ref acc i) (helper p e)))
+                (vector-set! mem i #t)))))))
+    (do ((i 1 (fx+ i 1))
+         (sum 0 (fx+ sum (vector-ref acc i))))
+      ((fx> i m) (fx- sum (fxexpt (fx/ (fx+ n 1) 2) 2))))))
+
+(let ((_ (solve 12345678)))
+  (print _) (assert (= _ 955892601606483)))
