@@ -8,7 +8,7 @@
   (join
     (map
       (lambda (str)
-        (irregex-split " " (irregex-match-substring (irregex-match regex str) 1)))
+        (irregex-split "(<b>|</b>| )" str))
       (irregex-extract regex (read-string)))))
 
 (define (solve input)
