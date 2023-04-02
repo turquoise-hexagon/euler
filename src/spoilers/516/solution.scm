@@ -1,0 +1,38 @@
+(import
+  (chicken sort)
+  (euler)
+  (srfi 1)
+  (srfi 69))
+
+(define (generate-hamming n)
+  (let ((acc (make-hash-table)))
+    (let loop ((i 1))
+      (unless (or (> i n) (hash-table-exists? acc i))
+        (hash-table-set! acc i #t)
+        (loop (* i 2))
+        (loop (* i 3))
+        (loop (* i 5))))
+    (sort (hash-table-keys acc) <)))
+
+(define (generate-hamming-primes h)
+  (drop (filter prime? (map add1 h)) 3))
+
+(define (_solve h p n)
+  (let loop ((h h) (nh '()) (ns 0))
+    (if (null? h)
+      (values nh ns)
+      (let* ((i (car h)) (t (* i p)))
+        (if (> t n)
+          (loop (cdr h) nh (+ ns i))
+          (loop (cdr h) (cons t (cons i nh)) ns))))))
+
+(define (solve n)
+  (let* ((h (generate-hamming n)) (p (generate-hamming-primes h)))
+    (let loop ((h h) (p p) (s 0))
+      (if (null? p)
+        (foldl + s h)
+        (let-values (((nh ns) (_solve h (car p) n)))
+          (loop nh (cdr p) (+ s ns)))))))
+
+(let ((_ (modulo (solve #e1e12) (expt 2 32))))
+  (print _) (assert (= _ 939087315)))
