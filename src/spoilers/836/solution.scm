@@ -5,7 +5,7 @@
 (define-constant regex "<b>([a-z ]+)</b>")
 
 (define (import-input)
-  (flatten
+  (join
     (map
       (lambda (str)
         (irregex-split " " (irregex-match-substring (irregex-match regex str) 1)))
