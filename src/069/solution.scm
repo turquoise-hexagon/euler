@@ -2,11 +2,13 @@
   (euler))
 
 (define (solve n)
-  (let loop ((lst (primes n)) (acc 1))
-    (let ((tmp (* acc (car lst))))
-      (if (> tmp n)
-        acc
-        (loop (cdr lst) tmp)))))
+  (let loop ((i 1) (acc 1))
+    (if (prime? i)
+      (let ((_ (* acc i)))
+        (if (> _ n)
+          acc
+          (loop (+ i 1) _)))
+      (loop (+ i 1) acc))))
 
 (let ((_ (solve #e1e6)))
-  (print _) (assert (= 510510)))
+  (print _) (assert (= _ 510510)))
