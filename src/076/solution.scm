@@ -1,0 +1,10 @@
+(define (solve n)
+  (let ((acc (make-vector (+ n 1) 0)))
+    (vector-set! acc 0 1)
+    (do ((a 1 (+ a 1))) ((= a n))
+      (do ((b a (+ b 1))) ((> b n))
+        (vector-set! acc b (+ (vector-ref acc b) (vector-ref acc (- b a))))))
+    (vector-ref acc n)))
+
+(let ((_ (solve 100)))
+  (print _) (assert (= _ 190569291)))
