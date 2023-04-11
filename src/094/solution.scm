@@ -4,7 +4,7 @@
      (* -1 (function (- n 3)))))
 
 (define function
-  (let ((cache (make-vector 100 #f)))
+  (let ((cache (make-vector 100)))
     (vector-set! cache 0 1)
     (vector-set! cache 1 1)
     (vector-set! cache 2 5)
