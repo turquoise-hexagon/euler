@@ -19,4 +19,5 @@
         (quotient acc (expt n 4))
         (loop (+ i 1) (+ acc (f n i)))))))
 
-(print (solve 70))
+(let ((_ (solve 70)))
+  (print _) (assert (= _ 331951449665644800)))
