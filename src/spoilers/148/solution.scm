@@ -1,11 +1,8 @@
-(define (_solve n p)
-  (let loop ((n n) (acc '()))
-    (if (= n 0)
-      (reverse acc)
-      (loop (quotient n p) (cons (+ (modulo n p) 1) acc)))))
+(import
+  (euler))
 
 (define (solve n p)
-  (let ((l (_solve n p)))
+  (let ((l (reverse (map add1 (number->list n p)))))
     (let loop ((i 0) (l l) (p (apply * l)) (acc 0))
       (if (null? l)
         acc
