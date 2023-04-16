@@ -12,6 +12,5 @@
 (define (solve input)
   (list->string (map car (map string->list input))))
 
-(let ((input (import-input)))
-  (let ((_ (solve input)))
-    (print _) (assert (string=? _ "aprilfoolsjoke"))))
+(let ((_ (solve (import-input))))
+  (print _) (assert (string=? _ "aprilfoolsjoke")))
