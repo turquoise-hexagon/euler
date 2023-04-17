@@ -13,7 +13,7 @@
        (vector-set! mem i acc)))))
 
 (define (solve l)
-  (let ((mem (make-vector (fx+ l 1))))
+  (let* ((l (inexact->exact (floor (/ (sqrt (* l 2)) 2)))) (mem (make-vector (fx+ l 1))))
     (do ((i 1 (fx+ i 1))) ((fx> i l))
       (vector-set! mem i (f i)))
     (let loop ((i 1) (acc 0))
@@ -29,5 +29,5 @@
               (fx+ acc 1)
               acc)))))))
 
-(let ((_ (solve 50000000)))
+(let ((_ (solve #e5e15)))
   (print _) (assert (= _ 4037526)))
