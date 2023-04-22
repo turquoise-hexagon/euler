@@ -16,12 +16,10 @@
 (define (make-binomial n p)
   (let ((factorial (make-factorial n p)))
     (define (binomial n k)
-      (if (< n k)
-        0
-        (let ((a (factorial n))
-              (b (factorial k))
-              (c (factorial (- n k))))
-          (modulo (* a (modular-inverse (modulo (* b c) p) p)) p))))
+      (let ((a (factorial n))
+            (b (factorial k))
+            (c (factorial (- n k))))
+        (modulo (* a (modular-inverse (modulo (* b c) p) p)) p)))
     binomial))
 
 (define (make-function n p)
