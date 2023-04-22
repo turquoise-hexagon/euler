@@ -5,19 +5,17 @@
   (if (< m n) 0 (/ (factorial m) (* (factorial n) (factorial (- m n))))))
 
 (define-inline (_lucas m n p)
-  (let loop ((m m) (n n) (acc 1))
-    (if (and (= m 0)
-             (= n 0))
-      acc
-      (loop
-        (quotient m p)
-        (quotient n p)
-        (modulo
-          (* acc
-             (binomial
-               (modulo m p)
-               (modulo n p)))
-          p)))))
+  (do ((m m (quotient m p))
+       (n n (quotient n p))
+       (acc 1 (modulo
+                (* acc
+                   (binomial
+                     (modulo m p)
+                     (modulo n p)))
+                p)))
+    ((and (= m 0)
+          (= n 0))
+     acc)))
 
 (define (make-lucas m n primes limit)
   (let ((acc (make-vector (+ limit 1))))
@@ -30,10 +28,8 @@
     lucas))
 
 (define (generate a b)
-  (let loop ((lst (primes b)))
-    (if (> (car lst) a)
-      lst
-      (loop (cdr lst)))))
+  (do ((lst (primes b) (cdr lst)))
+    ((> (car lst) a) lst)))
 
 (define-inline (_solve a b c lucas)
   (let ((i (lucas a))
