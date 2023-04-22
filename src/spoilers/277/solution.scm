@@ -1,24 +1,15 @@
 (import
-  (srfi 69)
   (only (srfi 152) substring))
 
-(define-inline (next proc n)
-  (case (modulo n 3)
-    ((0) (cons #\D (proc (quotient (+ (* 1 n) 0) 3))))
-    ((1) (cons #\U (proc (quotient (+ (* 4 n) 2) 3))))
-    ((2) (cons #\d (proc (quotient (- (* 2 n) 1) 3))))))
-
-(define sequence
-  (let ((cache (make-hash-table)))
-    (hash-table-set! cache 1 '())
-    (lambda (n)
-      (list->string
-        (let loop ((n n))
-          (if (hash-table-exists? cache n)
-            (hash-table-ref cache n)
-            (let ((acc (next loop n)))
-              (hash-table-set! cache n acc)
-              acc)))))))
+(define (sequence n)
+  (list->string
+    (let loop ((n n))
+      (if (= n 1)
+        '()
+        (case (modulo n 3)
+          ((0) (cons #\D (loop (quotient (+ (* 1 n) 0) 3))))
+          ((1) (cons #\U (loop (quotient (+ (* 4 n) 2) 3))))
+          ((2) (cons #\d (loop (quotient (- (* 2 n) 1) 3)))))))))
 
 (define (match? n str)
   (let ((res (sequence n)))
