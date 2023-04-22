@@ -34,21 +34,15 @@
             (loop (+ i 1) (modulo (+ acc (binomial (exact (- x (* (- a 1) i))) i)) p))))))
     function))
 
-(define (generate a b)
-  (let loop ((i a) (acc '()))
-    (if (> i b)
-      acc
-      (loop (+ i 1)
-        (if (prime? i)
-          (cons i acc)
-          acc)))))
-
 (define (solve a b p)
   (let ((function (make-function b p)))
-    (foldl
-      (lambda (acc i)
-        (modulo (+ acc (function (sqrt i) i)) p))
-      0 (generate a b))))
+    (let loop ((i a) (acc 0))
+      (if (> i b)
+        acc
+        (loop (+ i 1)
+          (if (prime? i)
+            (modulo (+ acc (function (sqrt i) i)) p)
+            acc))))))
 
 (let ((_ (solve 10000000 10010000 1000000007)))
   (print _) (assert (= _ 581468882)))
