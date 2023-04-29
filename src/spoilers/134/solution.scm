@@ -13,9 +13,8 @@
     ((> i n) i)))
 
 (define (function p l n)
-  (let ((a (vector-ref p n))
-        (b (next-prime p l n)))
-    (solve-chinese (list a 0) (list (order a) b))))
+  (let ((t (vector-ref p n)))
+    (solve-chinese (list t 0) (list (order t) (next-prime p l n)))))
 
 (define (solve n)
   (let* ((p (list->vector (list-tail (primes n) 2))) (l (vector-length p)))
