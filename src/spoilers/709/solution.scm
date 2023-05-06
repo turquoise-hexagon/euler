@@ -1,7 +1,7 @@
 (import
   (chicken fixnum))
 
-(define-inline (2d-ref acc a b)
+(define-inline (2d-ref  acc a b)
   (vector-ref  (vector-ref acc a) b))
 
 (define-inline (2d-set! acc a b i)
