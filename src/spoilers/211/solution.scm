@@ -1,11 +1,19 @@
 (import
-  (chicken fixnum))
+  (chicken fixnum)
+  (euler))
 
 (define (make-sigma2 l)
-  (let ((acc (make-vector (fx+ l 1) 0)))
-    (do ((i 1 (fx+ i 1))) ((fx> i l))
-      (do ((j i (fx+ j i))) ((fx> j l))
-        (vector-set! acc j (fx+ (vector-ref acc j) (fx* i i)))))
+  (let ((acc (make-vector (fx+ l 1) 1)))
+    (for-each
+      (lambda (p)
+        (let ((s (fx* p p)))
+          (do ((m p (fx+ m p))) ((fx> m l))
+            (do ((a p (fx* a p))
+                 (b s (fx* b s))
+                 (c 1 (fx+ c b)))
+              ((not (fx= (fxmod m a) 0))
+               (vector-set! acc m (fx* (vector-ref acc m) c)))))))
+      (primes l))
     (lambda (n)
       (vector-ref acc n))))
 
