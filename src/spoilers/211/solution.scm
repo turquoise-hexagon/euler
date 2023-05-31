@@ -11,7 +11,7 @@
             (do ((a p (fx* a p))
                  (b s (fx* b s))
                  (c 1 (fx+ c b)))
-              ((not (fx= (fxmod m a) 0))
+              ((fx> (fxmod m a) 0)
                (vector-set! acc m (fx* (vector-ref acc m) c)))))))
       (primes l))
     (lambda (n)
