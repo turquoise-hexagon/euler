@@ -11,22 +11,19 @@
           (hash-table-set! cache n acc)
           acc)))))
 
-(define (a n)
-  (do ((i 2 (fx+ i 1))
-       (acc 0 (fx+ acc (PHI (fx/ n i)))))
-    ((fx> (fx* i i) n) acc)))
-
-(define (b n)
-  (do ((i 1 (fx+ i 1))
-       (acc 0 (if (not (fx= (fx/ n i) i))
-                (fx+ acc (fx* (fx- (fx/ n i) (fx/ n (fx+ i 1))) (PHI i)))
-                acc)))
-    ((fx> (fx* i i) n) acc)))
+(define (a n i)
+  (if (fx= (fx/ n i) i)
+    0
+    (let ((_ (fx+ i 1)))
+      (fx* (fx- (fx/ n i)
+                (fx/ n _))
+           (PHI i)))))
 
 (define (_PHI n)
   (fx- (fx/ (fx* n (fx+ n 1)) 2)
-       (fx+ (a n)
-            (b n))))
+       (do ((i 2 (fx+ i 1))
+            (acc (a n 1) (fx+ acc (fx+ (a n i) (PHI (fx/ n i))))))
+         ((fx> (fx* i i) n) acc))))
 
 (define (_f n)
   (do ((i n (fx/ i 2))
