@@ -44,12 +44,6 @@
         #t
         (loop (fx/ a 10))))))
 
-(define (generate primes fun)
-  (let loop ((lst primes))
-    (if (null? lst)
-      '()
-      (cons (fun (car lst)) (loop (cdr lst))))))
-
 (define (combine a b)
   (let loop ((a a) (b (cdr b)) (acc '()))
     (if (null? b)
@@ -64,8 +58,8 @@
 
 (define (solve index pattern)
   (let* ((primes (primes limit))
-         (a (generate primes (lambda (i) (fx* i i))))
-         (b (generate primes (lambda (i) (fx* i (fx* i i))))))
+         (a (map (lambda (i) (fx* i i)) primes))
+         (b (map (lambda (i) (fx* i (fx* i i))) primes)))
     (list-ref
       (sort
         (filter
