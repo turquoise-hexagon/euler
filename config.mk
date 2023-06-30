@@ -14,5 +14,6 @@ $(BIN) : $(SRC)
 
 clean :
 	rm -f $(BIN)
+	rm -f $(BIN).link
 
 .PHONY : all debug clean
