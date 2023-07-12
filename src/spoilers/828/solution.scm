@@ -20,13 +20,6 @@
 (define (id target numbers) ;; make caching easier
   (string-intersperse (map number->string (cons target numbers)) ":"))
 
-(define (delete-once lst item)
-  (if (null? lst)
-    '()
-    (if (= (car lst) item)
-      (cdr lst)
-      (cons (car lst) (delete-once (cdr lst) item)))))
-
 (define valid?
   (let ((cache (make-hash-table)))
     (lambda (target numbers)
@@ -49,8 +42,8 @@
                        (loop (cdr operands))
                        (let ((value ((car operators) a b)))
                          (if (and (> value 0) (integer? value))
-                           (let* ((numbers (delete-once numbers a))
-                                  (numbers (delete-once numbers b))
+                           (let* ((numbers (delete-first numbers a))
+                                  (numbers (delete-first numbers b))
                                   (numbers (sort (cons value numbers) >)))
                              (let ((result (valid? target numbers)))
                                (hash-table-set! cache id result)

@@ -4,12 +4,6 @@
 
 (define operators (list + - * /))
 
-(define (delete-once lst item)
-  (let ((i (car lst)))
-    (if (= i item)
-      (cdr lst)
-      (cons i (delete-once (cdr lst) item)))))
-
 (define (run lst)
   (let ((acc (make-hash-table)))
     (let loop ((lst lst))
@@ -19,8 +13,8 @@
           (lambda (pair)
             (apply
               (lambda (a b)
-                (let* ((lst (delete-once lst a))
-                       (lst (delete-once lst b)))
+                (let* ((lst (delete-first lst a))
+                       (lst (delete-first lst b)))
                   (for-each
                     (lambda (operator)
                       (let ((i (operator a b)))
