@@ -1,17 +1,6 @@
 (import
-  (chicken fixnum))
-
-(define (fxexpt b e)
-  (if (fx= e 0)
-    1
-    (let loop ((s b) (i e) (a 1))
-      (let ((a (if (fxodd? i)
-                 (fx* a s)
-                 a))
-            (i (fx/ i 2)))
-        (if (fx= i 0)
-          a
-          (loop (fx* s s) i a))))))
+  (chicken fixnum)
+  (euler))
 
 (define _helper
   (let ((cache (make-vector #e1e8 #f)))

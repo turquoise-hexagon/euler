@@ -1,12 +1,10 @@
 (import
-  (chicken fixnum))
+  (chicken fixnum)
+  (euler))
 
 (define (square? n)
-  (let loop ((i n))
-    (let ((_ (fx/ (fx+ i (fx/ n i)) 2)))
-      (if (fx< _ i)
-        (loop _)
-        (fx= (fx* i i) n)))))
+  (let ((_ (fxsqrt n)))
+    (fx= n (fx* _ _))))
 
 (define (solve n)
   (do ((a 1 (fx+ a 1))

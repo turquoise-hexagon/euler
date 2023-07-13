@@ -1,5 +1,6 @@
 (import
-  (chicken fixnum))
+  (chicken fixnum)
+  (euler))
 
 (define-syntax f
   (syntax-rules ()
@@ -7,13 +8,6 @@
      (fx/ (fx* (fx* a (fx+ a 1))
                (fx* b (fx+ b 1)))
           4))))
-
-(define-syntax fxabs
-  (syntax-rules ()
-    ((_ n)
-     (if (fx< n 0)
-       (fxneg n)
-       n))))
 
 (define (solve n)
   (let loop ((a 1) (tmp n) (acc 0))

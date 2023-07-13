@@ -18,11 +18,8 @@
       (vector-ref acc n))))
 
 (define (square? n)
-  (let loop ((i n))
-    (let ((_ (fx/ (fx+ i (fx/ n i)) 2)))
-      (if (fx< _ i)
-        (loop _)
-        (fx= (fx* _ _) n)))))
+  (let ((_ (fxsqrt n)))
+    (fx= n (fx* _ _))))
 
 (define (solve l)
   (let ((sigma2 (make-sigma2 l)))

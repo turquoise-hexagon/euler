@@ -7,7 +7,7 @@
     (let loop ((l l))
       (if (null? l)
         '()
-        (let ((_ (expt (car l) e)))
+        (let ((_ (fxexpt (car l) e)))
           (if (> _ n)
             '()
             (cons _ (loop (cdr l))))))))
@@ -16,7 +16,7 @@
 (define (solve n)
   (let ((mem (make-vector (fx+ n 1) #f)))
     (let*
-      ((generate (make-generate (primes (inexact->exact (ceiling (sqrt n)))) n))
+      ((generate (make-generate (primes (fx+ (fxsqrt n) 1)) n))
        (a (generate 2))
        (b (generate 3))
        (c (generate 4)))

@@ -1,5 +1,6 @@
 (import
-  (chicken fixnum))
+  (chicken fixnum)
+  (euler))
 
 (define-inline (f n)
   (let ((_ (fx+ n 1)))
@@ -13,7 +14,7 @@
        (vector-set! mem i acc)))))
 
 (define (solve l)
-  (let* ((l (inexact->exact (floor (/ (sqrt (* l 2)) 2)))) (mem (make-vector (fx+ l 1))))
+  (let* ((l (fx/ (fxsqrt (fx* l 2)) 2)) (mem (make-vector (fx+ l 1))))
     (do ((i 1 (fx+ i 1))) ((fx> i l))
       (vector-set! mem i (f i)))
     (let loop ((i 1) (acc 0))

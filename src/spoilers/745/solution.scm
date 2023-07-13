@@ -1,8 +1,9 @@
 (import
-  (chicken fixnum))
+  (chicken fixnum)
+  (euler))
 
 (define (solve n m)
-  (let-values (((lim _) (exact-integer-sqrt n)))
+  (let ((lim (fxsqrt n)))
     (let ((mem (make-vector (+ lim 1) 1)))
       (vector-set! mem 0 0)
       (let loop ((i lim))

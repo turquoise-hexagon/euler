@@ -6,7 +6,7 @@
   (list->vector
     (map
       (lambda (i)
-        (expt i e))
+        (fxexpt i e))
       (range 0 9))))
 
 (define (bounds d)
