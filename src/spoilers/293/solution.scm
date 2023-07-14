@@ -2,7 +2,7 @@
   (euler)
   (srfi 69))
 
-(define (primes-limit limit)
+(define (nodes limit)
   (let loop ((i 1) (product 1))
     (if (prime? i)
       (let ((_ (* product i)))
@@ -47,7 +47,7 @@
     (for-each
       (lambda (i)
         (hash-table-set! acc (pseudo-fortunate i) #t))
-      (run (graph (primes-limit limit)) limit))
+      (run (graph (nodes limit)) limit))
     (apply + (hash-table-keys acc))))
 
 (let ((_ (solve #e1e9)))
