@@ -1,33 +1,36 @@
 (import
   (chicken fixnum)
-  (euler)
-  (srfi 69))
+  (euler))
+
+(define (make-prime? primes limit)
+  (let ((acc (make-vector (fx+ limit 1) #f)))
+    (for-each
+      (lambda (i)
+        (vector-set! acc i #t))
+      primes)
+    (lambda (n)
+      (vector-ref acc n))))
 
 (define (order n)
-  (let loop ((i 1))
-    (let ((_ (fx* i 10)))
+  (let loop ((acc 1))
+    (let ((_ (fx* acc 10)))
       (if (fx> _ n)
-        i
+        acc
         (loop _)))))
 
-(define (make-circular-prime? primes)
-  (let ((acc (make-hash-table)))
-    (for-each
-      (lambda (_)
-        (hash-table-set! acc _ #t))
-      primes)
-    (define (circular-prime? n)
+(define (make-circular-prime? primes limit)
+  (let ((prime? (make-prime? primes limit)))
+    (lambda (n)
       (let ((_ (order n)))
         (let loop ((i n) (n n))
           (if (fx= i 0)
             #t
-            (if (hash-table-exists? acc n)
-              (loop (fx/ i 10) (fx+ (fx* (fxmod n _) 10) (fx/ n _)))
-              #f)))))
-    circular-prime?))
+            (if (prime? n)
+              (loop (fx/ i 10) (fx+ (fx* (fxmod n 10) _) (fx/ n 10)))
+              #f)))))))
 
-(define (solve n)
-  (let* ((primes (primes n)) (circular-prime? (make-circular-prime? primes)))
+(define (solve limit)
+  (let* ((primes (primes limit)) (circular-prime? (make-circular-prime? primes limit)))
     (foldl
       (lambda (acc i)
         (if (circular-prime? i)
