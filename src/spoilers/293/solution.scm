@@ -3,13 +3,13 @@
   (srfi 69))
 
 (define (primes-limit limit)
-  (let loop ((i 1) (acc 1))
+  (let loop ((i 1) (product 1))
     (if (prime? i)
-      (let ((_ (* acc i)))
+      (let ((_ (* product i)))
         (if (> _ limit)
           '()
           (cons i (loop (+ i 1) _))))
-      (loop (+ i 1) acc))))
+      (loop (+ i 1) product))))
 
 (define (connect! graph a b)
   (let ((value (hash-table-ref/default graph a (make-hash-table))))
