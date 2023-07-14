@@ -28,14 +28,14 @@
 
 (define (run graph limit)
   (let ((acc (make-hash-table)))
-    (let loop ((current 2) (product 1))
-      (let ((_ (* product current)))
+    (let loop ((i 2) (product 1))
+      (let ((_ (* product i)))
         (unless (> _ limit)
           (hash-table-set! acc _ #t)
           (for-each
             (lambda (next)
               (loop next _))
-            (hash-table-keys (hash-table-ref graph current))))))
+            (hash-table-keys (hash-table-ref graph i))))))
     (hash-table-keys acc)))
 
 (define (pseudo-fortunate n)
