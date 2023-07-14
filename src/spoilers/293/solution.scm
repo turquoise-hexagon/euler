@@ -18,12 +18,14 @@
 
 (define (graph primes)
   (let ((acc (make-hash-table)))
-    (for-each
-      (lambda (a b)
-        (connect! acc a a)
-        (connect! acc b b)
-        (connect! acc a b))
-      primes (cdr primes))
+    (let loop ((l primes))
+      (unless (null? l)
+        (let ((a (car l)))
+          (connect! acc a a)
+          (unless (null? (cdr l))
+            (let ((b (cadr l)))
+              (connect! acc a b))))
+        (loop (cdr l))))
     acc))
 
 (define (run graph limit)
