@@ -41,7 +41,7 @@
     (hash-table-keys acc)))
 
 (define (pseudo-fortunate n)
-  (do ((i 2 (+ i 1)))
+  (do ((i 3 (+ i 2)))
     ((prime? (+ n i)) i)))
 
 (define (solve limit)
