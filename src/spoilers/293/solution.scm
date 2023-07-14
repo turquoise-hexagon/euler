@@ -39,8 +39,8 @@
     (hash-table-keys acc)))
 
 (define (pseudo-fortunate n)
-  (do ((m 2 (+ m 1)))
-    ((prime? (+ n m)) m)))
+  (do ((i 2 (+ i 1)))
+    ((prime? (+ n i)) i)))
 
 (define (solve limit)
   (let ((acc (make-hash-table)))
