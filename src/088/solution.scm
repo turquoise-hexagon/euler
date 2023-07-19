@@ -18,4 +18,5 @@
         (hash-table-set! t (vector-ref m i) #t))
       (foldl fx+ 0 (hash-table-keys t)))))
 
-(print (solve 12000))
+(let ((_ (solve 12000)))
+  (print _) (assert (= _ 7587457)))
