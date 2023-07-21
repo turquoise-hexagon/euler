@@ -1,21 +1,15 @@
 (import
+  (chicken fixnum)
   (euler))
 
-(define (helper proc lst)
-  (let loop ((lst lst) (acc '()))
-    (if (null? lst)
-      acc
-      (loop (cdr lst) (cons (proc lst) acc)))))
-
-(define (solve number limit)
-  (let loop ((lst (primes number)) (n 1))
-    (if (> n limit)
+(define (solve type limit)
+  (let loop ((i 1) (l (primes type)))
+    (if (fx> i limit)
       0
-      (foldl + 1
-        (helper
-          (lambda (_)
-            (loop _ (* (car _) n)))
-          lst)))))
+      (let subloop ((l l) (acc 1))
+        (if (null? l)
+          acc
+          (subloop (cdr l) (fx+ acc (loop (fx* i (car l)) l))))))))
 
 (let ((_ (solve 100 #e1e9)))
   (print _) (assert (= _ 2944730)))
