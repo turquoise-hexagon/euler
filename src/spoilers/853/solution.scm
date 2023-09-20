@@ -3,29 +3,14 @@
   (euler)
   (srfi 69))
 
-(define (bruteforce n)
-  (let loop ((acc 1) (a 1) (b 1))
-    (if (and (fx= a 0)
-             (fx= b 1))
-      acc
-      (loop (fx+ acc 1) b (fxmod (fx+ a b) n)))))
-
-(define (finesse n factors)
-  (foldl
-    (lambda (acc i)
-      (apply
-        (lambda (e p)
-          (fxlcm acc (pisano (fxexpt p e))))
-        i))
-    1 factors))
-
 (define (pi n)
   (if (fx= n 1)
     1
-    (let ((factors (run-length (factors n) fx=)))
-      (if (null? (cdr factors))
-        (bruteforce n)
-        (finesse n factors)))))
+    (let loop ((acc 1) (a 1) (b 1))
+      (if (and (fx= a 0)
+               (fx= b 1))
+        acc
+        (loop (fx+ acc 1) b (fxmod (fx+ a b) n))))))
 
 (define pisano
   (let ((cache (make-hash-table)))
