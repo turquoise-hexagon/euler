@@ -3,9 +3,6 @@
   (euler)
   (srfi 69))
 
-(define (fxlcm a b)
-  (fx/ (fx* a b) (fxgcd a b)))
-
 (define (bruteforce n)
   (let loop ((acc 1) (a 1) (b 1))
     (if (and (fx= a 0)
