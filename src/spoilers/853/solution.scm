@@ -2,21 +2,23 @@
   (chicken fixnum)
   (euler))
 
-(define (pi n)
+(define (pi n target)
   (if (fx= n 1)
-    1
-    (let loop ((acc 1) (a 1) (b 1))
-      (if (and (fx= a 0)
-               (fx= b 1))
-        acc
-        (loop (fx+ acc 1) b (fxmod (fx+ a b) n))))))
+    #f
+    (let loop ((i 1) (a 1) (b 1))
+      (if (fx> i target)
+        #f
+        (if (and (fx= a 0)
+                 (fx= b 1))
+          (fx= i target)
+          (loop (fx+ i 1) b (fxmod (fx+ a b) n)))))))
 
 (define (solve limit target)
   (foldl
     (lambda (acc i)
       (if (fx> i limit)
         acc
-        (if (fx= (pi i) target)
+        (if (pi i target)
           (fx+ acc i)
           acc)))
     0 (divisors (fibonacci target))))
