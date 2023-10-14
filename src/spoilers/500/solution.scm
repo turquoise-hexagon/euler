@@ -5,13 +5,6 @@
 
 (define-constant limit #e1e7)
 
-(define (square-root n)
-  (let loop ((i n))
-    (let ((_ (fx/ (fx+ i (fx/ n i)) 2)))
-      (if (fx< _ i)
-        (loop _)
-        i))))
-
 (define (make-prime? n)
   (let ((acc (make-vector (fx+ n 1) #f)))
     (for-each
@@ -28,7 +21,7 @@
       (let ((c (vector-ref acc n)))
         (if (boolean? c)
           c
-          (let ((s (square-root n)))
+          (let ((s (fxsqrt n)))
             (let ((p (if (fx= (fx* s s) n)
                        (valid? s)
                        (prime? n))))
