@@ -8,13 +8,6 @@
       acc
       (loop (fx/ n 10) (fx+ (fx* acc 10) (fxmod n 10))))))
 
-(define (square-root n)
-  (let loop ((i n))
-    (let ((_ (fx/ (fx+ i (fx/ n i)) 2)))
-      (if (fx< _ i)
-        (loop _)
-        i))))
-
 (define (solve n)
   (let loop ((i 1) (cnt 0) (acc 0))
     (if (fx= cnt n)
@@ -22,7 +15,7 @@
       (let* ((s (fx* i i)) (r (reverse-number s)))
         (if (fx= s r)
           (loop (fx+ i 2) cnt acc)
-          (let ((_ (square-root r)))
+          (let ((_ (fxsqrt r)))
             (if (and (fx= (fx* _ _) r)
                      (prime? i)
                      (prime? _))
