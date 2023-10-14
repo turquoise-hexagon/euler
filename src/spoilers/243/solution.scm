@@ -2,14 +2,8 @@
   (euler)
   (srfi 1))
 
-(define (phi n)
-  (foldl
-    (lambda (acc p)
-      (- acc (quotient acc p)))
-    n (delete-duplicates (factors n))))
-
 (define (resilience n)
-  (/ (phi n) (- n 1)))
+  (/ (totient n) (- n 1)))
 
 (define (jump n)
   (let loop ((lst (primes 100)) (acc 1))
