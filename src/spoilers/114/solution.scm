@@ -1,9 +1,6 @@
 (import
   (euler))
 
-(define (binomial n k)
-  (quotient (factorial n) (* (factorial k) (factorial (- n k)))))
-
 (define (solve n)
   (let* ((n (+ n 1)) (l (quotient n 4)))
     (let loop ((i 0) (acc 0))
