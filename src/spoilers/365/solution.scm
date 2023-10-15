@@ -1,9 +1,6 @@
 (import
   (euler))
 
-(define (binomial m n)
-  (if (< m n) 0 (/ (factorial m) (* (factorial n) (factorial (- m n))))))
-
 (define-inline (_lucas m n p)
   (do ((m m (quotient m p))
        (n n (quotient n p))
