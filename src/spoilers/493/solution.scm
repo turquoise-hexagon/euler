@@ -4,12 +4,6 @@
   (chicken string)
   (euler))
 
-(define (choose n k)
-  (let ((_ (- n k)))
-    (/ (factorial n)
-       (* (factorial k)
-          (factorial _)))))
-
 #|
 t => number of balls
 p => number of picks
@@ -17,8 +11,8 @@ c => number of colors
 |#
 (define (solve t p c)
   (let ((_ (- t (/ t c))))
-    (* c (- 1 (/ (choose _ p)
-                 (choose t p))))))
+    (* c (- 1 (/ (binomial _ p)
+                 (binomial t p))))))
 
 (define (output n)
   (flonum-print-precision 11) (format "~a" (exact->inexact n)))
