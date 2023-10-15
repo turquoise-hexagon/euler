@@ -7,18 +7,18 @@
       (vector-ref acc n))
     factorial))
 
-(define (make-choose n)
+(define (make-binomial n)
   (let ((factorial (make-factorial n)))
-    (define (choose n k)
+    (define (binomial n k)
       (/ (factorial n) (* (factorial k) (factorial (- n k)))))
-    choose))
+    binomial))
 
 (define (solve a b)
-  (let ((choose (make-choose a)))
+  (let ((binomial (make-binomial a)))
     (do ((n 1 (+ n 1))
          (acc 0 (+ acc
                    (do ((k 1 (+ k 1))
-                        (acc 0 (if (> (choose n k) b)
+                        (acc 0 (if (> (binomial n k) b)
                                  (+ acc 1)
                                  acc)))
                       ((> k n) acc)))))
