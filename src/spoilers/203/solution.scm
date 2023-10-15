@@ -3,9 +3,6 @@
   (srfi 69)
   (srfi 1))
 
-(define (choose a b)
-  (/ (factorial a) (* (factorial b) (factorial (- a b)))))
-
 (define (square-free? n)
   (every
     (lambda (lst)
@@ -18,7 +15,7 @@
       (lambda (n)
         (for-each
           (lambda (k)
-            (let ((_ (choose n k)))
+            (let ((_ (binomial n k)))
               (when (square-free? _)
                 (hash-table-set! acc _ #t))))
           (range 0 n)))
