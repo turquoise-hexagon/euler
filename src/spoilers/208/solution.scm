@@ -1,9 +1,6 @@
 (import
   (euler))
 
-(define (binomial n k)
-  (/ (factorial n) (* (factorial k) (factorial (- n k)))))
-
 (define (f n i)
   (* (+ (- (expt n 4)
            (* 3 (expt n 3) i)
