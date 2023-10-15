@@ -8,18 +8,18 @@
       (vector-ref acc n))
     factorial))
 
-(define (make-choose n)
+(define (make-binomial n)
   (let ((factorial (make-factorial n)))
-    (define (choose n k)
+    (define (binomial n k)
       (/ (factorial n) (* (factorial k) (factorial (- n k)))))
-    choose))
+    binomial))
 
 (define (solve n)
-  (let ((choose (make-choose (+ n 1))))
+  (let ((binomial (make-binomial (+ n 1))))
     (let loop ((k 1) (e 9) (acc 0))
       (if (> k (/ n 2))
         acc
-        (loop (+ k 1) (* e 9) (+ acc (* e (- (choose (+ n 1) k) (choose (- (* 2 k) 1) k)))))))))
+        (loop (+ k 1) (* e 9) (+ acc (* e (- (binomial (+ n 1) k) (binomial (- (* 2 k) 1) k)))))))))
 
 (let ((_ (modulo (solve 2022) 1000000007)))
   (print _) (assert (= _ 471745499)))
