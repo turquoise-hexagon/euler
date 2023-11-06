@@ -13,7 +13,7 @@
     (- (apply +
          (map
            (lambda (solution)
-             (solve-chinese solution factors))
+             (chinese-remainder-theorem solution factors))
            (apply product (map s factors))))
        1)))
 
