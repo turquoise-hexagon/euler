@@ -36,7 +36,7 @@
              (= j 0)
              (= k 0))
       0
-      (solve-chinese
+      (chinese-remainder-theorem
         (list i j k)
         (list a b c)))))
 
