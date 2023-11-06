@@ -14,7 +14,7 @@
 
 (define (function p l n)
   (let ((t (vector-ref p n)))
-    (solve-chinese (list t 0) (list (order t) (next-prime p l n)))))
+    (chinese-remainder-theorem (list t 0) (list (order t) (next-prime p l n)))))
 
 (define (solve n)
   (let* ((p (list->vector (list-tail (primes n) 2))) (l (vector-length p)))
