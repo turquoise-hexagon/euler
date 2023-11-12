@@ -4,7 +4,7 @@
   (srfi 1)
   (srfi 69))
 
-(define (bruteforce n)
+(define (base n)
   (let loop/i ((i 1))
     (let loop/j ((j 1))
       (let ((sum (fx+ (fx* i i) (fx* j j))))
@@ -14,7 +14,7 @@
             (list (cons i j))
             (loop/j (fx+ j 1))))))))
 
-(define (finesse a b)
+(define (complex a b)
   (let
     ((acc/a (s a))
      (acc/b (s b)))
@@ -39,8 +39,8 @@
     ((head (car n))
      (tail (cdr n)))
     (if (null? tail)
-      (bruteforce head)
-      (finesse (list head) tail))))
+      (base head)
+      (complex (list head) tail))))
 
 (define (id n)
   (foldl fx* 1 n))
