@@ -5,7 +5,7 @@
 (define bound/1
   (let loop ((i 1))
     (let ((_ (+ i 1)))
-      (if (> (integer-log (expt _ _)) _)
+      (if (> (+ (integer-log (expt _ _)) 1) _)
         i
         (loop _)))))
 
@@ -15,7 +15,7 @@
       (lambda (n)
         (let loop ((i 1))
           (let ((_ (+ i 1)))
-            (if (> (integer-log (expt n _)) bound/1)
+            (if (> (+ (integer-log (expt n _)) 1) bound/1)
               i
               (loop _)))))
       (range 2 bound/1))))
@@ -26,7 +26,7 @@
       (apply
         (lambda (i power)
           (let ((_ (expt i power)))
-            (= (integer-log _) power)))
+            (= (+ (integer-log _) 1) power)))
         pair))
     (product (range 1 bound/1) (range 1 bound/2))))
 
