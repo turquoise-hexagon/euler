@@ -1,33 +1,49 @@
 (import
-  (chicken fixnum)
-  (euler))
+  (chicken sort)
+  (euler)
+  (srfi 1)
+  (srfi 69))
 
-(define (make-number-solutions n)
-  (let ((acc (make-vector (fx+ n 1) 1)))
-    (for-each
-      (lambda (p)
-        (let loop ((m p))
-          (unless (fx> m n)
-            (let subloop ((i m) (tmp 0))
-              (if (fx= (fxmod i p) 0)
-                (subloop (fx/ i p) (fx+ tmp 1))
-                (vector-set! acc m (fx* (vector-ref acc m) (fx+ (fx* tmp 2) 1)))))
-            (loop (fx+ m p)))))
-      (primes n))
-    (let loop ((i 0))
-      (unless (fx> i n)
-        (vector-set! acc i (fx/ (fx- (vector-ref acc i) 1) 2))
-        (loop (fx+ i 1))))
-    (define (number-solutions n)
-      (vector-ref acc n))
-    number-solutions))
+(include-relative "input.scm")
 
-(define (solve n)
-  (let ((number-solutions (make-number-solutions #e5e5)))
-    (let loop ((i 0))
-      (if (fx> (number-solutions i) n)
-        i
-        (loop (fx+ i 1))))))
+(define-constant limit 50)
 
-(let ((_ (solve 1000)))
-  (print _) (assert (= _ 180180)))
+(define (nb-solutions n)
+  (quotient
+    (foldl
+      (lambda (acc i)
+        (* acc (+ (* (car i) 2) 1)))
+      1 (run-length (factors n)))
+    2))
+
+(define (next primes current)
+  (map
+    (lambda (i)
+      (* current i))
+    primes))
+
+(define (compute table target-nb-solutions)
+  (hash-table-ref table
+    (find
+      (lambda (i)
+        (> i target-nb-solutions))
+      (sort (hash-table-keys table) <))))
+
+(define (solve target-nb-solutions)
+  (let ((primes (primes limit)) (acc (make-hash-table)))
+    (do ((queue
+           (priority-queue-insert (priority-queue <) 1)
+           (foldl
+             (lambda (queue i)
+               (let ((nb-solutions (nb-solutions i)))
+                 (if (> nb-solutions (* 2 target-nb-solutions))
+                   queue
+                   (if (> (hash-table-ref/default acc nb-solutions +inf.0) i)
+                     (begin
+                       (hash-table-set! acc nb-solutions i)
+                       (priority-queue-insert queue i))
+                     queue))))
+             (priority-queue-rest queue) (next primes (priority-queue-first queue)))))
+      ((priority-queue-empty? queue) (compute acc target-nb-solutions)))))
+
+(print (solve input))
