@@ -2,15 +2,6 @@
   (chicken fixnum)
   (euler))
 
-(define (modular-expt b e m)
-  (let loop ((b b) (e e) (acc 1))
-    (if (fx= e 0)
-      acc
-      (loop (fxmod (fx* b b) m) (fx/ e 2)
-        (if (fxodd? e)
-          (fxmod (fx* b acc) m)
-          acc)))))
-
 (define (f num den nth)
   (fx/ (fx* 10 (fxmod (fx* num (modular-expt 10 (fx- nth 1) den)) den)) den))
 
