@@ -95,7 +95,7 @@
           (hash-table-update!/default acc position (lambda (_) (+ _ 1)) 0)
 
           (let-values (((roll duplicate?) (dice)))
-            
+
             ;; handle consecutive duplicates
             (let ((consecutive-duplicates
                     (if duplicate?

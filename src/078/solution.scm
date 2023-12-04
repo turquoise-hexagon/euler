@@ -3,7 +3,7 @@
   (euler)
   (srfi 69))
 
-(define partition 
+(define partition
   (let ((cache (make-hash-table)))
     (hash-table-set! cache 0 1)
     (hash-table-set! cache 1 1)

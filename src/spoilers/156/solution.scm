@@ -10,7 +10,7 @@
     (let ((_ (- n (* d b))))
       (if (< _ 0)
         acc
-        (loop (quotient a 10) (* b 10) (+ acc (_f))))))) 
+        (loop (quotient a 10) (* b 10) (+ acc (_f)))))))
 
 (define-inline (_g)
   (max (quotient (abs _) (max (inexact->exact (floor (log i 10))) 1)) 1))
