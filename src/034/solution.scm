@@ -2,7 +2,7 @@
   (chicken fixnum)
   (euler))
 
-(define factorials (list->vector (map factorial (range 0 9))))
+(define factorials (list->vector (map factorial (range 9))))
 
 (define limit
   (let ((_ (vector-ref factorials 9)))
