@@ -18,8 +18,8 @@
             (let ((_ (binomial n k)))
               (when (square-free? _)
                 (hash-table-set! acc _ #t))))
-          (range 0 n)))
-      (range 1 limit))
+          (range n)))
+      (range limit))
     (apply + (hash-table-keys acc))))
 
 (let ((_ (solve 50)))
