@@ -54,8 +54,8 @@
     (lambda (h w)
       (let ((a (- h 1)) (b (- w 1)))
         (find-path input
-          (map (lambda (i) (list i 0)) (range 0 a))
-          (map (lambda (i) (list i b)) (range 0 a)))))
+          (map (lambda (i) (list i 0)) (range a))
+          (map (lambda (i) (list i b)) (range a)))))
     (array-dimensions input)))
 
 (let ((_ (solve (import-input))))
