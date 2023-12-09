@@ -34,7 +34,7 @@
   (count
     (lambda (i)
       (apply valid? i))
-    (combinations (combinations (range 0 9) 6) 2)))
+    (combinations (combinations (range 9) 6) 2)))
 
 (let ((_ (solve)))
   (print _) (assert (= _ 1217)))
