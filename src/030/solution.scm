@@ -7,7 +7,7 @@
     (map
       (lambda (i)
         (fxexpt i e))
-      (range 0 9))))
+      (range 9))))
 
 (define (bounds d)
   (let loop ((a 0) (b 0))
