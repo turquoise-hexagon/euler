@@ -1,6 +1,5 @@
 (import
   (euler)
-  (srfi 1)
   (srfi 69))
 
 (define (next-prime n)
@@ -15,8 +14,7 @@
               (h (* b b)))
           (do ((i (+ l a) (+ i a))) ((> i h)) (hash-table-update! acc i add1))
           (do ((i (- h b) (- i b))) ((< i l)) (hash-table-update! acc i add1))))
-      (list-tail lst 0)
-      (list-tail lst 1))
+      lst (cdr lst))
     (hash-table-fold acc
       (lambda (i cnt acc)
         (if (and (= cnt 1) (<= i limit))
