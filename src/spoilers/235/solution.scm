@@ -2,7 +2,7 @@
   (chicken flonum)
   (chicken format))
 
-(define-constant limit 1/10000000000000)
+(define-constant limit #e1e-13)
 
 (define (s n r)
   (let loop ((i 1) (acc 0) (pow 1.0))
@@ -23,5 +23,5 @@
           (loop m h)
           (loop l m))))))
 
-(let ((_ (solve 5000 -600000000000)))
+(let ((_ (solve 5000 #e-6e11)))
   (print _) (assert (string=? _ "1.002322108633")))
