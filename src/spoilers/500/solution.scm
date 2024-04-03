@@ -1,42 +1,29 @@
 (import
-  (chicken fixnum)
-  (euler)
-  (srfi 69))
+  (euler))
 
-(define-constant limit #e1e7)
+(define-constant primes-limit   #e1e7)
+(define-constant generate-limit #e1e8)
 
-(define (make-prime? n)
-  (let ((acc (make-vector (fx+ n 1) #f)))
-    (for-each
-      (lambda (p)
-        (vector-set! acc p #t))
-      (primes n))
-    (define (prime? n)
-      (vector-ref acc n))
-    prime?))
+(define (generate b e)
+  (priority-queue-take
+    (foldl
+      (lambda (acc p)
+        (let loop ((k 0) (acc acc))
+          (let ((_ (expt p (expt b k))))
+            (if (> _ generate-limit)
+              acc
+              (loop (+ k 1) (priority-queue-insert acc _))))))
+      (priority-queue <) (primes primes-limit))
+    e))
 
-(define (make-valid? n)
-  (let ((acc (make-vector (fx+ n 1))) (prime? (make-prime? n)))
-    (define (valid? n)
-      (let ((c (vector-ref acc n)))
-        (if (boolean? c)
-          c
-          (let ((s (fxsqrt n)))
-            (let ((p (if (fx= (fx* s s) n)
-                       (valid? s)
-                       (prime? n))))
-              (vector-set! acc n p)
-              p)))))
-    valid?))
+(define (solve b e m)
+  (modular-expt
+    (priority-queue-fold (generate b e)
+      (lambda (acc i)
+        (modulo (* acc i) m))
+      1)
+    (- b 1)
+    m))
 
-(define (solve n m)
-  (let ((valid? (make-valid? limit)))
-    (let loop ((i 2) (cnt 0) (acc 1))
-      (if (fx= cnt n)
-        acc
-        (if (valid? i)
-          (loop (fx+ i 1) (fx+ cnt 1) (fxmod (fx* acc i) m))
-          (loop (fx+ i 1) cnt acc))))))
-
-(let ((_ (solve 500500 500500507)))
+(let ((_ (solve 2 500500 500500507)))
   (print _) (assert (= _ 35407281)))
