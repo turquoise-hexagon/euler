@@ -7,8 +7,8 @@
     (do ((a l (+ a 1))
          (acc 0 (do ((b a (+ b 1))
                      (acc acc (let ((_ (* a b)))
-                                (if (palindrome? _)
-                                  (max acc _)
+                                (if (and (> _ acc) (palindrome? _))
+                                  _
                                   acc))))
                   ((> b h) acc))))
       ((> a h) acc))))
