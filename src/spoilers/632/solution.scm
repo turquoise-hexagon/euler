@@ -1,0 +1,60 @@
+(import
+  (chicken fixnum)
+  (euler))
+
+(define-constant S 30)
+
+(define (make-binomial)
+  (let ((mem (make-vector S)))
+    (do ((i 0 (fx+ i 1))) ((fx= i S))
+      (vector-set! mem i (make-vector S))
+      (do ((j 0 (fx+ j 1))) ((fx= j S))
+        (vector-set! (vector-ref mem i) j (binomial i j))))
+    (lambda (a b)
+      (vector-ref (vector-ref mem a) b))))
+
+(define (make-moebius l ps)
+  (let ((mem (make-vector (fx+ l 1) 1)))
+    (for-each
+      (lambda (p)
+        (let ((s (fx* p p)))
+          (do ((m p (fx+ m p))) ((fx> m l))
+            (vector-set! mem m (fx* (vector-ref mem m) -1)))
+          (do ((m s (fx+ m s))) ((fx> m l))
+            (vector-set! mem m 0))))
+      ps)
+    (lambda (n)
+      (vector-ref mem n))))
+
+(define (make-factors-count l ps)
+  (let ((mem (make-vector (fx+ l 1) 0)))
+    (for-each
+      (lambda (p)
+        (do ((m p (fx+ m p))) ((fx> m l))
+          (vector-set! mem m (fx+ (vector-ref mem m) 1))))
+      ps)
+    (lambda (n)
+      (vector-ref mem n))))
+
+(define (make-function l)
+  (let* ((r             (fxsqrt l))
+         (ps            (primes r))
+         (binomial      (make-binomial))
+         (moebius       (make-moebius r ps))
+         (factors-count (make-factors-count r ps)))
+    (lambda (n)
+      (let loop ((i 1) (acc 0))
+        (if (fx> i r)
+          (if (fx> acc 0) acc (fxneg acc))
+          (loop (fx+ i 1) (fx+ acc (fx* (fx* (moebius i) (fx/ l (fx* i i))) (binomial (factors-count i) n)))))))))
+
+(define (solve l m)
+  (let ((function (make-function l)))
+    (let loop ((i 0) (acc 1))
+      (let ((_ (function i)))
+        (if (fx= _ 0)
+          acc
+          (loop (fx+ i 1) (fxmod (fx* acc (fxmod _ m)) m)))))))
+
+(let ((_ (solve #e1e16 1000000007)))
+  (print _) (assert (fx= _ 728378714)))
