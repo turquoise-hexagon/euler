@@ -1,0 +1,48 @@
+(import
+  (chicken fixnum)
+  (only (euler) primes))
+
+(define (extended-gcd a b)
+  (let loop ((_r a) (r b)
+             (_s 1) (s 0)
+             (_t 0) (t 1))
+    (if (fx= r 0)
+      (values _r _s _t)
+      (let ((_ (fx/ _r r)))
+        (loop
+          r (fx- _r (fx* _ r))
+          s (fx- _s (fx* _ s))
+          t (fx- _t (fx* _ t)))))))
+
+(define (chinese-remainder-theorem a m b n)
+  (let-values (((g u v) (extended-gcd m n)))
+    (if (fx= (fxmod (fx- a b) g) 0)
+      (fxmod (fx/ (fx+ (fx* a (fx* v n))
+                       (fx* b (fx* u m)))
+                  g)
+             (fx/ (fx* m n) g))
+      0)))
+
+(define (make-totient h)
+  (let ((mem (make-vector (fx+ h 1))))
+    (do ((i 0 (fx+ i 1))) ((fx> i h))
+      (vector-set! mem i i))
+    (for-each
+      (lambda (p)
+        (do ((m p (fx+ m p))) ((fx> m h))
+          (let ((_ (vector-ref mem m)))
+            (vector-set! mem m (fx- _ (fx/ _ p))))))
+      (primes h))
+    (lambda (n)
+      (vector-ref mem n))))
+
+(define (solve l h)
+  (let ((totient (make-totient h)))
+    (do ((i l (fx+ i 1))
+         (s 0 (do ((j (fx+ i 1) (fx+ j 1))
+                   (s s (fx+ s (chinese-remainder-theorem (totient i) i (totient j) j))))
+                ((fx= j h) s))))
+      ((fx= i h) s))))
+
+(let ((_ (solve 1000000 1005000)))
+  (print _) (assert (fx= _ 4515432351156203105)))
