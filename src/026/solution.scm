@@ -13,7 +13,13 @@
             (loop (* i 10))))))))
 
 (define (solve limit)
-  (extremum (range 2 limit) cycle >))
+  (let loop ((i 2) (cur 0) (acc 0))
+    (if (= i limit)
+      acc
+      (let ((tmp (cycle i)))
+        (if (> tmp cur)
+          (loop (+ i 1) tmp i)
+          (loop (+ i 1) cur acc))))))
 
 (let ((_ (solve 1000)))
   (print _) (assert (= _ 983)))
