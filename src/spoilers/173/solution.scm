@@ -1,15 +1,18 @@
+(import
+  (chicken fixnum))
+
 (define (solve lim)
   (let loop ((i 3) (acc 0))
-    (let ((cnt (* 4 (- i 1))))
-      (if (> cnt lim)
+    (let ((cnt (fx* 4 (fx- i 1))))
+      (if (fx> cnt lim)
         acc
-        (let subloop ((cnt cnt) (j (- i 2)) (acc (+ acc 1)))
-          (if (< j 3)
-            (loop (+ i 1) acc)
-            (let ((cnt (+ cnt (* 4 (- j 1)))))
-              (if (> cnt lim)
-                (loop (+ i 1) acc)
-                (subloop cnt (- j 2) (+ acc 1))))))))))
+        (let subloop ((cnt cnt) (j (fx- i 2)) (acc (fx+ acc 1)))
+          (if (fx< j 3)
+            (loop (fx+ i 1) acc)
+            (let ((cnt (fx+ cnt (fx* 4 (fx- j 1)))))
+              (if (fx> cnt lim)
+                (loop (fx+ i 1) acc)
+                (subloop cnt (fx- j 2) (fx+ acc 1))))))))))
 
 (let ((_ (solve 1000000)))
   (print _) (assert (= _ 1572729)))
