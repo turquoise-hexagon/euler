@@ -1,5 +1,5 @@
 (define (solve n)
-  (call/cc
+  (call-with-current-continuation
     (lambda (_)
       (do ((i 1 (+ i 1))) ((>= i (/ n 3)))
         (do ((j i (+ j 1))) ((>= j (/ n 2)))
