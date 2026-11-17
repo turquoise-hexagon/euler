@@ -67,7 +67,7 @@
             (sort (map car reps) _)))))
 
 (define (compare a b)
-  (call/cc
+  (call-with-current-continuation
     (lambda (_)
       (for-each
         (lambda (a b)
