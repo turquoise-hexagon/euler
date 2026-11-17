@@ -25,7 +25,7 @@
   (map parse-chunk (irregex-split "Grid [0-9]+\n" (read-string))))
 
 (define (find-empty? grid)
-  (call/cc
+  (call-with-current-continuation
     (lambda (_)
       (do ((i 0 (fx+ i 1))) ((fx= i 9))
         (do ((j 0 (fx+ j 1))) ((fx= j 9))
@@ -34,7 +34,7 @@
       #f)))
 
 (define (can-place? grid x y n)
-  (call/cc
+  (call-with-current-continuation
     (lambda (_)
       (unless (fx= (grid-ref grid x y) 0)
         (_ #f))
@@ -56,7 +56,7 @@
       #t)))
 
 (define (solve-sudoku! grid)
-  (call/cc
+  (call-with-current-continuation
     (lambda (_)
       (let ((result (find-empty? grid)))
         (if result
