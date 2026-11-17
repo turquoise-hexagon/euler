@@ -44,7 +44,7 @@
                    (generate proc/6)
                    (generate proc/7)
                    (generate proc/8))))
-    (call/cc
+    (call-with-current-continuation
       (lambda (proc)
         (for-each
           (lambda (i)
